@@ -9,13 +9,6 @@ This is the main part providing the core routing and handling of all of the appl
 $ npm install
 ```
 
-## Environment variables
-
-Sample .evn file
-```
-DEV_PORT=3000
-```
-
 ## Technology
 - Node.js & npm
 - NestJS
