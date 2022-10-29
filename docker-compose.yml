@@ -28,18 +28,6 @@ services:
       - pgadmin-data:/var/lib/pgadmin
     restart: unless-stopped
 
-  prisma-postgres-api:
-    stdin_open: true
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: prisma-postgres-api
-    depends_on:
-      - postgres
-    ports:
-      - "3012:3012"
-    restart: always
-
 volumes:
   postgres-data:
   pgadmin-data:
