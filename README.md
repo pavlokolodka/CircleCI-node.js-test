@@ -9,17 +9,15 @@ This is the main part providing the core routing and handling of all of the appl
 $ npm install
 ```
 
-## Run app
+## Build 
+```
+$ docker build -t postgresdb_main . 
+```
 
+## Run app
 ```
 $ npm run start
 $ npm run start:dev
-```
-
-## Run data base
-
-```
-$ docker-compose up
 ```
 
 ## Technology
