@@ -9,18 +9,22 @@ This is the main part providing the core routing and handling of all of the appl
 $ npm install
 ```
 
-## Build 
+## Build db & run container
+
 ```
-$ docker build -t postgresdb_main . 
+$ docker build -t postgresdb_main .
+$ docker run -d --name postgresdb_main -p 6532:5432 --rm postgresdb_main
 ```
 
 ## Run app
+
 ```
 $ npm run start
 $ npm run start:dev
 ```
 
 ## Technology
+
 - Node.js & npm
 - NestJS
 - TypeScript
