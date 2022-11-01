@@ -30,6 +30,6 @@ model Order {
 }
 
 enum Role {
-  USER
-  ADMIN
+  user
+  admin
 }

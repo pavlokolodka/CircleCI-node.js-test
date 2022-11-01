@@ -15,7 +15,11 @@ $ npm install
 $ docker build -t postgresdb_main .
 $ docker run -d --name postgresdb_main -p 6532:5432 --rm postgresdb_main
 ```
+## Run migration
 
+```
+$ npx prisma migrate dev
+```
 ## Run app
 
 ```
