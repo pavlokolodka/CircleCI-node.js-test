@@ -12,8 +12,21 @@ $ npm install
 ## Build db & run container
 
 ```
-$ docker build -t postgresdb_main .
-$ docker run -d --name postgresdb_main -p 6532:5432 --rm postgresdb_main
+# 1 (only once if you have not built before, otherwise step 2)
+$ npm run buildDb 
+
+# 2 Run the database
+$ npm run upDb
+
+# 3 Down the database
+$ npm run stopDb
+
+# Connect to the database local viewer
+host     - localhost
+port     - 6532
+database - main
+username - postgres
+password - root
 ```
 ## Run migration
 
