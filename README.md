@@ -28,7 +28,11 @@ database - main
 username - postgres
 password - root
 ```
+## Run migration
 
+```
+$ npx prisma migrate dev
+```
 ## Run app
 
 ```
