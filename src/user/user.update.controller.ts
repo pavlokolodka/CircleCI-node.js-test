@@ -1,30 +1,32 @@
-import { Body, Controller, Put } from '@nestjs/common';
-import { UserService } from './user.service';
+import { Body, Controller, Put, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { UserUpdateService } from './user.update.service';
 
 @Controller('user-update')
 export class UserUpdateController {
-    constructor(private readonly userService: UserService) { }
+    constructor(private readonly userUpdateService: UserUpdateService) { }
 
     //add current user dec
 
     @Put('photo')
+    @UseInterceptors(FileFieldsInterceptor([{ name: 'photo', maxCount: 1 }]))
     updatePhoto(
         @Body('userId') userId: number,
-        @Body('photo') photo: string) {
-        return this.userService.updatePhoto(userId, photo)
+        @UploadedFiles() filePhoto) {
+        return this.userUpdateService.updatePhoto(Number(userId), filePhoto)
     }
 
     @Put('name')
     updateName(
         @Body('userId') userId: number,
         @Body('name') name: string) {
-        return this.userService.updateName(userId, name)
+        return this.userUpdateService.updateName(userId, name)
     }
 
     @Put('lastname')
     updateLastname(
         @Body('userId') userId: number,
         @Body('lastname') lastname: string) {
-        return this.userService.updateLastname(userId, lastname)
+        return this.userUpdateService.updateLastname(userId, lastname)
     }
 }
