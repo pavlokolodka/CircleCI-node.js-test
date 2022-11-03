@@ -1,7 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { LoginUserDto } from './dto/login-user.dto';
-import { lastValueFrom } from 'rxjs';
 import { PrismaService } from '../services/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from '../services/user.service';
@@ -25,12 +24,17 @@ export class AuthService {
     const createdUser = await this.usersService.create(user);
 
     try {
-      const res = await lastValueFrom(
-        this.httpService.post(
-          `http://localhost:${process.env.AUTH_SERVICE_PORT}/auth/signup`,
-          { ...user, role: createdUser.role },
-        ),
+      const res = await this.httpService.axiosRef.post(
+        `${process.env.AUTH_SERVICE_URL}/signup`,
+        {
+          ...user,
+          role: createdUser.role,
+        },
       );
+      console.log({
+        ...user,
+        role: createdUser.role,
+      });
       return { message: 'Success' };
     } catch (err) {
       const res = await this.usersService.delete(user.email);
@@ -48,13 +52,10 @@ export class AuthService {
     }
 
     try {
-      const res = await lastValueFrom(
-        this.httpService.post(
-          `http://localhost:${process.env.AUTH_SERVICE_PORT}/auth/signin`,
-          credentials,
-        ),
+      const res = await this.httpService.axiosRef.post(
+        `${process.env.AUTH_SERVICE_URL}/signin`,
+        credentials,
       );
-
       return res.data;
     } catch (err) {
       throw new BadRequestException('Invalid email or password');
