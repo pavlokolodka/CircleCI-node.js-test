@@ -31,6 +31,7 @@ export class AuthService {
           role: createdUser.role,
         },
       );
+
       return res.data;
     } catch (err) {
       const res = await this.usersService.delete(user.email);
