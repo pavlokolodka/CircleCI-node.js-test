@@ -3,6 +3,7 @@ import {
   ExecutionContext,
   ForbiddenException,
   Injectable,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Observable } from 'rxjs';
@@ -21,7 +22,11 @@ export class RolesGuard implements CanActivate {
       const roles = this.reflector.get<string[]>('roles', context.getHandler());
 
       const authHeader = request.headers.authorization;
-      const token = authHeader.split(' ')[1];
+      const [prefix, token] = authHeader.split(' ');
+
+      if (prefix !== 'Bearer' || !token) {
+        throw new UnauthorizedException({ message: 'User is not auth' });
+      }
 
       const user = this.jwtService.verify(token, {
         publicKey: process.env.PRIVATE_KEY,
