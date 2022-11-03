@@ -20,16 +20,17 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "prepare": "husky install",
-    "migration:create": "npx prisma migrate dev",
     "buildDb": "docker build -t postgresdb_main .",
     "upDb": "docker run -d --name postgresdb_main --rm -v /postgres-data:/var/lib/postgresql/data -p 6532:5432 postgresdb_main",
     "stopDb": "docker stop postgresdb_main"
   },
   "dependencies": {
+    "@nestjs/axios": "^0.1.0",
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^2.2.0",
     "@nestjs/core": "^9.0.0",
     "@nestjs/mapped-types": "*",
+    "@nestjs/jwt": "^9.0.0",
     "@nestjs/platform-express": "^9.0.0",
     "@prisma/client": "^4.5.0",
     "cors": "^2.8.5",
