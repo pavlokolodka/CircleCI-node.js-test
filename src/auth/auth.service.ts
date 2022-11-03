@@ -31,10 +31,6 @@ export class AuthService {
           role: createdUser.role,
         },
       );
-      console.log({
-        ...user,
-        role: createdUser.role,
-      });
       return { message: 'Success' };
     } catch (err) {
       const res = await this.usersService.delete(user.email);
