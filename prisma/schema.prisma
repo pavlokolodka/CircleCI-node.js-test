@@ -12,7 +12,7 @@ model User {
   email      String   @unique
   name       String
   lastname   String
-  role       Role     @default(USER)
+  role       Role     @default(customer)
   photo      String?
   orders     Order[]
   createdAt  DateTime @default(now())
@@ -21,7 +21,7 @@ model User {
 
 model Order {
   id         Int      @default(autoincrement()) @id
-  title      String  
+  title      String
   info       String
   user       User     @relation(fields: [user_id], references: [id])
   user_id    Int
@@ -30,6 +30,7 @@ model Order {
 }
 
 enum Role {
-  user
+  customer
+  volunteer
   admin
 }
