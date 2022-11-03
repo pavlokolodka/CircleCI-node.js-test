@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Put } from '@nestjs/common';
+import { Body, Controller, Patch } from '@nestjs/common';
 import { UpdateNameDto } from './dto/update-name.dto';
 import { UserUpdateService } from './user.update.service';
 
@@ -6,7 +6,7 @@ import { UserUpdateService } from './user.update.service';
 export class UserUpdateController {
     constructor(private readonly userUpdateService: UserUpdateService) { }
 
-    @Put('name')
+    @Patch('name')
     updateName(@Body() updateNameDto: UpdateNameDto) {
         return this.userUpdateService.updateName(updateNameDto)
     }
