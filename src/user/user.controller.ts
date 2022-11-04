@@ -1,4 +1,6 @@
-import { Body, Controller, Patch } from '@nestjs/common';
+import { Body, Controller, Patch, UsePipes } from '@nestjs/common';
+import { UpdateUserSchema } from 'src/utils/validator/schemes';
+import { AjvValidationPipe } from 'src/utils/validator/validation';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
 
@@ -7,7 +9,9 @@ export class UserController {
   constructor(private readonly userService: UserService) { }
 
   @Patch()
-  updateUser(@Body() updateUserDto: UpdateUserDto) {
-    return this.userService.updateUser(updateUserDto)
+  @UsePipes(new AjvValidationPipe(UpdateUserSchema))
+  async updateUser(@Body() updateUserDto: UpdateUserDto) {
+    const user = await this.userService.updateUser(updateUserDto);
+    return user;
   }
 }
