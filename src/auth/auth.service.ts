@@ -22,6 +22,7 @@ export class AuthService {
     }
 
     const createdUser = await this.usersService.create(user);
+    console.log(createdUser);
 
     try {
       const res = await this.httpService.axiosRef.post(
