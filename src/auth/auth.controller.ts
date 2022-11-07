@@ -3,7 +3,7 @@ import { AuthService } from './auth.service';
 import { LoginUserDto } from './dto/login-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { AjvValidationPipe } from 'src/utils/validator/validation';
-import { CreateUserSchema, LoginUserSchema } from 'src/utils/validator/schemes';
+import { CreateUserSchema, LoginUserSchema } from 'src/utils/validator/user/index';
 
 @Controller('auth')
 export class AuthController {

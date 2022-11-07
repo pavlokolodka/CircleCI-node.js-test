@@ -1,5 +1,5 @@
 import { Body, Controller, Patch, UsePipes } from '@nestjs/common';
-import { UpdateUserSchema } from 'src/utils/validator/schemes';
+import { UpdateUserSchema } from 'src/utils/validator/user/index';
 import { AjvValidationPipe } from 'src/utils/validator/validation';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
