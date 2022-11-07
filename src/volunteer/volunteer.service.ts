@@ -44,7 +44,7 @@ export class VolunteerService {
         },
       })
       .catch(() => {
-        throw new BadRequestException('Order not found');
+        throw new BadRequestException('Something went wrong');
       });
   }
 
@@ -58,7 +58,7 @@ export class VolunteerService {
         },
       })
       .catch(() => {
-        throw new BadRequestException('Order not created');
+        throw new BadRequestException('Something went wrong');
       });
   }
 
@@ -72,7 +72,7 @@ export class VolunteerService {
         },
       })
       .catch(() => {
-        throw new BadRequestException('Order not updated');
+        throw new BadRequestException('Something went wrong');
       });
   }
 }
