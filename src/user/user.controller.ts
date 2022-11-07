@@ -6,11 +6,11 @@ import { UserService } from './user.service';
 @ApiTags('User')
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) { }
+  constructor(private readonly userService: UserService) {}
 
   @ApiResponse({ status: 200, description: 'Return updated user' })
   @Patch()
   updateUser(@Body() updateUserDto: UpdateUserDto) {
-    return this.userService.updateUser(updateUserDto)
+    return this.userService.updateUser(updateUserDto);
   }
 }
