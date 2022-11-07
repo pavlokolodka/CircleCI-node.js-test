@@ -32,10 +32,10 @@ export class VolunteerService {
     };
   }
 
-  async getOrderById(id: string) {
+  async getOrderById(id: number) {
     return this.prismaService.order.findFirst({
       where: {
-        id: +id,
+        id,
       },
     });
   }
@@ -50,9 +50,9 @@ export class VolunteerService {
     });
   }
 
-  async updateOrder(order: UpdateOrderDto, id: string) {
+  async updateOrder(order: UpdateOrderDto, id: number) {
     return this.prismaService.order.update({
-      where: { id: +id },
+      where: { id },
       data: {
         title: order.title,
         info: order.info,

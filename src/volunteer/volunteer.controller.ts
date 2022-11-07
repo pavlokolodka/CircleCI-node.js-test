@@ -25,41 +25,25 @@ export class VolunteerController {
     @Query('sort') sort = 'asc',
     @Query('search') search: string,
   ) {
-    try {
-      return this.volunteerService.getAllOrders(+limit, sort, +page, search);
-    } catch (e) {
-      throw e;
-    }
+    return this.volunteerService.getAllOrders(+limit, sort, +page, search);
   }
 
   @Get('/:id')
   async getOrderById(@Param('id') id: string) {
-    try {
-      return this.volunteerService.getOrderById(id);
-    } catch (e) {
-      throw e;
-    }
+    return this.volunteerService.getOrderById(+id);
   }
 
   @UseGuards(RolesGuard)
   @Roles('volunteer')
   @Post()
   async createOrder(@Body() order: CreateOrderDto) {
-    try {
-      return this.volunteerService.createOrder(order);
-    } catch (e) {
-      throw e;
-    }
+    return this.volunteerService.createOrder(order);
   }
 
   @UseGuards(RolesGuard)
   @Roles('volunteer')
   @Patch('/:id')
   async updateOrder(@Param('id') id: string, @Body() order: UpdateOrderDto) {
-    try {
-      return this.volunteerService.updateOrder(order, id);
-    } catch (e) {
-      throw e;
-    }
+    return this.volunteerService.updateOrder(order, +id);
   }
 }
