@@ -6,6 +6,15 @@ import { UpdateUserDto } from './dto/update-user.dto';
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
+  async get(email: string) {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        email,
+      },
+    });
+    return user;
+  }
+
   async updateUser({ userId, name, lastname }: UpdateUserDto) {
     return await this.prisma.user
       .update({

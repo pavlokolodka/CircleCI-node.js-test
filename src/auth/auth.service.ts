@@ -4,7 +4,6 @@ import { LoginUserDto } from './dto/login-user.dto';
 import { PrismaService } from '../services/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from '../services/user.service';
-import * as jwt from 'jsonwebtoken';
 
 @Injectable()
 export class AuthService {
@@ -57,9 +56,5 @@ export class AuthService {
     } catch (err) {
       throw new BadRequestException('Invalid email or password');
     }
-  }
-
-  private validateJwt(token) {
-    return jwt.verify(token, process.env.PRIVATE_KEY);
   }
 }

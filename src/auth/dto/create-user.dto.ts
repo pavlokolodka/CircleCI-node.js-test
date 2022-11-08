@@ -1,32 +1,32 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateUserDto {
   @ApiProperty({
     example: 'email@gmail.com',
     description: 'User email',
     uniqueItems: true,
-    type: String
+    type: String,
   })
   email: string;
 
   @ApiProperty({
     example: 'Name',
     description: 'User name',
-    type: String
+    type: String,
   })
   name: string;
 
   @ApiProperty({
     example: 'Lastname',
     description: 'User lastname',
-    type: String
+    type: String,
   })
   lastname: string;
 
   @ApiProperty({
     example: 'qwerty123',
     description: 'User password',
-    type: String
+    type: String,
   })
   password: string;
 
@@ -34,7 +34,7 @@ export class CreateUserDto {
     example: 'https://www.google.com/photo.png',
     description: 'User photo',
     required: false,
-    type: String
+    type: String,
   })
   photo?: string;
 }
