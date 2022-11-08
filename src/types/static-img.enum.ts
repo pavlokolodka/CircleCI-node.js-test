@@ -1,7 +1,7 @@
 export enum FileTypes {
-    IMG = 'image'
+  IMG = 'image',
 }
 
 export enum ResourceTypes {
-    USER_PHOTO = 'user-photo'
+  USER_PHOTO = 'user-photo',
 }
