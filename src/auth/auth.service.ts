@@ -10,13 +10,8 @@ import * as jwt from 'jsonwebtoken';
 export class AuthService {
   constructor(
     private readonly httpService: HttpService,
-<<<<<<< HEAD
     private readonly userService: UserService,
   ) {}
-=======
-    private readonly usersService: UsersService,
-  ) { }
->>>>>>> 7228b117b52e1974aa5fea13cce07f9d4025ca25
 
   async register(user: CreateUserDto) {
     const registeredUser = await this.userService.getByEmail(user.email);
