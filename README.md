@@ -39,7 +39,8 @@ $ npx prisma migrate dev
 $ npm run start
 $ npm run start:dev
 ```
-
+## API endpoints documentation
+> http://localhost:4000/api
 ## Technology
 
 - Node.js & npm
