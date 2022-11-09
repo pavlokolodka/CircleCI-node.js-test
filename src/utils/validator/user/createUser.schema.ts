@@ -1,5 +1,5 @@
 import { JSONSchemaType } from "ajv";
-import { CreateUserDto } from "src/auth/dto/create-user.dto";
+import { CreateUserDto } from "../dto/create-user.validator.dto";
 import { email } from "../shared/email.schema";
 import { password } from "../shared/password.schema";
 

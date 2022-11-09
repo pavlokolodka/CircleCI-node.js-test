@@ -1,5 +1,5 @@
 import { JSONSchemaType } from "ajv";
-import { UpdateUserDto } from "src/user/dto/update-user.dto";
+import { UpdateUserDto } from "../dto/update-user.validator.dto";
 
 
 export const UpdateUserSchema: JSONSchemaType<UpdateUserDto> = {
