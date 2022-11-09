@@ -1,27 +1,31 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { LoginUserDto } from './dto/login-user.dto';
-import { PrismaService } from '../services/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UsersService } from '../services/user.service';
+import { UserService } from 'src/user/user.service';
 import * as jwt from 'jsonwebtoken';
+
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly prisma: PrismaService,
     private readonly httpService: HttpService,
+<<<<<<< HEAD
+    private readonly userService: UserService,
+  ) {}
+=======
     private readonly usersService: UsersService,
   ) { }
+>>>>>>> 7228b117b52e1974aa5fea13cce07f9d4025ca25
 
   async register(user: CreateUserDto) {
-    const registeredUser = await this.usersService.getByEmail(user.email);
+    const registeredUser = await this.userService.getByEmail(user.email);
 
     if (registeredUser) {
       throw new BadRequestException('Something wrong');
     }
 
-    const createdUser = await this.usersService.create(user);
+    const createdUser = await this.userService.create(user);
 
     try {
       const res = await this.httpService.axiosRef.post(
@@ -34,13 +38,13 @@ export class AuthService {
 
       return res.data;
     } catch (err) {
-      const res = await this.usersService.delete(user.email);
+      const res = await this.userService.delete(user.email);
       throw new BadRequestException('Something wrong');
     }
   }
 
   async login(credentials: LoginUserDto) {
-    const registeredUser = await this.usersService.getByEmail(
+    const registeredUser = await this.userService.getByEmail(
       credentials.email,
     );
 
