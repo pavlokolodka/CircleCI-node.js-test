@@ -21,15 +21,6 @@ export class UserService {
     return newUser;
   }
 
-  async get(email: string) {
-    const user = await this.prisma.user.findUnique({
-      where: {
-        email,
-      },
-    });
-    return user;
-  }
-
   async updateUser({ userId, name, lastname }: UpdateUserDto) {
     const user = await this.userRepository.update({ userId, name, lastname });
     return user;

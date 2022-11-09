@@ -8,7 +8,12 @@ export class VolunteerService {
   constructor(private orderRepository: OrderRepository) {}
 
   async getAllOrders(limit: number, sort, page: number, search: string) {
-    const orders = await this.orderRepository.getAllOrders(limit, sort, page, search);
+    const orders = await this.orderRepository.getAllOrders(
+      limit,
+      sort,
+      page,
+      search,
+    );
     return orders;
   }
 
@@ -26,4 +31,4 @@ export class VolunteerService {
     const updatedOrder = await this.orderRepository.updateOrder(order, id);
     return updatedOrder;
   }
-}  
+}

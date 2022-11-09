@@ -1,4 +1,14 @@
-import { Body, Controller, Get, Patch, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Patch,
+  Req,
+  UseGuards,
+  UsePipes,
+} from '@nestjs/common';
+import { UpdateUserSchema } from '../utils/validator/user';
+import { AjvValidationPipe } from 'src/utils/validator/validation';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
@@ -16,12 +26,14 @@ export class UserController {
   @Get()
   get(@Req() req) {
     const { email } = req;
-    return this.userService.get(email);
+    return this.userService.getByEmail(email);
   }
 
   @ApiResponse({ status: 200, description: 'Return updated user' })
   @Patch()
-  updateUser(@Body() updateUserDto: UpdateUserDto) {
-    return this.userService.updateUser(updateUserDto);
+  @UsePipes(new AjvValidationPipe(UpdateUserSchema))
+  async updateUser(@Body() updateUserDto: UpdateUserDto) {
+    const user = await this.userService.updateUser(updateUserDto);
+    return user;
   }
 }

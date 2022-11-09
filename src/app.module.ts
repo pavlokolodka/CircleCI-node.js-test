@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { VolunteerModule } from './volunteer/volunteer.module';
+import { PasswordModule } from './password/password.module';
 import { AuthMiddleware } from './middleware/auth.middleware';
 import { JwtModule } from '@nestjs/jwt';
 
@@ -11,6 +12,7 @@ import { JwtModule } from '@nestjs/jwt';
     ConfigModule.forRoot(),
     UserModule,
     AuthModule,
+    PasswordModule,
     VolunteerModule,
     JwtModule,
   ],
