@@ -1,78 +1,29 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { PrismaService } from '../services/prisma.service';
+import { Injectable } from '@nestjs/common';
+import OrderRepository from 'src/order/repository/order.repository';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 
 @Injectable()
 export class VolunteerService {
-  constructor(private prismaService: PrismaService) {}
+  constructor(private orderRepository: OrderRepository) {}
 
   async getAllOrders(limit: number, sort, page: number, search: string) {
-    const skip = limit * (page - 1);
-    const orders = await this.prismaService.order
-      .findMany({
-        skip,
-        take: limit,
-        orderBy: {
-          id: sort,
-        },
-        where: {
-          title: {
-            contains: search,
-          },
-        },
-      })
-      .catch(() => {
-        throw new BadRequestException('Something went wrong');
-      });
-    const totalPages = Math.round(
-      (await this.prismaService.order.findMany()).length / limit,
-    );
-    return {
-      page,
-      limit,
-      totalPages,
-      data: orders,
-    };
+    const orders = await this.orderRepository.getAllOrders(limit, sort, page, search);
+    return orders;
   }
 
   async getOrderById(id: number) {
-    return this.prismaService.order
-      .findFirst({
-        where: {
-          id,
-        },
-      })
-      .catch(() => {
-        throw new BadRequestException('Something went wrong');
-      });
+    const order = await this.orderRepository.getOrderById(id);
+    return order;
   }
 
   async createOrder(order: CreateOrderDto) {
-    return this.prismaService.order
-      .create({
-        data: {
-          title: order.title,
-          info: order.info,
-          user_id: order.id,
-        },
-      })
-      .catch(() => {
-        throw new BadRequestException('Something went wrong');
-      });
+    const newOrder = await this.orderRepository.createOrder(order);
+    return newOrder;
   }
 
   async updateOrder(order: UpdateOrderDto, id: number) {
-    return this.prismaService.order
-      .update({
-        where: { id },
-        data: {
-          title: order.title,
-          info: order.info,
-        },
-      })
-      .catch(() => {
-        throw new BadRequestException('Something went wrong');
-      });
+    const updatedOrder = await this.orderRepository.updateOrder(order, id);
+    return updatedOrder;
   }
-}
+}  
