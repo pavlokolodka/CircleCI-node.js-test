@@ -25,7 +25,7 @@ export class AuthService {
 
     try {
       const res = await this.httpService.axiosRef.post(
-        `${process.env.AUTH_SERVICE_URL}auth/signup`,
+        `${process.env.AUTH_SERVICE_URL}/auth/signup`,
         {
           ...user,
           role: createdUser.role,
@@ -50,7 +50,7 @@ export class AuthService {
 
     try {
       const res = await this.httpService.axiosRef.post(
-        `${process.env.AUTH_SERVICE_URL}auth/signin`,
+        `${process.env.AUTH_SERVICE_URL}/auth/signin`,
         credentials,
       );
       return res.data;
