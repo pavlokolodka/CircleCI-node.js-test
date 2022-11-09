@@ -12,7 +12,7 @@ export class AuthService {
     private readonly prisma: PrismaService,
     private readonly httpService: HttpService,
     private readonly usersService: UsersService,
-  ) {}
+  ) { }
 
   async register(user: CreateUserDto) {
     const registeredUser = await this.usersService.getByEmail(user.email);
@@ -25,7 +25,7 @@ export class AuthService {
 
     try {
       const res = await this.httpService.axiosRef.post(
-        `${process.env.AUTH_SERVICE_URL}/signup`,
+        `${process.env.AUTH_SERVICE_URL}auth/signup`,
         {
           ...user,
           role: createdUser.role,
@@ -50,7 +50,7 @@ export class AuthService {
 
     try {
       const res = await this.httpService.axiosRef.post(
-        `${process.env.AUTH_SERVICE_URL}/signin`,
+        `${process.env.AUTH_SERVICE_URL}auth/signin`,
         credentials,
       );
       return res.data;
