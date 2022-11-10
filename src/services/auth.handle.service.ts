@@ -1,25 +1,18 @@
-import {
-  Injectable,
-  NestMiddleware,
-  UnauthorizedException,
-} from '@nestjs/common';
-import { NextFunction } from 'express';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
-export class AuthMiddleware implements NestMiddleware {
+export class AuthHandleService {
   constructor(private readonly jwtService: JwtService) {}
 
-  use(req: Request & { email: string }, res: Response, next: NextFunction) {
-    const token = this.parseToken(req.headers['authorization']);
+  getPayload(rawToken: string) {
+    const token = this.parseToken(rawToken);
 
     const user = this.jwtService.verify(token, {
       publicKey: process.env.PRIVATE_KEY,
     });
 
-    req.email = user.email;
-
-    next();
+    return user;
   }
 
   private parseToken(rawToken?: string) {

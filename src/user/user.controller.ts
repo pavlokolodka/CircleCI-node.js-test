@@ -14,18 +14,24 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
+import { AuthHandleService } from '../services/auth.handle.service';
 
 @ApiTags('User')
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly authHandleService: AuthHandleService,
+  ) {}
 
   @ApiResponse({ status: 200, description: 'Return user info' })
   @Roles('customer')
   @UseGuards(RolesGuard)
   @Get()
   get(@Req() req) {
-    const { email } = req;
+    const { email } = this.authHandleService.getPayload(
+      req.headers['authorization'],
+    );
     return this.userService.getByEmail(email);
   }
 

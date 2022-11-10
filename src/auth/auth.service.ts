@@ -3,7 +3,6 @@ import { HttpService } from '@nestjs/axios';
 import { LoginUserDto } from './dto/login-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserService } from 'src/user/user.service';
-import * as jwt from 'jsonwebtoken';
 
 @Injectable()
 export class AuthService {
