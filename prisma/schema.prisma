@@ -19,6 +19,16 @@ model User {
   updatedAt  DateTime @updatedAt
 }
 
+model Admin {
+  id         Int      @default(autoincrement()) @id
+  email      String   @unique
+  name       String
+  lastname   String
+  photo      String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
 model Order {
   id         Int      @default(autoincrement()) @id
   title      String
@@ -32,5 +42,4 @@ model Order {
 enum Role {
   customer
   volunteer
-  admin
 }
