@@ -33,6 +33,12 @@ password - root
 ```
 $ npx prisma migrate dev
 ```
+
+## Run seed
+
+```
+$ npx prisma db seed
+```
 ## Run app
 
 ```
