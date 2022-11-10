@@ -38,6 +38,8 @@ $ npx prisma migrate dev
 
 ```
 $ npx prisma db seed
+
+user password - 12345678
 ```
 ## Run app
 

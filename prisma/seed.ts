@@ -5,11 +5,11 @@ const prisma = new PrismaClient();
 
 const userData: Prisma.UserCreateInput[] = [
   {
-    email: faker.internet.email(),
+    email: "Arvid_Beer@hotmail.com",
     name: faker.name.firstName(),
     lastname: faker.name.lastName(),
     photo: faker.image.avatar(),
-    role: faker.helpers.arrayElement(['customer', 'admin', 'volunteer']),
+    role: 'customer',
     orders: {
       create: [
         {
@@ -45,11 +45,11 @@ const userData: Prisma.UserCreateInput[] = [
     
   },
   {
-    email: faker.internet.email(),
+    email: "Aubree94@yahoo.com",
     name: faker.name.firstName(),
     lastname: faker.name.lastName(),
     photo: faker.image.avatar(),
-    role: faker.helpers.arrayElement(['customer', 'admin', 'volunteer']),
+    role: 'admin',
     orders: {
       create: [
         {
@@ -85,10 +85,10 @@ const userData: Prisma.UserCreateInput[] = [
     
   },
   {
-    email: faker.internet.email(),
+    email: "Norbert_Sipes@hotmail.com",
     name: faker.name.firstName(),
     lastname: faker.name.lastName(),
-    role: faker.helpers.arrayElement(['customer', 'admin', 'volunteer']),
+    role: 'volunteer',
     orders: {
       create: [
         {
@@ -124,10 +124,10 @@ const userData: Prisma.UserCreateInput[] = [
     
   },
   {
-    email: faker.internet.email(),
+    email: "Cassandre.Ernser25@gmail.com",
     name: faker.name.firstName(),
     lastname: faker.name.lastName(),
-    role: faker.helpers.arrayElement(['customer', 'admin', 'volunteer']),
+    role: 'volunteer',
     orders: {
       create: [
         {
@@ -163,10 +163,10 @@ const userData: Prisma.UserCreateInput[] = [
     
   },
   {
-    email: faker.internet.email(),
+    email: "Lauren_Harvey@hotmail.com",
     name: faker.name.firstName(),
     lastname: faker.name.lastName(),
-    role: faker.helpers.arrayElement(['customer', 'admin', 'volunteer']),
+    role: 'volunteer',
     orders: {
       create: [
         {
@@ -202,10 +202,10 @@ const userData: Prisma.UserCreateInput[] = [
     
   },
   {
-    email: faker.internet.email(),
+    email: "Alexzander49@gmail.com",
     name: faker.name.firstName(),
     lastname: faker.name.lastName(),
-    role: faker.helpers.arrayElement(['customer', 'admin', 'volunteer']),
+    role: 'customer',
     orders: {
       create: [
         {
@@ -241,10 +241,10 @@ const userData: Prisma.UserCreateInput[] = [
     
   },
   {
-    email: faker.internet.email(),
+    email: "Keely_Cummings98@hotmail.com",
     name: faker.name.firstName(),
     lastname: faker.name.lastName(),
-    role: faker.helpers.arrayElement(['customer', 'admin', 'volunteer']),
+    role: 'customer',
     orders: {
       create: [
         {
@@ -280,51 +280,11 @@ const userData: Prisma.UserCreateInput[] = [
     
   },
   {
-    email: faker.internet.email(),
-    name: faker.name.firstName(),
-    lastname: faker.name.lastName(),
-    photo: faker.image.avatar(),
-    role: faker.helpers.arrayElement(['customer', 'admin', 'volunteer']),
-    orders: {
-      create: [
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-      ]
-    }
-    
-  },
-  {
-    email: faker.internet.email(),
+    email: "Deon_Johns@gmail.com",
     name: faker.name.firstName(),
     lastname: faker.name.lastName(),
     photo: faker.image.avatar(),
-    role: faker.helpers.arrayElement(['customer', 'admin', 'volunteer']),
+    role: 'customer',
     orders: {
       create: [
         {
@@ -360,11 +320,51 @@ const userData: Prisma.UserCreateInput[] = [
     
   },
   {
-    email: faker.internet.email(),
+    email: "Clarissa.Kunze@gmail.com",
     name: faker.name.firstName(),
     lastname: faker.name.lastName(),
     photo: faker.image.avatar(),
-    role: faker.helpers.arrayElement(['customer', 'admin', 'volunteer']),
+    role: 'customer',
+    orders: {
+      create: [
+        {
+          title: faker.commerce.product(),
+          info: faker.commerce.productDescription()
+        },
+        {
+          title: faker.commerce.product(),
+          info: faker.commerce.productDescription()
+        },
+        {
+          title: faker.commerce.product(),
+          info: faker.commerce.productDescription()
+        },
+        {
+          title: faker.commerce.product(),
+          info: faker.commerce.productDescription()
+        },
+        {
+          title: faker.commerce.product(),
+          info: faker.commerce.productDescription()
+        },
+        {
+          title: faker.commerce.product(),
+          info: faker.commerce.productDescription()
+        },
+        {
+          title: faker.commerce.product(),
+          info: faker.commerce.productDescription()
+        },
+      ]
+    }
+    
+  },
+  {
+    email: "Ulises_Dooley@gmail.com",
+    name: faker.name.firstName(),
+    lastname: faker.name.lastName(),
+    photo: faker.image.avatar(),
+    role: 'customer',
     orders: {
       create: [
         {
