@@ -1,4 +1,5 @@
 import { Body, Controller, Patch, Post } from '@nestjs/common';
+import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 import { PasswordService } from './password.service';
@@ -8,8 +9,8 @@ export class PasswordController {
   constructor(private readonly passwordService: PasswordService) { }
 
   @Post('forgot')
-  forgotPassword(@Body('email') email: string) {
-    return this.passwordService.forgotPassword(email)
+  forgotPassword(@Body() forgotPasswordDto: ForgotPasswordDto) {
+    return this.passwordService.forgotPassword(forgotPasswordDto)
   }
 
   @Patch('reset')
