@@ -21,10 +21,13 @@ export class PasswordService {
     }
 
     async resetPassword(resetPasswordDto: ResetPasswordDto) {
-        return await this.httpService.axiosRef.patch(
-            `${process.env.AUTH_SERVICE_URL}/password/reset`, resetPasswordDto)
-            .then(data => data.data)
-            .catch((err) => { throw new BadRequestException(err) })
+        const recaptchaVerified = await this.recaptcha.check(resetPasswordDto.recaptchaToken)
+        if (recaptchaVerified) {
+            return await this.httpService.axiosRef.patch(
+                `${process.env.AUTH_SERVICE_URL}/password/reset`, resetPasswordDto)
+                .then(data => data.data)
+                .catch((err) => { throw new BadRequestException(err) })
+        }
     }
 
     async updatePassword(updatePasswordDto: UpdatePasswordDto) {

@@ -13,4 +13,10 @@ export class LoginUserDto {
     description: 'User password'
   })
   password: string;
+
+  @ApiProperty({
+    description: 'Recaptcha token',
+    type: String
+  })
+  recaptchaToken: string
 }

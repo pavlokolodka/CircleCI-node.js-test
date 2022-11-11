@@ -1,5 +1,5 @@
 import { HttpService } from "@nestjs/axios"
-import { Injectable } from "@nestjs/common"
+import { BadRequestException, Injectable } from "@nestjs/common"
 
 @Injectable()
 export class RecaptchaService {
@@ -13,6 +13,6 @@ export class RecaptchaService {
                 params: { secret: process.env.RECAPTCHA_SECRET_KEY, response: recaptchaToken }
             })
             .then(data => data.data.success)
-            .catch(err => console.log(err))
+            .catch(err => { throw new BadRequestException(err) })
     }
 }

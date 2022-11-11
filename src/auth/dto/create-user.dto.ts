@@ -37,4 +37,10 @@ export class CreateUserDto {
     type: String
   })
   photo?: string;
+
+  @ApiProperty({
+    description: 'Recaptcha token',
+    type: String
+  })
+  recaptchaToken: string
 }
