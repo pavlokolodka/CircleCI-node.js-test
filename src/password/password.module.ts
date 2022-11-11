@@ -4,10 +4,9 @@ import { PrismaService } from './../services/prisma.service';
 import { PasswordService } from './password.service';
 import { PasswordController } from './password.controller';
 
-
 @Module({
   controllers: [PasswordController],
   providers: [PasswordService, PrismaService],
   imports: [HttpModule],
 })
-export class PasswordModule { }
+export class PasswordModule {}

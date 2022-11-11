@@ -1,7 +1,7 @@
-import { BadRequestException } from "@nestjs/common";
-import Repository from "src/repository/repository";
-import { CreateOrderDto } from "src/volunteer/dto/create-order.dto";
-import { UpdateOrderDto } from "src/volunteer/dto/update-order.dto";
+import { BadRequestException } from '@nestjs/common';
+import Repository from 'src/repository/repository';
+import { CreateOrderDto } from 'src/volunteer/dto/create-order.dto';
+import { UpdateOrderDto } from 'src/volunteer/dto/update-order.dto';
 
 export default class OrderRepository extends Repository {
   async getAllOrders(limit: number, sort, page: number, search: string) {

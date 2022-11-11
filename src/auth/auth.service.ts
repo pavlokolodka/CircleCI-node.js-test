@@ -3,8 +3,6 @@ import { HttpService } from '@nestjs/axios';
 import { LoginUserDto } from './dto/login-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserService } from 'src/user/user.service';
-import * as jwt from 'jsonwebtoken';
-
 
 @Injectable()
 export class AuthService {
@@ -39,9 +37,7 @@ export class AuthService {
   }
 
   async login(credentials: LoginUserDto) {
-    const registeredUser = await this.userService.getByEmail(
-      credentials.email,
-    );
+    const registeredUser = await this.userService.getByEmail(credentials.email);
 
     if (!registeredUser) {
       throw new BadRequestException('Something wrong');
@@ -56,9 +52,5 @@ export class AuthService {
     } catch (err) {
       throw new BadRequestException('Invalid email or password');
     }
-  }
-
-  private validateJwt(token) {
-    return jwt.verify(token, process.env.PRIVATE_KEY!);
   }
 }

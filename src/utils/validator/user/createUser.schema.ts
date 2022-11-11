@@ -1,26 +1,25 @@
-import { JSONSchemaType } from "ajv";
-import { CreateUserDto } from "../dto/create-user.validator.dto";
-import { email } from "../shared/email.schema";
-import { password } from "../shared/password.schema";
-
+import { JSONSchemaType } from 'ajv';
+import { CreateUserDto } from '../dto/create-user.validator.dto';
+import { email } from '../shared/email.schema';
+import { password } from '../shared/password.schema';
 
 export const CreateUserSchema: JSONSchemaType<CreateUserDto> = {
-  type: "object",
+  type: 'object',
   properties: {
     email: email,
     name: {
-      type: "string",
+      type: 'string',
       maxLength: 256,
-      minLength: 3
+      minLength: 3,
     },
     lastname: {
-      type: "string",
+      type: 'string',
       maxLength: 256,
-      minLength: 3
+      minLength: 3,
     },
     password: password,
-    photo: {type: "string", nullable: true}
-   },
-  required: ["email", "name", "lastname", "password"],
-  additionalProperties: false
-}
+    photo: { type: 'string', nullable: true },
+  },
+  required: ['email', 'name', 'lastname', 'password'],
+  additionalProperties: false,
+};

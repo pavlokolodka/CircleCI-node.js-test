@@ -3,16 +3,14 @@ import { AuthService } from './auth.service';
 import { LoginUserDto } from './dto/login-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { AjvValidationPipe } from 'src/utils/validator/validation';
-import { CreateUserSchema, LoginUserSchema } from 'src/utils/validator/user/index';
+import { CreateUserSchema, LoginUserSchema } from '../utils/validator/user';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
-
-
 
 @ApiTags('Authorization')
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) { }
+  constructor(private readonly authService: AuthService) {}
 
   @ApiResponse({ status: 201, description: 'User created' })
   @Post('/sign-up')
