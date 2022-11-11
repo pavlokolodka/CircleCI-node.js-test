@@ -10,20 +10,18 @@ export class AdminAuthService {
     private adminService: AdminService,
   ) {}
 
-  async loginAdmin(adminDto: LoginAdminDto) {
-    const admin = await this.adminService.getAdminByEmail(adminDto.email);
+  async loginAdmin(adminPayload: LoginAdminDto) {
+    const admin = await this.adminService.getAdminByEmail(adminPayload.email);
     if (!admin) {
       throw new BadRequestException('Admin with this email does not exist');
     }
 
-    try {
-      const res = await this.httpService.axiosRef.post(
-        `${process.env.ADMIN_AUTH_SERVICE_URL}/sign-in`,
-        adminDto,
-      );
-      return res.data;
-    } catch (err) {
-      throw new BadRequestException('Wrong password');
-    }
+    const res = await this.httpService.axiosRef
+      .post(`${process.env.ADMIN_AUTH_SERVICE_URL}/sign-in`, adminPayload)
+      .catch((err) => {
+        throw new BadRequestException(err);
+      });
+
+    return res.data;
   }
 }

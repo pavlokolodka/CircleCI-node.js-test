@@ -18,52 +18,56 @@ export class AdminPassService {
       throw new BadRequestException('Admin with this email does not exist');
     }
 
-    try {
-      const res = await this.httpService.axiosRef.post(
-        `${process.env.ADMIN_PASSWORD_SERVICE_URL}/forgot`,
-        {
-          email: email,
-        },
-      );
-      return res.data;
-    } catch (err) {
-      throw new BadRequestException('Wrong password');
-    }
+    const res = await this.httpService.axiosRef
+      .post(`${process.env.ADMIN_PASSWORD_SERVICE_URL}/forgot`, {
+        email: email,
+      })
+      .catch((err) => {
+        throw new BadRequestException(err);
+      });
+
+    return res.data;
   }
 
-  async resetPass(resetPassDto: AdminResetPassDto) {
-    const admin = await this.adminService.getAdminByEmail(resetPassDto.email);
+  async resetPass(resetPassPayload: AdminResetPassDto) {
+    const admin = await this.adminService.getAdminByEmail(
+      resetPassPayload.email,
+    );
 
     if (!admin) {
       throw new BadRequestException('Admin with this email does not exist');
     }
 
-    try {
-      const res = await this.httpService.axiosRef.patch(
+    const res = await this.httpService.axiosRef
+      .patch(
         `${process.env.ADMIN_PASSWORD_SERVICE_URL}/reset`,
-        resetPassDto,
-      );
-      return res.data;
-    } catch (err) {
-      throw new BadRequestException('Something went wrong');
-    }
+        resetPassPayload,
+      )
+      .catch((err) => {
+        throw new BadRequestException(err);
+      });
+
+    return res.data;
   }
 
-  async updatePass(updatePassDto: AdminUpdatePassDto) {
-    const admin = await this.adminService.getAdminByEmail(updatePassDto.email);
+  async updatePass(updatePassPayload: AdminUpdatePassDto) {
+    const admin = await this.adminService.getAdminByEmail(
+      updatePassPayload.email,
+    );
 
     if (!admin) {
       throw new BadRequestException('Admin with this email does not exist');
     }
 
-    try {
-      const res = await this.httpService.axiosRef.patch(
+    const res = await this.httpService.axiosRef
+      .patch(
         `${process.env.ADMIN_PASSWORD_SERVICE_URL}/update`,
-        updatePassDto,
-      );
-      return res.data;
-    } catch (err) {
-      throw new BadRequestException('Something went wrong');
-    }
+        updatePassPayload,
+      )
+      .catch((err) => {
+        throw new BadRequestException(err);
+      });
+
+    return res.data;
   }
 }

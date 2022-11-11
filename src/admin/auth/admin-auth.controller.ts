@@ -7,9 +7,8 @@ export class AdminAuthController {
   constructor(private readonly adminAuthService: AdminAuthService) {}
 
   @Post('sign-in')
-  async loginAdmin(@Body() adminDto: LoginAdminDto, @Res() res) {
-    const token = await this.adminAuthService.loginAdmin(adminDto);
-    res.set('Authorization', `Bearer ${token}`);
+  async loginAdmin(@Body() adminPayload: LoginAdminDto, @Res() res) {
+    const token = await this.adminAuthService.loginAdmin(adminPayload);
     res.send({ message: 'success', token });
   }
 }
