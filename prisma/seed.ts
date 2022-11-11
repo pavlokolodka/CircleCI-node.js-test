@@ -3,411 +3,64 @@ import { faker } from '@faker-js/faker';
 
 const prisma = new PrismaClient();
 
-const userData: Prisma.UserCreateInput[] = [
-  {
-    email: "Arvid_Beer@hotmail.com",
-    name: faker.name.firstName(),
-    lastname: faker.name.lastName(),
-    photo: faker.image.avatar(),
-    role: 'customer',
-    orders: {
-      create: [
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-      ]
-    }
-    
-  },
-  {
-    email: "Aubree94@yahoo.com",
-    name: faker.name.firstName(),
-    lastname: faker.name.lastName(),
-    photo: faker.image.avatar(),
-    role: 'admin',
-    orders: {
-      create: [
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-      ]
-    }
-    
-  },
-  {
-    email: "Norbert_Sipes@hotmail.com",
-    name: faker.name.firstName(),
-    lastname: faker.name.lastName(),
-    role: 'volunteer',
-    orders: {
-      create: [
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-      ]
-    }
-    
-  },
-  {
-    email: "Cassandre.Ernser25@gmail.com",
-    name: faker.name.firstName(),
-    lastname: faker.name.lastName(),
-    role: 'volunteer',
-    orders: {
-      create: [
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-      ]
-    }
-    
-  },
-  {
-    email: "Lauren_Harvey@hotmail.com",
-    name: faker.name.firstName(),
-    lastname: faker.name.lastName(),
-    role: 'volunteer',
-    orders: {
-      create: [
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-      ]
-    }
-    
-  },
-  {
-    email: "Alexzander49@gmail.com",
-    name: faker.name.firstName(),
-    lastname: faker.name.lastName(),
-    role: 'customer',
-    orders: {
-      create: [
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-      ]
-    }
-    
-  },
-  {
-    email: "Keely_Cummings98@hotmail.com",
-    name: faker.name.firstName(),
-    lastname: faker.name.lastName(),
-    role: 'customer',
-    orders: {
-      create: [
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-      ]
-    }
-    
-  },
-  {
-    email: "Deon_Johns@gmail.com",
-    name: faker.name.firstName(),
-    lastname: faker.name.lastName(),
-    photo: faker.image.avatar(),
-    role: 'customer',
-    orders: {
-      create: [
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-      ]
-    }
-    
-  },
-  {
-    email: "Clarissa.Kunze@gmail.com",
-    name: faker.name.firstName(),
-    lastname: faker.name.lastName(),
-    photo: faker.image.avatar(),
-    role: 'customer',
-    orders: {
-      create: [
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-      ]
-    }
-    
-  },
-  {
-    email: "Ulises_Dooley@gmail.com",
-    name: faker.name.firstName(),
-    lastname: faker.name.lastName(),
-    photo: faker.image.avatar(),
-    role: 'customer',
-    orders: {
-      create: [
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-        {
-          title: faker.commerce.product(),
-          info: faker.commerce.productDescription()
-        },
-      ]
-    }
-    
-  },
+const staticData = [
+  ["Arvid_Beer@hotmail.com", 'customer'],
+  ["Aubree94@yahoo.com", 'admin'],
+  ["Norbert_Sipes@hotmail.com", 'volunteer'],
+  ["Cassandre.Ernser25@gmail.com", 'volunteer'],
+  ["Lauren_Harvey@hotmail.com", 'volunteer'],
+  ["Alexzander49@gmail.com", 'customer'],
+  ["Keely_Cummings98@hotmail.com", 'customer'],
+  ["Deon_Johns@gmail.com", 'customer'],
+  ["Clarissa.Kunze@gmail.com", 'customer'],
+  ["Ulises_Dooley@gmail.com", 'customer'],
 ]
-
 
 async function main() {
   console.log(`Start seeding ...`);
 
-  for (const u of userData) {
+  for (let i = 0; i < 10; i++) {
     const user = await prisma.user.create({
-      data: u,
+      data: {
+        email: staticData[i][0],
+        name: faker.name.firstName(),
+        lastname: faker.name.lastName(),
+        photo: faker.image.avatar(),
+        //@ts-ignore
+        role: staticData[i][1],
+        orders: {
+          create: [
+            {
+              title: faker.commerce.product(),
+              info: faker.commerce.productDescription()
+            },
+            {
+              title: faker.commerce.product(),
+              info: faker.commerce.productDescription()
+            },
+            {
+              title: faker.commerce.product(),
+              info: faker.commerce.productDescription()
+            },
+            {
+              title: faker.commerce.product(),
+              info: faker.commerce.productDescription()
+            },
+            {
+              title: faker.commerce.product(),
+              info: faker.commerce.productDescription()
+            },
+            {
+              title: faker.commerce.product(),
+              info: faker.commerce.productDescription()
+            },
+            {
+              title: faker.commerce.product(),
+              info: faker.commerce.productDescription()
+            },
+          ]
+        }
+      },
     })
     
     console.log(`Created user with id: ${user.id}`);
@@ -417,11 +70,8 @@ async function main() {
 }
 
 main()
-  .then(async () => {
-    await prisma.$disconnect();
-  })
-  .catch(async (e) => {
+  .catch((e) => {
     console.error(e);
-    await prisma.$disconnect();
     process.exit(1);
   })
+  .finally(async () => await prisma.$disconnect())
