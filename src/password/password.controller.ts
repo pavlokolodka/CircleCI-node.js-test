@@ -14,13 +14,12 @@ export class PasswordController {
   }
 
   @Patch('reset')
-  resetPassword(
-    @Body() resetPasswordDto: ResetPasswordDto) {
-    return this.passwordService.resetPassword(resetPasswordDto)
+  resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
+    return this.passwordService.resetPassword(resetPasswordDto);
   }
 
   @Patch('update')
   updatePassword(@Body() updatePasswordDto: UpdatePasswordDto) {
-    return this.passwordService.updatePassword(updatePasswordDto)
+    return this.passwordService.updatePassword(updatePasswordDto);
   }
 }

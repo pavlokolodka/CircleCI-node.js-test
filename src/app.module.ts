@@ -4,15 +4,17 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { VolunteerModule } from './volunteer/volunteer.module';
 import { PasswordModule } from './password/password.module';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     UserModule,
     AuthModule,
+    PasswordModule,
     VolunteerModule,
-    PasswordModule
+    JwtModule,
   ],
   controllers: [],
 })
-export class AppModule { }
+export class AppModule {}

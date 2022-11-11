@@ -57,8 +57,4 @@ export class AuthService {
       }
     }
   }
-
-  private validateJwt(token) {
-    return jwt.verify(token, process.env.PRIVATE_KEY!);
-  }
 }

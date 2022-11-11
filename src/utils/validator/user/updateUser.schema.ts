@@ -1,24 +1,23 @@
-import { JSONSchemaType } from "ajv";
-import { UpdateUserDto } from "../dto/update-user.validator.dto";
-
+import { JSONSchemaType } from 'ajv';
+import { UpdateUserDto } from '../dto/update-user.validator.dto';
 
 export const UpdateUserSchema: JSONSchemaType<UpdateUserDto> = {
-  type: "object",
+  type: 'object',
   properties: {
     userId: {
-      type: "integer"
+      type: 'integer',
     },
     name: {
-      type: "string",
+      type: 'string',
       maxLength: 256,
-      minLength: 3
+      minLength: 3,
     },
     lastname: {
-      type: "string",
+      type: 'string',
       maxLength: 256,
-      minLength: 3
-    }
-   },
-  required: ["userId", "name", "lastname"],
-  additionalProperties: false
-}
+      minLength: 3,
+    },
+  },
+  required: ['userId', 'name', 'lastname'],
+  additionalProperties: false,
+};

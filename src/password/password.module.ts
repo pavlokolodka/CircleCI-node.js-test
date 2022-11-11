@@ -5,10 +5,9 @@ import { PasswordService } from './password.service';
 import { PasswordController } from './password.controller';
 import { RecaptchaService } from 'src/utils/recaptcha';
 
-
 @Module({
   controllers: [PasswordController],
   providers: [PasswordService, PrismaService, RecaptchaService],
   imports: [HttpModule],
 })
-export class PasswordModule { }
+export class PasswordModule {}
