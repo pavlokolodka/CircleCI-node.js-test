@@ -42,5 +42,5 @@ export class CreateUserDto {
     description: 'Recaptcha token',
     type: String
   })
-  recaptchaToken: string
+  recaptchaToken?: string
 }
