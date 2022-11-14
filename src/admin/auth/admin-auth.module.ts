@@ -6,7 +6,7 @@ import { AdminAuthController } from './admin-auth.controller';
 import { AdminAuthService } from './admin-auth.service';
 
 @Module({
-  imports: [HttpModule],
+  imports: [],
   controllers: [AdminAuthController],
   providers: [AdminAuthService, PrismaService, AdminService],
 })
