@@ -1,31 +1,28 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { LoginUserDto } from './dto/login-user.dto';
-import { PrismaService } from '../services/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UsersService } from '../services/user.service';
-import * as jwt from 'jsonwebtoken';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly prisma: PrismaService,
     private readonly httpService: HttpService,
-    private readonly usersService: UsersService,
+    private readonly userService: UserService,
   ) {}
 
   async register(user: CreateUserDto) {
-    const registeredUser = await this.usersService.getByEmail(user.email);
+    const registeredUser = await this.userService.getByEmail(user.email);
 
     if (registeredUser) {
       throw new BadRequestException('Something wrong');
     }
 
-    const createdUser = await this.usersService.create(user);
+    const createdUser = await this.userService.create(user);
 
     try {
       const res = await this.httpService.axiosRef.post(
-        `${process.env.AUTH_SERVICE_URL}/signup`,
+        `${process.env.AUTH_SERVICE_URL}/auth/signup`,
         {
           ...user,
           role: createdUser.role,
@@ -34,15 +31,13 @@ export class AuthService {
 
       return res.data;
     } catch (err) {
-      const res = await this.usersService.delete(user.email);
+      const res = await this.userService.delete(user.email);
       throw new BadRequestException('Something wrong');
     }
   }
 
   async login(credentials: LoginUserDto) {
-    const registeredUser = await this.usersService.getByEmail(
-      credentials.email,
-    );
+    const registeredUser = await this.userService.getByEmail(credentials.email);
 
     if (!registeredUser) {
       throw new BadRequestException('Something wrong');
@@ -50,16 +45,12 @@ export class AuthService {
 
     try {
       const res = await this.httpService.axiosRef.post(
-        `${process.env.AUTH_SERVICE_URL}/signin`,
+        `${process.env.AUTH_SERVICE_URL}/auth/signin`,
         credentials,
       );
       return res.data;
     } catch (err) {
       throw new BadRequestException('Invalid email or password');
     }
-  }
-
-  private validateJwt(token) {
-    return jwt.verify(token, process.env.PRIVATE_KEY);
   }
 }
