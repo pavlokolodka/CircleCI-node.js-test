@@ -46,7 +46,6 @@ export default class OrderRepository extends Repository {
   }
 
   async createOrder(order: CreateOrderDto) {
-    console.log(order);
     return this.prismaService.order
       .create({
         data: {
@@ -72,6 +71,11 @@ export default class OrderRepository extends Repository {
         data: {
           title: order.title,
           info: order.info,
+          photo: order.photo,
+          goal_amount: order.goal_amount,
+          sum: order.sum,
+          short_info: order.short_info,
+          finished_at: new Date(order.finished_at).toISOString(),
         },
       })
       .catch(() => {
