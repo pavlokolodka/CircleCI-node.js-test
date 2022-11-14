@@ -29,38 +29,86 @@ async function main() {
         //@ts-ignore
         role: staticData[i][1],
         orders: {
-          create: [
-            {
-              title: faker.commerce.product(),
-              info: faker.commerce.productDescription()
-            },
-            {
-              title: faker.commerce.product(),
-              info: faker.commerce.productDescription()
-            },
-            {
-              title: faker.commerce.product(),
-              info: faker.commerce.productDescription()
-            },
-            {
-              title: faker.commerce.product(),
-              info: faker.commerce.productDescription()
-            },
-            {
-              title: faker.commerce.product(),
-              info: faker.commerce.productDescription()
-            },
-            {
-              title: faker.commerce.product(),
-              info: faker.commerce.productDescription()
-            },
-            {
-              title: faker.commerce.product(),
-              info: faker.commerce.productDescription()
-            },
-          ]
+          // create: [
+          //   {
+          //     title: faker.commerce.product(),
+          //     info: faker.commerce.productDescription(),
+          //     photo: faker.image.business(),
+          //     goal_amount: Number(faker.finance.amount()),
+          //     sum: Number(faker.finance.amount()),
+          //     short_info: faker.commerce.productDescription(),
+          //     finished_at: faker.date.future()
+          //   },
+          //   {
+          //     title: faker.commerce.product(),
+          //     info: faker.commerce.productDescription(),
+          //     photo: faker.image.business(),
+          //     goal_amount: faker.finance.amount(),
+          //     sum: faker.finance.amount(),
+          //     short_info: faker.commerce.productDescription(),
+          //     finished_at: faker.date.future(),
+          //   },
+          //   {
+          //     title: faker.commerce.product(),
+          //     info: faker.commerce.productDescription(),
+          //     photo: faker.image.business(),
+          //     goal_amount: faker.finance.amount(),
+          //     sum: faker.finance.amount(),
+          //     short_info: faker.commerce.productDescription(),
+          //     finished_at: faker.date.future(),
+          //   },
+          //   {
+          //     title: faker.commerce.product(),
+          //     info: faker.commerce.productDescription(),
+          //     photo: faker.image.business(),
+          //     goal_amount: faker.finance.amount(),
+          //     sum: faker.finance.amount(),
+          //     short_info: faker.commerce.productDescription(),
+          //     finished_at: faker.date.future(),
+          //   },
+          //   {
+          //     title: faker.commerce.product(),
+          //     info: faker.commerce.productDescription(),
+          //     photo: faker.image.business(),
+          //     goal_amount: faker.finance.amount(),
+          //     sum: faker.finance.amount(),
+          //     short_info: faker.commerce.productDescription(),
+          //     finished_at: faker.date.future(),
+          //   },
+          //   {
+          //     title: faker.commerce.product(),
+          //     info: faker.commerce.productDescription(),
+          //     photo: faker.image.business(),
+          //     goal_amount: faker.finance.amount(),
+          //     sum: faker.finance.amount(),
+          //     short_info: faker.commerce.productDescription(),
+          //     finished_at: faker.date.future(),
+          //   },
+          //   {
+          //     title: faker.commerce.product(),
+          //     info: faker.commerce.productDescription(),
+          //     photo: faker.image.business(),
+          //     goal_amount: faker.finance.amount(),
+          //     sum: faker.finance.amount(),
+          //     short_info: faker.commerce.productDescription(),
+          //     finished_at: faker.date.future(),
+          //   },
+          // ]
         }
       },
+    })
+    
+    const order = await prisma.order.create({
+      data: {
+        user_id: user.id,
+        title: faker.commerce.product(),
+        info: faker.commerce.productDescription(),
+        photo: faker.image.business(),
+        goal_amount: Number(faker.finance.amount()),
+        sum: Number(faker.finance.amount()),
+        short_info: faker.commerce.productDescription(),
+        finished_at: faker.date.future(),
+      }
     })
     
     console.log(`Created user with id: ${user.id}`);
