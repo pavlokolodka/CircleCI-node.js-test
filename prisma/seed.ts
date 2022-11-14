@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 const staticData = [
   ["Arvid_Beer@hotmail.com", 'customer'],
-  ["Aubree94@yahoo.com", 'admin'],
+  ["Aubree94@yahoo.com", 'volunteer'],
   ["Norbert_Sipes@hotmail.com", 'volunteer'],
   ["Cassandre.Ernser25@gmail.com", 'volunteer'],
   ["Lauren_Harvey@hotmail.com", 'volunteer'],
@@ -14,6 +14,13 @@ const staticData = [
   ["Deon_Johns@gmail.com", 'customer'],
   ["Clarissa.Kunze@gmail.com", 'customer'],
   ["Ulises_Dooley@gmail.com", 'customer'],
+]
+
+const adminEmails = [
+  'admin_kraud@hotmail.com',
+  'admin_kraud@gmail.com',
+  'admin1_kraud@hotmail.com',
+  'admin2_kraud@hotmail.com',
 ]
 
 async function main() {
@@ -29,88 +36,88 @@ async function main() {
         //@ts-ignore
         role: staticData[i][1],
         orders: {
-          // create: [
-          //   {
-          //     title: faker.commerce.product(),
-          //     info: faker.commerce.productDescription(),
-          //     photo: faker.image.business(),
-          //     goal_amount: Number(faker.finance.amount()),
-          //     sum: Number(faker.finance.amount()),
-          //     short_info: faker.commerce.productDescription(),
-          //     finished_at: faker.date.future()
-          //   },
-          //   {
-          //     title: faker.commerce.product(),
-          //     info: faker.commerce.productDescription(),
-          //     photo: faker.image.business(),
-          //     goal_amount: faker.finance.amount(),
-          //     sum: faker.finance.amount(),
-          //     short_info: faker.commerce.productDescription(),
-          //     finished_at: faker.date.future(),
-          //   },
-          //   {
-          //     title: faker.commerce.product(),
-          //     info: faker.commerce.productDescription(),
-          //     photo: faker.image.business(),
-          //     goal_amount: faker.finance.amount(),
-          //     sum: faker.finance.amount(),
-          //     short_info: faker.commerce.productDescription(),
-          //     finished_at: faker.date.future(),
-          //   },
-          //   {
-          //     title: faker.commerce.product(),
-          //     info: faker.commerce.productDescription(),
-          //     photo: faker.image.business(),
-          //     goal_amount: faker.finance.amount(),
-          //     sum: faker.finance.amount(),
-          //     short_info: faker.commerce.productDescription(),
-          //     finished_at: faker.date.future(),
-          //   },
-          //   {
-          //     title: faker.commerce.product(),
-          //     info: faker.commerce.productDescription(),
-          //     photo: faker.image.business(),
-          //     goal_amount: faker.finance.amount(),
-          //     sum: faker.finance.amount(),
-          //     short_info: faker.commerce.productDescription(),
-          //     finished_at: faker.date.future(),
-          //   },
-          //   {
-          //     title: faker.commerce.product(),
-          //     info: faker.commerce.productDescription(),
-          //     photo: faker.image.business(),
-          //     goal_amount: faker.finance.amount(),
-          //     sum: faker.finance.amount(),
-          //     short_info: faker.commerce.productDescription(),
-          //     finished_at: faker.date.future(),
-          //   },
-          //   {
-          //     title: faker.commerce.product(),
-          //     info: faker.commerce.productDescription(),
-          //     photo: faker.image.business(),
-          //     goal_amount: faker.finance.amount(),
-          //     sum: faker.finance.amount(),
-          //     short_info: faker.commerce.productDescription(),
-          //     finished_at: faker.date.future(),
-          //   },
-          // ]
+          create: [
+            {
+              title: faker.commerce.product(),
+              info: faker.commerce.productDescription(),
+              photo: faker.image.business(),
+              goal_amount: Number(faker.finance.amount()),
+              sum: Number(faker.finance.amount()),
+              short_info: faker.commerce.productDescription(),
+              finished_at: faker.date.future(),
+            },
+            {
+              title: faker.commerce.product(),
+              info: faker.commerce.productDescription(),
+              photo: faker.image.business(),
+              goal_amount: Number(faker.finance.amount()),
+              sum: Number(faker.finance.amount()),
+              short_info: faker.commerce.productDescription(),
+              finished_at: faker.date.future(),
+            },
+            {
+              title: faker.commerce.product(),
+              info: faker.commerce.productDescription(),
+              photo: faker.image.business(),
+              goal_amount: Number(faker.finance.amount()),
+              sum: Number(faker.finance.amount()),
+              short_info: faker.commerce.productDescription(),
+              finished_at: faker.date.future(),
+            },
+            {
+              title: faker.commerce.product(),
+              info: faker.commerce.productDescription(),
+              photo: faker.image.business(),
+              goal_amount: Number(faker.finance.amount()),
+              sum: Number(faker.finance.amount()),
+              short_info: faker.commerce.productDescription(),
+              finished_at: faker.date.future(),
+            },
+            {
+              title: faker.commerce.product(),
+              info: faker.commerce.productDescription(),
+              photo: faker.image.business(),
+              goal_amount: Number(faker.finance.amount()),
+              sum: Number(faker.finance.amount()),
+              short_info: faker.commerce.productDescription(),
+              finished_at: faker.date.future(),
+            },
+            {
+              title: faker.commerce.product(),
+              info: faker.commerce.productDescription(),
+              photo: faker.image.business(),
+              goal_amount: Number(faker.finance.amount()),
+              sum: Number(faker.finance.amount()),
+              short_info: faker.commerce.productDescription(),
+              finished_at: faker.date.future(),
+            },
+            {
+              title: faker.commerce.product(),
+              info: faker.commerce.productDescription(),
+              photo: faker.image.business(),
+              goal_amount: Number(faker.finance.amount()),
+              sum: Number(faker.finance.amount()),
+              short_info: faker.commerce.productDescription(),
+              finished_at: faker.date.future(),
+            },
+          ]
         }
       },
     })
-    
-    const order = await prisma.order.create({
-      data: {
-        user_id: user.id,
-        title: faker.commerce.product(),
-        info: faker.commerce.productDescription(),
-        photo: faker.image.business(),
-        goal_amount: Number(faker.finance.amount()),
-        sum: Number(faker.finance.amount()),
-        short_info: faker.commerce.productDescription(),
-        finished_at: faker.date.future(),
-      }
-    })
-    
+
+    if (i < 4) {
+      const admin = await prisma.admin.create({
+        data: {
+          email: adminEmails[i],
+          name: faker.name.firstName(),
+          lastname: faker.name.lastName(),
+          photo: faker.image.avatar(),
+        }
+      })
+
+      console.log(`Created admin with id: ${admin.id}`);
+    }
+
     console.log(`Created user with id: ${user.id}`);
   }
 
