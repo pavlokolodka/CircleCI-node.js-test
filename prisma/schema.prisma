@@ -20,17 +20,28 @@ model User {
 }
 
 model Order {
-  id         Int      @default(autoincrement()) @id
-  title      String
-  info       String
-  user       User     @relation(fields: [user_id], references: [id])
-  user_id    Int
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id              Int      @default(autoincrement()) @id
+  title           String
+  info            String
+  user            User     @relation(fields: [user_id], references: [id])
+  user_id         Int
+  photo           String
+  goal_amount     Float
+  sum             Float
+  short_info      String
+  finished_at     DateTime
+  status          Status   @default(open)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 enum Role {
   customer
   volunteer
   admin
+}
+
+enum Status {
+  open
+  closed
 }
