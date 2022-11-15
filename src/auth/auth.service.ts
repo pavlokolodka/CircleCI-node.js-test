@@ -43,7 +43,7 @@ export class AuthService {
     try {
       const res = await this.httpService.post('/auth/signin', credentials);
    
-      return res;
+      return res.data;
     } catch (err) {
       throw new BadRequestException('Invalid email or password');
     }

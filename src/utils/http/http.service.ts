@@ -1,9 +1,6 @@
 import axios, { AxiosInstance } from "axios";
 import { IHttpService } from "./http.interface";
 
-// private http = axios.create({
-    //   baseURL: process.env.AUTH_SERVICE_URL
-    // })
 export default class HttpService implements IHttpService {
   private http: AxiosInstance;
   constructor(uri: string) {
