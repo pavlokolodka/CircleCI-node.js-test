@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { VolunteerService } from './volunteer.service';
+import { OrderService } from './order.service';
 import { VolunteerController } from './volunteer.controller';
 import { PrismaService } from '../services/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import OrderRepository from 'src/order/repository/order.repository';
 
 @Module({
-  providers: [VolunteerService, PrismaService, JwtService, OrderRepository],
+  providers: [OrderService, PrismaService, JwtService, OrderRepository],
   controllers: [VolunteerController],
 })
-export class VolunteerModule {}
+export class OrderModule {}

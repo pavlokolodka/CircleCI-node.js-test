@@ -4,7 +4,7 @@ import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 
 @Injectable()
-export class VolunteerService {
+export class OrderService {
   constructor(private orderRepository: OrderRepository) {}
 
   async getAllOrders(limit: number, sort, page: number, search: string) {
