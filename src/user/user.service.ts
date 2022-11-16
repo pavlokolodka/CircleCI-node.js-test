@@ -1,11 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from 'src/auth/dto/create-user.dto';
+import { AwsService } from 'src/services/aws.service';
+import { AwsBucketFolders } from 'src/types/aws-bucket-folders.enum';
 import { UpdateUserDto } from './dto/update-user.dto';
 import UserRepository from './repository/user.repository';
 
 @Injectable()
 export class UserService {
-  constructor(private userRepository: UserRepository) {}
+  constructor(private userRepository: UserRepository,
+    private awsService: AwsService) { }
+
   async getByEmail(email: string) {
     const user = await this.userRepository.getByEmail(email);
     return user;
@@ -21,8 +25,21 @@ export class UserService {
     return newUser;
   }
 
-  async updateUser({ userId, name, lastname }: UpdateUserDto) {
-    const user = await this.userRepository.update({ userId, name, lastname });
+  async updateUser(updateUserDto: UpdateUserDto) {
+
+    if (updateUserDto.imgBase64) {
+      const user = await this.userRepository.getById(updateUserDto.userId)
+      const oldPhoto = user?.photo
+
+      updateUserDto.imgBase64 = await this.awsService.
+        uploadImg(updateUserDto.imgBase64, AwsBucketFolders.USER_AVATAR)
+        .then(async (data) => {
+          if (oldPhoto) await this.awsService.deleteFile(oldPhoto)
+          return data
+        })
+    }
+
+    const user = await this.userRepository.update(updateUserDto);
     return user;
   }
 }
