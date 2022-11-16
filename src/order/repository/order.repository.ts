@@ -51,7 +51,12 @@ export default class OrderRepository extends Repository {
         data: {
           title: order.title,
           info: order.info,
-          user_id: order.id,
+          user_id: order.user_id,
+          photo: order.photo,
+          goal_amount: order.goal_amount,
+          sum: order.sum,
+          short_info: order.short_info,
+          finished_at: new Date(order.finished_at)
         },
       })
       .catch(() => {
