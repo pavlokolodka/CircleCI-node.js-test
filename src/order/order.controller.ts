@@ -8,15 +8,15 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { VolunteerService } from './volunteer.service';
+import { OrderService } from './order.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
 
 @Controller('orders')
-export class VolunteerController {
-  constructor(private volunteerService: VolunteerService) {}
+export class OrderController {
+  constructor(private volunteerService: OrderService) {}
 
   @Get()
   async getAllOrders(

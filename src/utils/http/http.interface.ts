@@ -1,5 +1,5 @@
 export interface IHttpService {
-   /**
+  /**
    * @example <caption>Example usage of patch.</caption>
    * // Enter only the endpoint without the schema and domain
    * post('/reset', {email, password})
