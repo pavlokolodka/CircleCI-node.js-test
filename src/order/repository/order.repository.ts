@@ -45,20 +45,19 @@ export default class OrderRepository extends Repository {
       });
   }
 
+
   async createOrder(order: CreateOrderDto) {
-    return this.prismaService.order
-      .create({
-        data: {
-          title: order.title,
-          info: order.info,
-          user_id: order.user_id,
-          photo: order.photo,
-          goal_amount: order.goal_amount,
-          sum: order.sum,
-          short_info: order.short_info,
-          finished_at: new Date(order.finished_at)
-        },
-      })
+    return this.prismaService.order.create({
+      data: {
+        title: order.title,
+        info: order.info,
+        short_info: order.short_info,
+        user_id: order.user_id,
+        photo: order.photo,
+        goal_amount: order.goal_amount,
+        finished_at: order.finished_at
+      },
+    })
       .catch(() => {
         throw new BadRequestException('Something went wrong');
       });
