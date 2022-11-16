@@ -1,12 +1,12 @@
-import axios, { AxiosInstance } from "axios";
-import { IHttpService } from "./http.interface";
+import axios, { AxiosInstance } from 'axios';
+import { IHttpService } from './http.interface';
 
 export default class HttpService implements IHttpService {
   private http: AxiosInstance;
   constructor(uri: string) {
     this.http = axios.create({
-        baseURL: uri 
-    })
+      baseURL: uri,
+    });
   }
 
   async post(path: string, data: object) {
@@ -17,5 +17,5 @@ export default class HttpService implements IHttpService {
   async patch(path: string, data: object) {
     const res = await this.http.patch(path, data);
     return res;
-  }  
+  }
 }
