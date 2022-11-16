@@ -16,7 +16,7 @@ import { Roles } from '../auth/decorators/roles.decorator';
 
 @Controller('orders')
 export class OrderController {
-  constructor(private volunteerService: OrderService) {}
+  constructor(private orderService: OrderService) {}
 
   @Get()
   async getAllOrders(
@@ -25,25 +25,25 @@ export class OrderController {
     @Query('sort') sort = 'asc',
     @Query('search') search: string,
   ) {
-    return this.volunteerService.getAllOrders(+limit, sort, +page, search);
+    return this.orderService.getAllOrders(+limit, sort, +page, search);
   }
 
   @Get('/:id')
   async getOrderById(@Param('id') id: string) {
-    return this.volunteerService.getOrderById(+id);
+    return this.orderService.getOrderById(+id);
   }
 
   @UseGuards(RolesGuard)
   @Roles('volunteer')
   @Post()
   async createOrder(@Body() order: CreateOrderDto) {
-    return this.volunteerService.createOrder(order);
+    return this.orderService.createOrder(order);
   }
 
   @UseGuards(RolesGuard)
   @Roles('volunteer')
   @Patch('/:id')
   async updateOrder(@Param('id') id: string, @Body() order: UpdateOrderDto) {
-    return this.volunteerService.updateOrder(order, +id);
+    return this.orderService.updateOrder(order, +id);
   }
 }
