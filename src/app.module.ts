@@ -5,11 +5,11 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { AdminAuthModule } from './admin/auth/admin-auth.module';
 import { AdminPassModule } from './admin/admin-password/admin-pass.module';
-import { VolunteerModule } from './volunteer/volunteer.module';
 import { PasswordModule } from './password/password.module';
 import { JwtModule } from '@nestjs/jwt';
 import { RecaptchaMiddleware } from './middlewares/recaptcha.middleware';
 import { RecaptchaService } from './utils/recaptcha';
+import { OrderModule } from './order/order.module';
 
 @Module({
   imports: [
@@ -19,9 +19,9 @@ import { RecaptchaService } from './utils/recaptcha';
     AdminAuthModule,
     AdminPassModule,
     PasswordModule,
-    VolunteerModule,
     JwtModule,
     HttpModule
+    OrderModule,
   ],
   providers: [RecaptchaService]
 })

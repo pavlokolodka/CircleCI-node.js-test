@@ -1,14 +1,15 @@
-import { HttpService } from '@nestjs/axios';
 import { BadRequestException, Injectable } from '@nestjs/common';
+import { IHttpService } from 'src/utils/http/http.interface';
+import HttpService from 'src/utils/http/http.service';
 import { AdminService } from '../services/admin.service';
 import { LoginAdminDto } from './dto/login-admin.dto';
 
 @Injectable()
 export class AdminAuthService {
-  constructor(
-    private httpService: HttpService,
-    private adminService: AdminService,
-  ) {}
+  private httpService: IHttpService;
+  constructor(private adminService: AdminService) {
+    this.httpService = new HttpService(process.env.ADMIN_AUTH_SERVICE_URL!);
+  }
 
   async loginAdmin(adminPayload: LoginAdminDto) {
     const admin = await this.adminService.getAdminByEmail(adminPayload.email);
@@ -16,10 +17,10 @@ export class AdminAuthService {
       throw new BadRequestException('Admin with this email does not exist');
     }
 
-    const res = await this.httpService.axiosRef
-      .post(`${process.env.ADMIN_AUTH_SERVICE_URL}/sign-in`, adminPayload)
+    const res = await this.httpService
+      .post('/sign-in', adminPayload)
       .catch((err) => {
-        throw new BadRequestException(err);
+        throw new BadRequestException(err.message);
       });
 
     return res.data;

@@ -1,36 +1,44 @@
-import { HttpService } from '@nestjs/axios';
 import { BadRequestException, Injectable } from '@nestjs/common';
+<<<<<<< HEAD
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
+=======
+import { IHttpService } from 'src/utils/http/http.interface';
+import HttpService from 'src/utils/http/http.service';
+>>>>>>> origin/dev
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 
 @Injectable()
 export class PasswordService {
-  constructor(private readonly httpService: HttpService) { }
+  private readonly httpService: IHttpService;
+  constructor() {
+    this.httpService = new HttpService(process.env.AUTH_SERVICE_URL!);
+  }
 
-  async forgotPassword({ email }: ForgotPasswordDto) {
-    return await this.httpService.axiosRef.post(
-      `${process.env.AUTH_SERVICE_URL}/password/forgot`, { email })
-      .then(data => data.data)
-      .catch((err) => { throw new BadRequestException(err) })
+  async forgotPassword(email: string) {
+    return await this.httpService
+      .post('/password/forgot', { email })
+      .then((data) => data.data)
+      .catch((err) => {
+        throw new BadRequestException(err.message);
+      });
   }
 
   async resetPassword(resetPasswordDto: ResetPasswordDto) {
-    return await this.httpService.axiosRef.patch(
-      `${process.env.AUTH_SERVICE_URL}/password/reset`, resetPasswordDto)
-      .then(data => data.data)
-      .catch((err) => { throw new BadRequestException(err) })
+    return await this.httpService
+      .patch('/password/reset', resetPasswordDto)
+      .then((data) => data.data)
+      .catch((err) => {
+        throw new BadRequestException(err.message);
+      });
   }
 
   async updatePassword(updatePasswordDto: UpdatePasswordDto) {
-    return await this.httpService.axiosRef
-      .patch(
-        `${process.env.AUTH_SERVICE_URL}/password/update`,
-        updatePasswordDto,
-      )
+    return await this.httpService
+      .patch('/password/update', updatePasswordDto)
       .then((data) => data.data)
       .catch((err) => {
-        throw new BadRequestException(err);
+        throw new BadRequestException(err.message);
       });
   }
 }

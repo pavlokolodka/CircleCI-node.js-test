@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import bodyParser from 'body-parser';
 
 const port = process.env.DEV_PORT!;
 
@@ -15,6 +16,16 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
+
+  app.use(bodyParser.json({ limit: '50mb' }));
+  app.use(
+    bodyParser.urlencoded({
+      limit: '50mb',
+      extended: true,
+      parameterLimit: 50000,
+    }),
+  );
+
   await app.listen(port);
   console.log(`Server is listening on port: ${port}`);
 }
