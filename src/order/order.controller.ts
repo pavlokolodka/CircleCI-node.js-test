@@ -31,7 +31,7 @@ export class OrderController {
     return this.orderService.getAllOrders(+limit, sort, +page, search);
   }
 
-  @ApiResponse({ status: 200, description: 'Get gull information about order' })
+  @ApiResponse({ status: 200, description: 'Get full information about order' })
   @Get('/:id')
   async getOrderById(@Param('id') id: string) {
     return this.orderService.getOrderById(+id);
