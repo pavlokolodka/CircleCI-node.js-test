@@ -25,21 +25,21 @@ export class UserService {
     return newUser;
   }
 
-  async updateUser(updateUserDto: UpdateUserDto) {
-    if (updateUserDto.image) {
-      const user = await this.userRepository.getById(updateUserDto.userId)
+  async updateUser(updateUserPayload: UpdateUserDto) {
+    if (updateUserPayload.image) {
+      const user = await this.userRepository.getById(updateUserPayload.userId)
       if (!user) throw new BadRequestException('User not found.')
       const oldPhoto = user.photo
 
-      updateUserDto.image = await this.awsService.
-        uploadImg(updateUserDto.image, AwsBucketFolders.USER_AVATAR)
+      updateUserPayload.image = await this.awsService.
+        uploadImg(updateUserPayload.image, AwsBucketFolders.USER_AVATAR)
         .then(async (data) => {
           if (oldPhoto) await this.awsService.deleteFile(oldPhoto)
           return data
         })
     }
 
-    const user = await this.userRepository.update(updateUserDto);
+    const user = await this.userRepository.update(updateUserPayload);
     return user;
   }
 }
