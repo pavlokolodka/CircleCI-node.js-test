@@ -45,7 +45,6 @@ export class OrderController {
     return this.orderService.createOrder(order);
   }
 
-
   @ApiResponse({ status: 204, description: 'Order was updated' })
   @UseGuards(RolesGuard)
   @Roles('volunteer')

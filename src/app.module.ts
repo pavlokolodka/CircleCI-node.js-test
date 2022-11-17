@@ -16,8 +16,8 @@ import { OrderModule } from './order/order.module';
     AdminAuthModule,
     AdminPassModule,
     PasswordModule,
-    OrderModule,
     JwtModule,
+    OrderModule,
   ],
   controllers: [],
 })
