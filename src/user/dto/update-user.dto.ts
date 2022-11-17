@@ -29,5 +29,5 @@ export class UpdateUserDto {
     type: String,
     nullable: true
   })
-  imgBase64?: string;
+  image?: string;
 }

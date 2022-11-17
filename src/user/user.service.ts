@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from 'src/auth/dto/create-user.dto';
 import { AwsService } from 'src/services/aws.service';
 import { AwsBucketFolders } from 'src/types/aws-bucket-folders.enum';
@@ -26,13 +26,13 @@ export class UserService {
   }
 
   async updateUser(updateUserDto: UpdateUserDto) {
-
-    if (updateUserDto.imgBase64) {
+    if (updateUserDto.image) {
       const user = await this.userRepository.getById(updateUserDto.userId)
-      const oldPhoto = user?.photo
+      if (!user) throw new BadRequestException('User not found.')
+      const oldPhoto = user.photo
 
-      updateUserDto.imgBase64 = await this.awsService.
-        uploadImg(updateUserDto.imgBase64, AwsBucketFolders.USER_AVATAR)
+      updateUserDto.image = await this.awsService.
+        uploadImg(updateUserDto.image, AwsBucketFolders.USER_AVATAR)
         .then(async (data) => {
           if (oldPhoto) await this.awsService.deleteFile(oldPhoto)
           return data

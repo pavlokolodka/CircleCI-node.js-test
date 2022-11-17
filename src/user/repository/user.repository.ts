@@ -5,14 +5,14 @@ import { UpdateUserDto } from '../dto/update-user.dto';
 
 export default class UserRepository extends Repository {
 
-  async update({ userId, name, lastname, imgBase64 }: UpdateUserDto) {
+  async update({ userId, name, lastname, image }: UpdateUserDto) {
     return await this.prismaService.user
       .update({
         where: { id: userId },
         data: {
           name: name != null ? name : undefined,
           lastname: lastname != null ? lastname : undefined,
-          photo: imgBase64 != null ? imgBase64 : undefined,
+          photo: image != null ? image : undefined,
         }
       })
       .catch(() => { throw new BadRequestException('Something went wrong.') })

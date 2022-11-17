@@ -19,14 +19,14 @@ export class AwsService {
         // @ts-ignore
         const base64Data = new Buffer.from(
             base64.replace(/^data:image\/\w+;base64,/, ""), 'base64')
-        const type = base64.split(';')[0].split('/')[1]
+        const extention = base64.split(';')[0].split('/')[1]
 
         const params = {
             Bucket: process.env.AWS_BUCKET_NAME,
-            Key: `${folder}/${uuidv4()}.${type}`,
+            Key: `${folder}/${uuidv4()}.${extention}`,
             Body: base64Data,
             ContentEncoding: 'base64',
-            ContentType: `image/${type}`
+            ContentType: `image/${extention}`
         }
 
         const res = await this.s3.upload(params).promise()
@@ -36,7 +36,7 @@ export class AwsService {
 
     async deleteFile(location: string) {
         const key = `${location.split('/').reverse()[1]}/${location.split('/').reverse()[0]}`
-        var params = {
+        const params = {
             Bucket: process.env.AWS_BUCKET_NAME,
             Key: key
         }
