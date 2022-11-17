@@ -11,18 +11,18 @@ export const UpdateUserSchema: JSONSchemaType<UpdateUserDto> = {
       type: 'string',
       maxLength: 256,
       minLength: 3,
-      nullable: true
+      nullable: true,
     },
     lastname: {
       type: 'string',
       maxLength: 256,
       minLength: 3,
-      nullable: true
+      nullable: true,
     },
     imgBase64: {
       type: 'string',
-      nullable: true
-    }
+      nullable: true,
+    },
   },
   required: ['userId'],
   additionalProperties: false,

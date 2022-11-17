@@ -64,13 +64,32 @@ export default class OrderRepository extends Repository {
       });
   }
 
-  async updateOrder(order: UpdateOrderDto, id: number) {
+  async updateOrder(
+    {
+      title,
+      info,
+      short_info,
+      finished_at,
+      sum,
+      goal_amount,
+      photo,
+    }: UpdateOrderDto,
+    id: number,
+  ) {
     return this.prismaService.order
       .update({
         where: { id },
         data: {
-          title: order.title,
-          info: order.info,
+          title: title != null ? title : undefined,
+          info: info != null ? info : undefined,
+          photo: photo != null ? photo : undefined,
+          goal_amount: goal_amount != null ? goal_amount : undefined,
+          sum: sum != null ? sum : undefined,
+          short_info: short_info != null ? short_info : undefined,
+          finished_at:
+            finished_at != null
+              ? new Date(finished_at).toISOString()
+              : undefined,
         },
       })
       .catch(() => {

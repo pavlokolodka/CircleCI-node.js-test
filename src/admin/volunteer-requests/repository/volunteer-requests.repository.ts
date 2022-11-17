@@ -1,5 +1,6 @@
 import Repository from '../../../repository/repository';
 import { BadRequestException } from '@nestjs/common';
+import { ApproveRequestDto } from '../dto/approve-request.dto';
 
 export default class VolunteerRequestsRepository extends Repository {
   async getRequests() {
@@ -20,7 +21,18 @@ export default class VolunteerRequestsRepository extends Repository {
       });
   }
 
-  async approveRequest(status: boolean) {
-    console.log(1);
+  async approveRequest(approveRequest: ApproveRequestDto) {
+    return this.prismaService.volunteer
+      .update({
+        where: {
+          userId: approveRequest.userId,
+        },
+        data: {
+          status: approveRequest.status,
+        },
+      })
+      .catch(() => {
+        throw new BadRequestException('Something went wrong');
+      });
   }
 }

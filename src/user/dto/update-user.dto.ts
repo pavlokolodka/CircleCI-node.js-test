@@ -12,7 +12,7 @@ export class UpdateUserDto {
     example: 'Name',
     description: 'User name',
     type: String,
-    nullable: true
+    nullable: true,
   })
   name?: string;
 
@@ -20,14 +20,14 @@ export class UpdateUserDto {
     example: 'Lastname',
     description: 'User lastname',
     type: String,
-    nullable: true
+    nullable: true,
   })
   lastname?: string;
 
   @ApiProperty({
     description: 'Image converted to base64',
     type: String,
-    nullable: true
+    nullable: true,
   })
   image?: string;
 }

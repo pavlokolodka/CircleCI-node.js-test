@@ -1,5 +1,6 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { VolunteerRequestsService } from './volunteer-requests.service';
+import { ApproveRequestDto } from './dto/approve-request.dto';
 
 @Controller('admin/requests')
 export class VolunteerRequestsController {
@@ -16,7 +17,7 @@ export class VolunteerRequestsController {
   }
 
   @Post()
-  async approveRequest(@Body() status: boolean) {
-    return this.volunteerRequestsService.approveRequest(status);
+  async approveRequest(@Body() approveRequest: ApproveRequestDto) {
+    return this.volunteerRequestsService.approveRequest(approveRequest);
   }
 }
