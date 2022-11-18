@@ -9,6 +9,7 @@ import { PasswordModule } from './password/password.module';
 import { JwtModule } from '@nestjs/jwt';
 import { VolunteerRequestModule } from './admin/volunteer-requests/volunteer-request.module';
 import { MailerModule } from '@nestjs-modules/mailer';
+import { OrderModule } from './order/order.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
     PasswordModule,
     VolunteerModule,
     JwtModule,
+    OrderModule,
     VolunteerRequestModule,
     MailerModule.forRoot({
       transport: {

@@ -4,7 +4,7 @@ import { BadRequestException } from '@nestjs/common';
 
 export default class VolunteerRepository extends Repository {
   async requestForGetVolunteer(volunteerRequest: GetVolunteerDto) {
-    const requestFromDB = await this.prismaService.volunteer
+    const requestFromDB = await this.prismaService.volunteer_activation_request
       .findFirst({
         where: {
           userId: volunteerRequest.userId,
@@ -21,7 +21,7 @@ export default class VolunteerRepository extends Repository {
     }
 
     if (requestFromDB) {
-      await this.prismaService.volunteer
+      await this.prismaService.volunteer_activation_request
         .delete({
           where: {
             userId: requestFromDB.userId,
@@ -32,7 +32,7 @@ export default class VolunteerRepository extends Repository {
         });
     }
 
-    const newRequest = await this.prismaService.volunteer
+    const newRequest = await this.prismaService.volunteer_activation_request
       .create({
         data: {
           country: volunteerRequest.country,

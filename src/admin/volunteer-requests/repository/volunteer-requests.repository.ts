@@ -4,13 +4,15 @@ import { ApproveRequestDto } from '../dto/approve-request.dto';
 
 export default class VolunteerRequestsRepository extends Repository {
   async getRequests() {
-    return this.prismaService.volunteer.findMany().catch(() => {
-      throw new BadRequestException('Something went wrong');
-    });
+    return this.prismaService.volunteer_activation_request
+      .findMany()
+      .catch(() => {
+        throw new BadRequestException('Something went wrong');
+      });
   }
 
   async getRequestById(id: number) {
-    return this.prismaService.volunteer
+    return this.prismaService.volunteer_activation_request
       .findUnique({
         where: {
           id,
@@ -22,7 +24,7 @@ export default class VolunteerRequestsRepository extends Repository {
   }
 
   async approveRequest(approveRequest: ApproveRequestDto) {
-    return this.prismaService.volunteer
+    return this.prismaService.volunteer_activation_request
       .update({
         where: {
           userId: approveRequest.userId,
