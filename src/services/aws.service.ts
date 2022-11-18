@@ -15,7 +15,6 @@ export class AwsService {
   }
 
   async uploadImg(base64: string, folder: AwsBucketFolders) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const base64Data = new Buffer.from(
       base64.replace(/^data:image\/\w+;base64,/, ''),
@@ -35,10 +34,27 @@ export class AwsService {
     return res.Location;
   }
 
+
+  async uploadFile(base64: string, extention: string, folder: AwsBucketFolders) {
+    // @ts-ignore
+    const base64Data = new Buffer.from(
+      base64.replace(/^data:image\/\w+;base64,/, ''), 'base64')
+    const params = {
+      Bucket: process.env.AWS_BUCKET_NAME,
+      Key: `${folder}/${uuidv4()}.${extention}`,
+      Body: base64Data,
+      ContentEncoding: 'base64'
+    }
+
+    const res = await this.s3.upload(params).promise()
+    return res.Location
+  }
+
+
   async deleteFile(location: string) {
     const key = `${location.split('/').reverse()[1]}/${
       location.split('/').reverse()[0]
-    }`;
+      }`;
     const params = {
       Bucket: process.env.AWS_BUCKET_NAME,
       Key: key,
