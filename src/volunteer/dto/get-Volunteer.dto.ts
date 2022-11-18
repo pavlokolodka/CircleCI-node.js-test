@@ -30,6 +30,13 @@ export class GetVolunteerDto {
   document: string;
 
   @ApiProperty({
+    example: 'pdf',
+    description: 'expansion of document',
+    type: String,
+  })
+  expansion: string;
+
+  @ApiProperty({
     example: 1,
     description: 'your id',
     type: Number,

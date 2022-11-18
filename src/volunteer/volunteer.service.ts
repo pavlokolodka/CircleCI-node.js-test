@@ -13,8 +13,9 @@ export class VolunteerService {
 
   async requestForGetVolunteer(volunteerRequest: GetVolunteerDto) {
     if (volunteerRequest.document) {
-      volunteerRequest.document = await this.awsService.uploadImg(
+      volunteerRequest.document = await this.awsService.uploadFile(
         volunteerRequest.document,
+        volunteerRequest.expansion,
         AwsBucketFolders.DOCUMENTS,
       );
     }

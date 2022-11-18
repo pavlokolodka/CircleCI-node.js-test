@@ -22,7 +22,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
     JwtModule,
     VolunteerRequestModule,
     MailerModule.forRoot({
-      transports: {
+      transport: {
         host: 'smtp.sendgrid.net',
         auth: { user: 'apikey', pass: process.env.MAIL_PASSWORD },
       },

@@ -17,7 +17,7 @@ model User {
   orders    Order[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  volunteer Volunteer?
+  volunteer Volunteer_activation_request?
 }
 
 model Admin {
@@ -46,7 +46,7 @@ model Order {
   updatedAt   DateTime @updatedAt
 }
 
-model Volunteer {
+model Volunteer_activation_request {
   id          Int      @id @default(autoincrement())
   country     String
   city        String

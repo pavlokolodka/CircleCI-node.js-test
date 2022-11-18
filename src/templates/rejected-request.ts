@@ -14,7 +14,7 @@ export const REJECTED_TEMP = (name: string) => {
   >Kraude Donate Service</h2>
   <p>
   Hello, ${name}. Sorry, but we can't approve you to be volunteer now.
-  Yuor document are not correct. Please send us correct document.
+  Your document are not correct. Please send us correct document.
   </p>
   <p>Best regards,Kraude Donate</p>
 </div>
