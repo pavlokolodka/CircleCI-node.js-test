@@ -16,7 +16,7 @@ export class PasswordService {
       .then((data) => data.data)
       .catch((err) => {
         throw new BadRequestException(err.message);
-      });  
+      });
   }
 
   async resetPassword(resetPasswordDto: ResetPasswordDto) {
