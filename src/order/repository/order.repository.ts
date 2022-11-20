@@ -34,7 +34,7 @@ export default class OrderRepository extends Repository {
   }
 
   async getOrderById(id: number) {
-    return this.prismaService.order
+    return await this.prismaService.order
       .findFirst({
         where: {
           id,
@@ -46,7 +46,7 @@ export default class OrderRepository extends Repository {
   }
 
   async createOrder(order: CreateOrderDto) {
-    return this.prismaService.order
+    return await this.prismaService.order
       .create({
         data: {
           title: order.title,
@@ -76,7 +76,7 @@ export default class OrderRepository extends Repository {
     }: UpdateOrderDto,
     id: number,
   ) {
-    return this.prismaService.order
+    return await this.prismaService.order
       .update({
         where: { id },
         data: {

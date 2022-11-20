@@ -18,7 +18,7 @@ import { AwsService } from 'src/services/aws.service';
     RolesGuard,
     UserRepository,
     AuthHandleService,
-    AwsService
+    AwsService,
   ],
 })
-export class UserModule { }
+export class UserModule {}
