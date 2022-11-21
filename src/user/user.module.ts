@@ -6,6 +6,7 @@ import { RolesGuard } from '../auth/guards/roles.guard';
 import { JwtService } from '@nestjs/jwt';
 import UserRepository from './repository/user.repository';
 import { AuthHandleService } from '../services/auth.handle.service';
+import { AwsService } from 'src/services/aws.service';
 
 @Module({
   controllers: [UserController],
@@ -17,6 +18,7 @@ import { AuthHandleService } from '../services/auth.handle.service';
     RolesGuard,
     UserRepository,
     AuthHandleService,
+    AwsService,
   ],
 })
 export class UserModule {}

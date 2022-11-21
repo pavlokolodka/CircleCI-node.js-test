@@ -1,34 +1,24 @@
 import { Injectable } from '@nestjs/common';
-import OrderRepository from 'src/order/repository/order.repository';
-import { CreateOrderDto } from './dto/create-order.dto';
-import { UpdateOrderDto } from './dto/update-order.dto';
+import { GetVolunteerDto } from './dto/get-Volunteer.dto';
+import VolunteerRepository from './repository/volunteer.repository';
+import { AwsBucketFolders } from '../types/aws-bucket-folders.enum';
+import { AwsService } from '../services/aws.service';
 
 @Injectable()
 export class VolunteerService {
-  constructor(private orderRepository: OrderRepository) {}
+  constructor(
+    private volunteerRepository: VolunteerRepository,
+    private awsService: AwsService,
+  ) {}
 
-  async getAllOrders(limit: number, sort, page: number, search: string) {
-    const orders = await this.orderRepository.getAllOrders(
-      limit,
-      sort,
-      page,
-      search,
-    );
-    return orders;
-  }
-
-  async getOrderById(id: number) {
-    const order = await this.orderRepository.getOrderById(id);
-    return order;
-  }
-
-  async createOrder(order: CreateOrderDto) {
-    const newOrder = await this.orderRepository.createOrder(order);
-    return newOrder;
-  }
-
-  async updateOrder(order: UpdateOrderDto, id: number) {
-    const updatedOrder = await this.orderRepository.updateOrder(order, id);
-    return updatedOrder;
+  async requestForGetVolunteer(volunteerRequest: GetVolunteerDto) {
+    if (volunteerRequest.document) {
+      volunteerRequest.document = await this.awsService.uploadFile(
+        volunteerRequest.document,
+        volunteerRequest.expansion,
+        AwsBucketFolders.DOCUMENTS,
+      );
+    }
+    return this.volunteerRepository.requestForGetVolunteer(volunteerRequest);
   }
 }

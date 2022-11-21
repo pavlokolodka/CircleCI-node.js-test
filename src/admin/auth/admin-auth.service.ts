@@ -7,10 +7,8 @@ import { LoginAdminDto } from './dto/login-admin.dto';
 @Injectable()
 export class AdminAuthService {
   private httpService: IHttpService;
-  constructor(
-    private adminService: AdminService,
-  ) {
-    this.httpService = new HttpService(process.env.ADMIN_AUTH_SERVICE_URL!)
+  constructor(private adminService: AdminService) {
+    this.httpService = new HttpService(process.env.ADMIN_AUTH_SERVICE_URL!);
   }
 
   async loginAdmin(adminPayload: LoginAdminDto) {
@@ -19,7 +17,8 @@ export class AdminAuthService {
       throw new BadRequestException('Admin with this email does not exist');
     }
 
-    const res = await this.httpService.post('/sign-in', adminPayload)
+    const res = await this.httpService
+      .post('/sign-in', adminPayload)
       .catch((err) => {
         throw new BadRequestException(err.message);
       });

@@ -2,11 +2,11 @@ import { Module } from '@nestjs/common';
 import { VolunteerService } from './volunteer.service';
 import { VolunteerController } from './volunteer.controller';
 import { PrismaService } from '../services/prisma.service';
-import { JwtService } from '@nestjs/jwt';
-import OrderRepository from 'src/order/repository/order.repository';
+import VolunteerRepository from './repository/volunteer.repository';
+import { AwsService } from '../services/aws.service';
 
 @Module({
-  providers: [VolunteerService, PrismaService, JwtService, OrderRepository],
+  providers: [VolunteerService, PrismaService, VolunteerRepository, AwsService],
   controllers: [VolunteerController],
 })
 export class VolunteerModule {}

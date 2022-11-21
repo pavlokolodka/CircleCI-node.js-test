@@ -1,7 +1,7 @@
 import { JSONSchemaType } from 'ajv';
-import { CreateOrderDto } from 'src/volunteer/dto/create-order.dto';
+import { UpdateOrderDto } from 'src/order/dto/update-order.dto';
 
-export const CreateOrderSchema: JSONSchemaType<CreateOrderDto> = {
+export const UpdateOrderSchema: JSONSchemaType<UpdateOrderDto> = {
   type: 'object',
   properties: {
     title: {
@@ -10,13 +10,13 @@ export const CreateOrderSchema: JSONSchemaType<CreateOrderDto> = {
     info: {
       type: 'string',
     },
-    user_id: {
-      type: 'number',
-    },
     photo: {
       type: 'string',
     },
     goal_amount: {
+      type: 'number',
+    },
+    sum: {
       type: 'number',
     },
     short_info: {
@@ -27,14 +27,6 @@ export const CreateOrderSchema: JSONSchemaType<CreateOrderDto> = {
       format: 'custom-date',
     },
   },
-  required: [
-    'title',
-    'info',
-    'user_id',
-    'photo',
-    'goal_amount',
-    'short_info',
-    'finished_at',
-  ],
+  required: [],
   additionalProperties: false,
 };

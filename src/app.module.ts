@@ -7,6 +7,9 @@ import { AdminPassModule } from './admin/admin-password/admin-pass.module';
 import { VolunteerModule } from './volunteer/volunteer.module';
 import { PasswordModule } from './password/password.module';
 import { JwtModule } from '@nestjs/jwt';
+import { VolunteerRequestModule } from './admin/volunteer-requests/volunteer-request.module';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { OrderModule } from './order/order.module';
 
 @Module({
   imports: [
@@ -18,6 +21,14 @@ import { JwtModule } from '@nestjs/jwt';
     PasswordModule,
     VolunteerModule,
     JwtModule,
+    OrderModule,
+    VolunteerRequestModule,
+    MailerModule.forRoot({
+      transport: {
+        host: 'smtp.sendgrid.net',
+        auth: { user: 'apikey', pass: process.env.MAIL_PASSWORD },
+      },
+    }),
   ],
   controllers: [],
 })

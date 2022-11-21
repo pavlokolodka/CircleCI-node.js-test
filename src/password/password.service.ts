@@ -8,11 +8,12 @@ import { UpdatePasswordDto } from './dto/update-password.dto';
 export class PasswordService {
   private readonly httpService: IHttpService;
   constructor() {
-      this.httpService = new HttpService(process.env.AUTH_SERVICE_URL!);
+    this.httpService = new HttpService(process.env.AUTH_SERVICE_URL!);
   }
 
   async forgotPassword(email: string) {
-    return await this.httpService.post('/password/forgot', {email})
+    return await this.httpService
+      .post('/password/forgot', { email })
       .then((data) => data.data)
       .catch((err) => {
         throw new BadRequestException(err.message);
@@ -20,7 +21,8 @@ export class PasswordService {
   }
 
   async resetPassword(resetPasswordDto: ResetPasswordDto) {
-    return await this.httpService.patch('/password/reset', resetPasswordDto)
+    return await this.httpService
+      .patch('/password/reset', resetPasswordDto)
       .then((data) => data.data)
       .catch((err) => {
         throw new BadRequestException(err.message);
@@ -28,7 +30,8 @@ export class PasswordService {
   }
 
   async updatePassword(updatePasswordDto: UpdatePasswordDto) {
-    return await this.httpService.patch('/password/update', updatePasswordDto)
+    return await this.httpService
+      .patch('/password/update', updatePasswordDto)
       .then((data) => data.data)
       .catch((err) => {
         throw new BadRequestException(err.message);

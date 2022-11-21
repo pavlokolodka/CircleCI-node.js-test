@@ -1,60 +1,19 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  ParseIntPipe,
-  Patch,
-  Post,
-  Query,
-  UseGuards,
-  UsePipes,
-} from '@nestjs/common';
+import { Body, Controller, Post, UsePipes } from '@nestjs/common';
 import { VolunteerService } from './volunteer.service';
-import { CreateOrderDto } from './dto/create-order.dto';
-import { UpdateOrderDto } from './dto/update-order.dto';
-import { RolesGuard } from '../auth/guards/roles.guard';
-import { Roles } from '../auth/decorators/roles.decorator';
-import { AjvValidationPipe } from 'src/utils/validator/validation';
-import {
-  CreateOrderSchema,
-  UpdateOrderSchema,
-} from 'src/utils/validator/volunteer';
-import { getAllOrdersSchema } from 'src/utils/validator/volunteer/allOrders.schema';
-import { AllOrdersDto } from 'src/utils/validator/dto/allOrders.dto';
+import { GetVolunteerDto } from './dto/get-Volunteer.dto';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { AjvValidationPipe } from '../utils/validator/validation';
+import { GetVolunteerSchema } from '../utils/validator/volunteer/get-volunteer.schema';
 
-@Controller('orders')
+@ApiTags('Volunteer')
+@Controller('volunteer')
 export class VolunteerController {
   constructor(private volunteerService: VolunteerService) {}
 
-  @Get()
-  @UsePipes(new AjvValidationPipe(getAllOrdersSchema))
-  async getAllOrders(@Query() params: AllOrdersDto) {
-    const { page, limit, sort, search } = params;
-    return this.volunteerService.getAllOrders(+limit, sort, +page, search);
-  }
-
-  @Get('/:id')
-  async getOrderById(@Param('id', ParseIntPipe) id: number) {
-    return this.volunteerService.getOrderById(id);
-  }
-
-  @UseGuards(RolesGuard)
-  @Roles('volunteer')
+  @ApiResponse({ status: 201, description: 'Request for get status Volunteer' })
   @Post()
-  @UsePipes(new AjvValidationPipe(CreateOrderSchema))
-  async createOrder(@Body() order: CreateOrderDto) {
-    return this.volunteerService.createOrder(order);
-  }
-
-  @UseGuards(RolesGuard)
-  @Roles('volunteer')
-  @Patch('/:id')
-  @UsePipes()
-  async updateOrder(
-    @Param('id', ParseIntPipe) id: number,
-    @Body(new AjvValidationPipe(UpdateOrderSchema)) order: UpdateOrderDto,
-  ) {
-    return this.volunteerService.updateOrder(order, id);
+  @UsePipes(new AjvValidationPipe(GetVolunteerSchema))
+  async requestForGetVolunteer(@Body() volunteerRequest: GetVolunteerDto) {
+    return this.volunteerService.requestForGetVolunteer(volunteerRequest);
   }
 }
