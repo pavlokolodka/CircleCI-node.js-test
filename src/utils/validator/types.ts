@@ -9,7 +9,7 @@ import { UpdateOrderDto } from 'src/volunteer/dto/update-order.dto';
 import { CreateUserDto } from './dto/create-user.validator.dto';
 import { LoginUserDto } from './dto/login-user.validator.dto';
 import { UpdateUserDto } from './dto/update-user.validator.dto';
-import { AllOrdersDto } from './volunteer/dto/allOrders.dto';
+import { AllOrdersDto } from './dto/allOrders.dto';
 
 export type SchemaType =
   | CreateUserDto

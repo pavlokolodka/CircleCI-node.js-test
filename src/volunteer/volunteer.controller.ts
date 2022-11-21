@@ -21,7 +21,7 @@ import {
   UpdateOrderSchema,
 } from 'src/utils/validator/volunteer';
 import { getAllOrdersSchema } from 'src/utils/validator/volunteer/allOrders.schema';
-import { AllOrdersDto } from 'src/utils/validator/volunteer/dto/allOrders.dto';
+import { AllOrdersDto } from 'src/utils/validator/dto/allOrders.dto';
 
 @Controller('orders')
 export class VolunteerController {

@@ -1,6 +1,6 @@
 import { Controller, Post, Body, Patch, UsePipes } from '@nestjs/common';
 import { EmailDto } from 'src/password/dto/email.dto';
-import { EmailSchema } from 'src/utils/validator/admin-password/email.schema';
+import { EmailSchema } from 'src/utils/validator/password/email.schema';
 import { AjvValidationPipe } from 'src/utils/validator/validation';
 import { AdminPassService } from './admin-pass.service';
 import { AdminResetPassDto } from './dto/admin-reset-pass.dto';

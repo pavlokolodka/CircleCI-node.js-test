@@ -1,5 +1,5 @@
 import { JSONSchemaType } from 'ajv';
-import { AllOrdersDto } from './dto/allOrders.dto';
+import { AllOrdersDto } from '../dto/allOrders.dto';
 
 export const getAllOrdersSchema: JSONSchemaType<AllOrdersDto> = {
   type: 'object',

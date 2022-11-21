@@ -8,6 +8,7 @@ import Ajv, { JSONSchemaType } from 'ajv';
 import addFormats from 'ajv-formats';
 import { SchemaType } from './types';
 import ajvErrors from 'ajv-errors';
+import { customDate, customSort, customStrNum } from './custom-formats';
 
 @Injectable()
 export class AjvValidationPipe implements PipeTransform {
@@ -18,20 +19,9 @@ export class AjvValidationPipe implements PipeTransform {
       this._ajv = new Ajv({ allErrors: true, $data: true });
       addFormats(this._ajv);
       ajvErrors(this._ajv);
-      this._ajv.addFormat('custom-date', (date) => {
-        const dateFormat =
-          /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/;
-        if (date.match(dateFormat)) return true;
-        else return false;
-      });
-      this._ajv.addFormat('sort', (sort) => {
-        if (sort === 'asc' || sort === 'desc') return true;
-        else return false;
-      });
-      this._ajv.addFormat('string-num', (num) => {
-        if (typeof Number(num) === 'number' && Number(num) >= 1) return true;
-        else return false;
-      });
+      this._ajv.addFormat('custom-date', customDate);
+      this._ajv.addFormat('sort', customSort);
+      this._ajv.addFormat('string-num', customStrNum);
     }
   }
 
