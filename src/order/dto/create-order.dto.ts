@@ -53,7 +53,7 @@ export class CreateOrderDto {
   @ApiProperty({
     example: '2018-03-29T13:34:00.000',
     description: 'When the order will finish',
-    type: Date,
+    type: String,
   })
-  finished_at: Date;
+  finished_at: string;
 }
