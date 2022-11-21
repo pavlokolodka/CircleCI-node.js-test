@@ -1,7 +1,9 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UsePipes } from '@nestjs/common';
 import { VolunteerRequestsService } from './volunteer-requests.service';
 import { ApproveRequestDto } from './dto/approve-request.dto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { AjvValidationPipe } from '../../utils/validator/validation';
+import { ApproveRequestSchema } from '../../utils/validator/admin/approve-request/approve-request.schema';
 
 @ApiTags('Admin/requests')
 @Controller('admin/requests')
@@ -22,6 +24,7 @@ export class VolunteerRequestsController {
 
   @ApiResponse({ status: 201, description: 'Approve or reject request' })
   @Post()
+  @UsePipes(new AjvValidationPipe(ApproveRequestSchema))
   async approveRequest(@Body() approveRequest: ApproveRequestDto) {
     return this.volunteerRequestsService.approveRequest(approveRequest);
   }
