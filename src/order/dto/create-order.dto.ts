@@ -37,13 +37,6 @@ export class CreateOrderDto {
   goal_amount: number;
 
   @ApiProperty({
-    example: 50000,
-    description: 'Sum of donation',
-    type: Number,
-  })
-  sum: number;
-
-  @ApiProperty({
     example: 'Smth about order',
     description: 'Order info',
     type: String,
@@ -53,7 +46,7 @@ export class CreateOrderDto {
   @ApiProperty({
     example: '2018-03-29T13:34:00.000',
     description: 'When the order will finish',
-    type: Date,
+    type: String,
   })
-  finished_at: Date;
+  finished_at: string;
 }
