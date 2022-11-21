@@ -26,6 +26,7 @@
     "stopDb": "docker stop postgresdb_main"
   },
   "dependencies": {
+    "@nestjs-modules/mailer": "^1.8.1",
     "@nestjs/axios": "^0.1.0",
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^2.2.0",
@@ -40,6 +41,8 @@
     "aws-sdk": "^2.1255.0",
     "body-parser": "^1.20.1",
     "cors": "^2.8.5",
+    "nodemailer": "^6.8.0",
+    "react-scripts": "^5.0.1",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
