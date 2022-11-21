@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { S3 } from 'aws-sdk';
-import { AwsBucketFolders } from 'src/types/aws-bucket-folders.enum';
+import { AwsBucketFolders } from 'src/types';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
@@ -56,9 +56,8 @@ export class AwsService {
   }
 
   async deleteFile(location: string) {
-    const key = `${location.split('/').reverse()[1]}/${
-      location.split('/').reverse()[0]
-    }`;
+    const key = `${location.split('/').reverse()[1]}/${location.split('/').reverse()[0]
+      }`;
     const params = {
       Bucket: process.env.AWS_BUCKET_NAME,
       Key: key,

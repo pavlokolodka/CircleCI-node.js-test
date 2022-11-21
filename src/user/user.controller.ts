@@ -14,7 +14,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
-import { AuthHandleService } from '../services/auth.handle.service';
+import { AuthHandleService } from 'src/services';
 
 @ApiTags('User')
 @Controller('user')
@@ -22,7 +22,7 @@ export class UserController {
   constructor(
     private readonly userService: UserService,
     private readonly authHandleService: AuthHandleService,
-  ) {}
+  ) { }
 
   @ApiResponse({ status: 200, description: 'Return user info' })
   @Roles('customer')

@@ -1,10 +1,9 @@
 import { Module } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { OrderController } from './order.controller';
-import { PrismaService } from '../services/prisma.service';
+import { PrismaService, AwsService } from 'src/services';
 import { JwtService } from '@nestjs/jwt';
 import OrderRepository from 'src/order/repository/order.repository';
-import { AwsService } from '../services/aws.service';
 
 @Module({
   providers: [
@@ -16,4 +15,4 @@ import { AwsService } from '../services/aws.service';
   ],
   controllers: [OrderController],
 })
-export class OrderModule {}
+export class OrderModule { }
