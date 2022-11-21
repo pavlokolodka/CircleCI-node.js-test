@@ -20,14 +20,14 @@ export class AwsService {
       base64.replace(/^data:image\/\w+;base64,/, ''),
       'base64',
     );
-    const extention = base64.split(';')[0].split('/')[1];
+    const expansion = base64.split(';')[0].split('/')[1];
 
     const params = {
       Bucket: process.env.AWS_BUCKET_NAME,
-      Key: `${folder}/${uuidv4()}.${extention}`,
+      Key: `${folder}/${uuidv4()}.${expansion}`,
       Body: base64Data,
       ContentEncoding: 'base64',
-      ContentType: `image/${extention}`,
+      ContentType: `image/${expansion}`,
     };
 
     const res = await this.s3.upload(params).promise();
@@ -36,7 +36,7 @@ export class AwsService {
 
   async uploadFile(
     base64: string,
-    extention: string,
+    expansion: string,
     folder: AwsBucketFolders,
   ) {
     // @ts-ignore
@@ -46,7 +46,7 @@ export class AwsService {
     );
     const params = {
       Bucket: process.env.AWS_BUCKET_NAME,
-      Key: `${folder}/${uuidv4()}.${extention}`,
+      Key: `${folder}/${uuidv4()}.${expansion}`,
       Body: base64Data,
       ContentEncoding: 'base64',
     };

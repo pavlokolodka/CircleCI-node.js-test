@@ -27,6 +27,10 @@ export class UserService {
     return newUser;
   }
 
+  async getUserById(id: number) {
+    return this.userRepository.getById(id);
+  }
+
   async updateUser(updateUserPayload: UpdateUserDto) {
     if (updateUserPayload.image) {
       const user = await this.userRepository.getById(updateUserPayload.userId);
