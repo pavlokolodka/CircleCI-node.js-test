@@ -20,6 +20,6 @@ export const getAllOrdersSchema: JSONSchemaType<AllOrdersDto> = {
       type: 'string',
     },
   },
-  required: ['page', 'limit', 'sort', 'search'],
+  required: ['page', 'limit'],
   additionalProperties: false,
 };

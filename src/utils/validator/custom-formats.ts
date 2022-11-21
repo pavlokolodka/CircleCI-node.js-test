@@ -6,6 +6,7 @@ export const customDate = (date: string) => {
 };
 
 export const customSort = (sort: string) => {
+  if (!sort) return true;
   if (sort === 'asc' || sort === 'desc') return true;
   else return false;
 };

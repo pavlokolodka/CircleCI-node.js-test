@@ -34,7 +34,7 @@ export class OrderController {
   @Get()
   @UsePipes(new AjvValidationPipe(getAllOrdersSchema))
   async getAllOrders(@Query() params: AllOrdersDto) {
-    const { page, limit, sort, search } = params;
+    const { limit = 10, sort = 'asc', page = 1, search } = params;
     return this.orderService.getAllOrders(+limit, sort, +page, search);
   }
 
