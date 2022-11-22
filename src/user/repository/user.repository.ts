@@ -20,7 +20,10 @@ export default class UserRepository extends Repository {
   }
 
   async getById(id: number) {
-    return await this.prismaService.user.findUnique({ where: { id } });
+    return await this.prismaService.user.findUnique({
+      where: { id },
+      include: { volunteer: true },
+    });
   }
 
   async getByEmail(email: string) {
@@ -28,6 +31,7 @@ export default class UserRepository extends Repository {
       where: {
         email,
       },
+      include: { volunteer: true },
     });
   }
 
