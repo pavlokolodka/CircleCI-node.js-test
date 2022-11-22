@@ -3,8 +3,8 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import OrderRepository from 'src/order/repository/order.repository';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
-import { AwsBucketFolders } from '../types/aws-bucket-folders.enum';
-import { AwsService } from '../services/aws.service';
+import { AwsBucketFolders } from 'src/types';
+import { AwsService } from 'src/services';
 
 @Injectable()
 export class OrderService {

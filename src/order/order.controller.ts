@@ -16,7 +16,7 @@ import { UpdateOrderDto } from './dto/update-order.dto';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { AuthHandleService } from 'src/services/auth.handle.service';
+import { AuthHandleService } from 'src/services';
 import { AjvValidationPipe } from 'src/utils/validator/validation';
 import {
   CreateOrderSchema,
