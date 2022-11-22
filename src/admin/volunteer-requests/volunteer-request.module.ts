@@ -1,11 +1,10 @@
 import { Module } from '@nestjs/common';
 import { VolunteerRequestsService } from './volunteer-requests.service';
 import { VolunteerRequestsController } from './volunteer-requests.controller';
-import { PrismaService } from '../../services/prisma.service';
+import { PrismaService, AwsService } from 'src/services';
 import VolunteerRequestsRepository from './repository/volunteer-requests.repository';
-import UserRepository from '../../user/repository/user.repository';
-import { UserService } from '../../user/user.service';
-import { AwsService } from '../../services/aws.service';
+import UserRepository from 'src/user/repository/user.repository';
+import { UserService } from 'src/user/user.service';
 
 @Module({
   imports: [],

@@ -1,6 +1,6 @@
 import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
-import { PrismaService } from 'src/services/prisma.service';
+import { PrismaService } from 'src/services';
 import { AdminAuthModule } from '../auth/admin-auth.module';
 import { AdminService } from '../services/admin.service';
 import { AdminPassController } from './admin-pass.controller';

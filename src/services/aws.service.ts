@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { S3 } from 'aws-sdk';
-import { AwsBucketFolders } from 'src/types/aws-bucket-folders.enum';
+import { AwsBucketFolders } from 'src/types';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()

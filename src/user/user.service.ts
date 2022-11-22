@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from 'src/auth/dto/create-user.dto';
 import { AwsService } from 'src/services/aws.service';
-import { AwsBucketFolders } from 'src/types/aws-bucket-folders.enum';
+import { AwsBucketFolders } from 'src/types';
 import { UpdateUserDto } from './dto/update-user.dto';
 import UserRepository from './repository/user.repository';
 

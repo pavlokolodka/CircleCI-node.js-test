@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { GetVolunteerDto } from './dto/get-Volunteer.dto';
 import VolunteerRepository from './repository/volunteer.repository';
-import { AwsBucketFolders } from '../types/aws-bucket-folders.enum';
-import { AwsService } from '../services/aws.service';
+import { AwsBucketFolders } from 'src/types';
+import { AwsService } from 'src/services';
 
 @Injectable()
 export class VolunteerService {

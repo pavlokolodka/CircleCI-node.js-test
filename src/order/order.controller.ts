@@ -7,6 +7,7 @@ import {
   Post,
   Query,
   UseGuards,
+  UsePipes,
 } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { CreateOrderDto } from './dto/create-order.dto';
@@ -14,6 +15,15 @@ import { UpdateOrderDto } from './dto/update-order.dto';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { AjvValidationPipe } from 'src/utils/validator/validation';
+import {
+  CreateOrderSchema,
+  UpdateOrderSchema,
+  getAllOrdersSchema,
+  IdSchema,
+} from 'src/utils/validator/order';
+import { AllOrdersDto } from 'src/utils/validator/dto/allOrders.dto';
+import { IdDto } from 'src/utils/validator/dto/id.dto';
 
 @ApiTags('Orders')
 @Controller('orders')
@@ -22,18 +32,17 @@ export class OrderController {
 
   @ApiResponse({ status: 200, description: 'Get all Orders from DB' })
   @Get()
-  async getAllOrders(
-    @Query('page') page = 1,
-    @Query('limit') limit = 10,
-    @Query('sort') sort = 'asc',
-    @Query('search') search: string,
-  ) {
+  @UsePipes(new AjvValidationPipe(getAllOrdersSchema))
+  async getAllOrders(@Query() params: AllOrdersDto) {
+    const { limit = 10, sort = 'asc', page = 1, search } = params;
     return this.orderService.getAllOrders(+limit, sort, +page, search);
   }
 
   @ApiResponse({ status: 200, description: 'Get full information about order' })
   @Get('/:id')
-  async getOrderById(@Param('id') id: string) {
+  @UsePipes(new AjvValidationPipe(IdSchema))
+  async getOrderById(@Param() idParam: IdDto) {
+    const { id } = idParam;
     return this.orderService.getOrderById(+id);
   }
 
@@ -41,6 +50,7 @@ export class OrderController {
   @UseGuards(RolesGuard)
   @Roles('volunteer')
   @Post()
+  @UsePipes(new AjvValidationPipe(CreateOrderSchema))
   async createOrder(@Body() order: CreateOrderDto) {
     return this.orderService.createOrder(order);
   }
@@ -49,7 +59,12 @@ export class OrderController {
   @UseGuards(RolesGuard)
   @Roles('volunteer')
   @Patch('/:id')
-  async updateOrder(@Param('id') id: string, @Body() order: UpdateOrderDto) {
+  @UsePipes()
+  async updateOrder(
+    @Param(new AjvValidationPipe(IdSchema)) idNum: IdDto,
+    @Body(new AjvValidationPipe(UpdateOrderSchema)) order: UpdateOrderDto,
+  ) {
+    const { id } = idNum;
     return this.orderService.updateOrder(order, +id);
   }
 }

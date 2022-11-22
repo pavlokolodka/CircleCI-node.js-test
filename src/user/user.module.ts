@@ -1,12 +1,10 @@
 import { Module } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserController } from './user.controller';
-import { PrismaService } from 'src/services/prisma.service';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { JwtService } from '@nestjs/jwt';
 import UserRepository from './repository/user.repository';
-import { AuthHandleService } from '../services/auth.handle.service';
-import { AwsService } from 'src/services/aws.service';
+import { PrismaService, AuthHandleService, AwsService } from 'src/services';
 
 @Module({
   controllers: [UserController],
