@@ -30,12 +30,16 @@ export class VolunteerRequestsController {
 
   @ApiResponse({ status: 200, description: 'Get single request from DB' })
   @Get('/:id')
+  @UseGuards(RolesGuard)
+  @Roles('admin')
   async getRequestById(@Param('id') id: string) {
     return this.volunteerRequestsService.getRequestById(+id);
   }
 
   @ApiResponse({ status: 201, description: 'Approve or reject request' })
   @Post()
+  @UseGuards(RolesGuard)
+  @Roles('admin')
   @UsePipes(new AjvValidationPipe(ApproveRequestSchema))
   async approveRequest(@Body() approveRequest: ApproveRequestDto) {
     return this.volunteerRequestsService.approveRequest(approveRequest);
