@@ -3,6 +3,11 @@
 KraudDonate-Service is part of the KraudDonate application to help volunteers. <br/>
 This is the main part providing the core routing and handling of all of the application's workflows.
 
+## Configuration
+
+1. Create .env file in root
+2. Add values from .env.example
+
 ## Installation
 
 ```
@@ -13,7 +18,7 @@ $ npm install
 
 ```
 # 1 (only once if you have not built before, otherwise step 2)
-$ npm run buildDb 
+$ npm run buildDb
 
 # 2 Run the database
 $ npm run upDb
@@ -28,6 +33,7 @@ database - main
 username - postgres
 password - root
 ```
+
 ## Run migration
 
 ```
@@ -41,14 +47,18 @@ $ npx prisma db seed
 
 user password - 12345678
 ```
+
 ## Run app
 
 ```
 $ npm run start
 $ npm run start:dev
 ```
+
 ## API endpoints documentation
+
 > http://localhost:4000/api
+
 ## Technology
 
 - Node.js & npm
