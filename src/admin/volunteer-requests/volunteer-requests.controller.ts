@@ -1,9 +1,19 @@
-import { Body, Controller, Get, Param, Post, UsePipes } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+  UsePipes,
+} from '@nestjs/common';
 import { VolunteerRequestsService } from './volunteer-requests.service';
 import { ApproveRequestDto } from './dto/approve-request.dto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AjvValidationPipe } from '../../utils/validator/validation';
 import { ApproveRequestSchema } from '../../utils/validator/admin/approve-request/approve-request.schema';
+import { Roles } from '../../auth/decorators/roles.decorator';
+import { RolesGuard } from '../../auth/guards/roles.guard';
 
 @ApiTags('Admin/requests')
 @Controller('admin/requests')
@@ -12,6 +22,8 @@ export class VolunteerRequestsController {
 
   @ApiResponse({ status: 200, description: 'Get all requests from DB' })
   @Get()
+  @UseGuards(RolesGuard)
+  @Roles('admin')
   async getRequests() {
     return this.volunteerRequestsService.getRequests();
   }
