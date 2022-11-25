@@ -18,4 +18,4 @@ import { UserModule } from 'src/user/user.module';
   imports: [UserModule],
   controllers: [OrderController],
 })
-export class OrderModule { }
+export class OrderModule {}
