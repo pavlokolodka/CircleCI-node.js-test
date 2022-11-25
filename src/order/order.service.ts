@@ -10,7 +10,7 @@ export class OrderService {
   constructor(
     private orderRepository: OrderRepository,
     private awsService: AwsService,
-  ) { }
+  ) {}
 
   async getAllOrders(limit: number, sort, page: number, search: string) {
     return this.orderRepository.getAllOrders(limit, sort, page, search);

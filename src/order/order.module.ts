@@ -15,4 +15,4 @@ import OrderRepository from 'src/order/repository/order.repository';
   ],
   controllers: [OrderController],
 })
-export class OrderModule { }
+export class OrderModule {}

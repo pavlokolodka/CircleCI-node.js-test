@@ -18,4 +18,4 @@ import { UserService } from 'src/user/user.service';
     AwsService,
   ],
 })
-export class VolunteerRequestModule { }
+export class VolunteerRequestModule {}
