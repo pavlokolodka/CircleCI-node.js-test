@@ -50,4 +50,11 @@ export class AuthService {
       throw new BadRequestException('Invalid email or password');
     }
   }
+
+  async refreshTokens(email: string, role: string) {
+    const res = await this.httpService
+      .post('/auth/refresh-tokens', { email, role })
+      .catch((err) => console.log(err));
+    return res.data;
+  }
 }
