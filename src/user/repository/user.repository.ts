@@ -4,7 +4,7 @@ import Repository from 'src/repository/repository';
 import { UpdateUserDto } from '../dto/update-user.dto';
 
 export default class UserRepository extends Repository {
-  async update({ userId, name, lastname, image }: UpdateUserDto) {
+  async update({ name, lastname, image }: UpdateUserDto, userId: number) {
     const user = await this.prismaService.user
       .update({
         where: { id: userId },
@@ -25,7 +25,7 @@ export default class UserRepository extends Repository {
     const user = await this.prismaService.user
       .findUnique({
         where: { id },
-        include: { volunteer: true },
+        include: { volunteer: true, orders: true }
       })
       .catch(() => {
         throw new BadRequestException('Something went wrong');
@@ -40,7 +40,7 @@ export default class UserRepository extends Repository {
         where: {
           email,
         },
-        include: { volunteer: true },
+        include: { volunteer: true, orders: true }
       })
       .catch(() => {
         throw new BadRequestException('Something went wrong');

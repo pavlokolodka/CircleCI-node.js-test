@@ -4,9 +4,6 @@ import { UpdateUserDto } from '../dto/update-user.validator.dto';
 export const UpdateUserSchema: JSONSchemaType<UpdateUserDto> = {
   type: 'object',
   properties: {
-    userId: {
-      type: 'integer',
-    },
     name: {
       type: 'string',
       maxLength: 256,
@@ -24,6 +21,5 @@ export const UpdateUserSchema: JSONSchemaType<UpdateUserDto> = {
       nullable: true,
     },
   },
-  required: ['userId'],
   additionalProperties: false,
 };
