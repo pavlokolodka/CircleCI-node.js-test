@@ -31,7 +31,7 @@ export class OrderService {
         AwsBucketFolders.ORDER,
       );
     }
-    return this.orderRepository.createOrder({ ...order, user_id: user.id });
+    return this.orderRepository.createOrder(order, user.id);
   }
 
   async updateOrder(order: UpdateOrderDto, id: number) {

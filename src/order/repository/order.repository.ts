@@ -45,13 +45,13 @@ export default class OrderRepository extends Repository {
       });
   }
 
-  async createOrder(order: CreateOrderDto) {
+  async createOrder(order: CreateOrderDto, userId: number) {
     return await this.prismaService.order
       .create({
         data: {
           title: order.title,
           info: order.info,
-          user_id: order.user_id,
+          user_id: userId,
           photo: order.photo,
           goal_amount: order.goal_amount,
           short_info: order.short_info,
