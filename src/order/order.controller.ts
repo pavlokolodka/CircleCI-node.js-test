@@ -23,15 +23,19 @@ import {
   UpdateOrderSchema,
   getAllOrdersSchema,
   IdSchema,
+  IdUserIdSchema,
 } from 'src/utils/validator/order';
 import { AllOrdersDto } from 'src/utils/validator/dto/allOrders.dto';
 import { IdDto } from 'src/utils/validator/dto/id.dto';
+import { IdUserIdDto } from '../utils/validator/dto/idUserId.dto';
 
 @ApiTags('Orders')
 @Controller('orders')
 export class OrderController {
-  constructor(private orderService: OrderService,
-    private readonly authHandleService: AuthHandleService) { }
+  constructor(
+    private orderService: OrderService,
+    private readonly authHandleService: AuthHandleService,
+  ) {}
 
   @ApiResponse({ status: 200, description: 'Get all Orders from DB' })
   @Get()
@@ -55,7 +59,9 @@ export class OrderController {
   @Post()
   @UsePipes(new AjvValidationPipe(CreateOrderSchema))
   async createOrder(@Req() req, @Body() order: CreateOrderDto) {
-    const { email } = this.authHandleService.getPayload(req.headers['authorization'])
+    const { email } = this.authHandleService.getPayload(
+      req.headers['authorization'],
+    );
     return this.orderService.createOrder(order, email);
   }
 
@@ -70,5 +76,21 @@ export class OrderController {
   ) {
     const { id } = idNum;
     return this.orderService.updateOrder(order, +id);
+  }
+
+  @ApiResponse({
+    status: 200,
+    description: 'Get full information about order by userId',
+  })
+  @Get('/:id/:userId')
+  @UseGuards(RolesGuard)
+  @Roles('volunteer')
+  @UsePipes(new AjvValidationPipe(IdUserIdSchema))
+  async getUserOrder(@Param() idUserId: IdUserIdDto, @Req() req) {
+    const { email } = this.authHandleService.getPayload(
+      req.headers['authorization'],
+    );
+    const { id } = idUserId;
+    return this.orderService.getUserOrder(+id, email);
   }
 }
