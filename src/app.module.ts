@@ -10,6 +10,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { VolunteerRequestModule } from './admin/volunteer-requests/volunteer-request.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { OrderModule } from './order/order.module';
+import { StripeModule } from './stripe/stripe.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { OrderModule } from './order/order.module';
         auth: { user: 'apikey', pass: process.env.MAIL_PASSWORD },
       },
     }),
+    StripeModule,
   ],
   controllers: [],
 })
