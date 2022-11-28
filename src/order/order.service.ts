@@ -52,8 +52,6 @@ export class OrderService {
   }
 
   async getUserOrder(id: number, email: string) {
-    const user = await this.userService.getByEmail(email);
-    if (!user) throw new BadRequestException('User not found');
-    return this.orderRepository.getUserOrder(id, user.id);
+    return this.orderRepository.getUserOrder(id, email);
   }
 }

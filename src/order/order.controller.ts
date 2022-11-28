@@ -23,11 +23,9 @@ import {
   UpdateOrderSchema,
   getAllOrdersSchema,
   IdSchema,
-  IdUserIdSchema,
 } from 'src/utils/validator/order';
 import { AllOrdersDto } from 'src/utils/validator/dto/allOrders.dto';
 import { IdDto } from 'src/utils/validator/dto/id.dto';
-import { IdUserIdDto } from '../utils/validator/dto/idUserId.dto';
 
 @ApiTags('Orders')
 @Controller('orders')
@@ -82,15 +80,15 @@ export class OrderController {
     status: 200,
     description: 'Get full information about order by userId',
   })
-  @Get('/:id/:userId')
-  @UseGuards(RolesGuard)
-  @Roles('volunteer')
-  @UsePipes(new AjvValidationPipe(IdUserIdSchema))
-  async getUserOrder(@Param() idUserId: IdUserIdDto, @Req() req) {
+  @Get('/:id/ownership')
+  // @UseGuards(RolesGuard)
+  // @Roles('volunteer')
+  @UsePipes(new AjvValidationPipe(IdSchema))
+  async getUserOrder(@Param() param: IdDto, @Req() req) {
     const { email } = this.authHandleService.getPayload(
       req.headers['authorization'],
     );
-    const { id } = idUserId;
+    const { id } = param;
     return this.orderService.getUserOrder(+id, email);
   }
 }
