@@ -95,4 +95,19 @@ export default class OrderRepository extends Repository {
         throw new BadRequestException('Something went wrong');
       });
   }
+
+  async getUserOrder(id: number, email: string) {
+    return await this.prismaService.order
+      .findFirst({
+        where: {
+          id,
+          user: {
+            email,
+          },
+        },
+      })
+      .catch(() => {
+        throw new BadRequestException('Something went wrong');
+      });
+  }
 }

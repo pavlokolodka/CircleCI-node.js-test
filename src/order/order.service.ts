@@ -11,7 +11,8 @@ export class OrderService {
   constructor(
     private orderRepository: OrderRepository,
     private awsService: AwsService,
-    private userService: UserService) { }
+    private userService: UserService,
+  ) {}
 
   async getAllOrders(limit: number, sort, page: number, search: string) {
     return this.orderRepository.getAllOrders(limit, sort, page, search);
@@ -22,8 +23,8 @@ export class OrderService {
   }
 
   async createOrder(order: CreateOrderDto, userEmail: string) {
-    const user = await this.userService.getByEmail(userEmail)
-    if (!user) throw new BadRequestException('User not found')
+    const user = await this.userService.getByEmail(userEmail);
+    if (!user) throw new BadRequestException('User not found');
 
     if (order.photo) {
       order.photo = await this.awsService.uploadImg(
@@ -48,5 +49,9 @@ export class OrderService {
         });
     }
     return this.orderRepository.updateOrder(order, id);
+  }
+
+  async getUserOrder(id: number, email: string) {
+    return this.orderRepository.getUserOrder(id, email);
   }
 }

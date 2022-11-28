@@ -13,7 +13,7 @@ import { UserModule } from 'src/user/user.module';
     JwtService,
     OrderRepository,
     AwsService,
-    AuthHandleService
+    AuthHandleService,
   ],
   imports: [UserModule],
   controllers: [OrderController],
