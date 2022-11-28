@@ -1,4 +1,11 @@
-import { Body, Controller, Post, Req, UsePipes } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Post,
+  Req,
+  UsePipes,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginUserDto } from './dto/login-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -6,6 +13,7 @@ import { AjvValidationPipe } from 'src/utils/validator/validation';
 import { CreateUserSchema, LoginUserSchema } from '../utils/validator/user';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthHandleService } from '../services';
+import { RefreshTokenDto } from './dto/refresh-token.dto';
 
 @ApiTags('Authorization')
 @Controller('auth')
@@ -36,10 +44,13 @@ export class AuthController {
     description: 'Return new access and refresh tokens',
   })
   @Post('/refresh-tokens')
-  refreshTokens(@Req() req) {
-    const { email, role } = this.authHandleService.getPayload(
-      req.headers['authorization'],
-    );
-    return this.authService.refreshTokens(email, role);
+  refreshTokens(@Body() rawRefreshToken: RefreshTokenDto) {
+    try {
+      const { refreshToken } = rawRefreshToken;
+      const { email, role } = this.authHandleService.getPayload(refreshToken);
+      return this.authService.refreshTokens(email, role);
+    } catch (err) {
+      throw new BadRequestException(err.message);
+    }
   }
 }
