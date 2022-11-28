@@ -81,8 +81,8 @@ export class OrderController {
     description: 'Get full information about order by userId',
   })
   @Get('/:id/ownership')
-  // @UseGuards(RolesGuard)
-  // @Roles('volunteer')
+  @UseGuards(RolesGuard)
+  @Roles('volunteer')
   @UsePipes(new AjvValidationPipe(IdSchema))
   async getUserOrder(@Param() param: IdDto, @Req() req) {
     const { email } = this.authHandleService.getPayload(
