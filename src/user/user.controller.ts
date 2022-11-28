@@ -41,6 +41,6 @@ export class UserController {
   async updateUser(@Req() req, @Body() updateUserDto: UpdateUserDto) {
     const { email } = this.authHandleService.getPayload(req.headers['authorization'])
     const user = await this.userService.getByEmail(email)
-    if (user) return await this.userService.updateUser(updateUserDto, user.id)
+    if (user) return this.userService.updateUser(updateUserDto, user.id)
   }
 }
