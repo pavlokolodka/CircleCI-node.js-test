@@ -10,6 +10,10 @@ export const ApproveRequestSchema: JSONSchemaType<ApproveRequestDto> = {
     status: {
       type: 'boolean',
     },
+    message: {
+      type: 'string',
+      nullable: true,
+    },
   },
   required: ['userId', 'status'],
   additionalProperties: false,

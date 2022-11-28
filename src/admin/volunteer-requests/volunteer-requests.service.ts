@@ -29,7 +29,7 @@ export class VolunteerRequestsService {
           to: user.email,
           from: 'krauddonate@gmail.com',
           subject: 'Rejected request',
-          html: REJECTED_TEMP(user.name),
+          html: REJECTED_TEMP(user.name, approveRequest.message),
         });
       }
     }
