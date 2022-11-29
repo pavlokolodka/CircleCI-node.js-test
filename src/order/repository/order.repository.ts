@@ -34,7 +34,7 @@ export default class OrderRepository extends Repository {
   }
 
   async getOrderById(id: number) {
-    return this.prismaService.order
+    return await this.prismaService.order
       .findFirst({
         where: {
           id,
@@ -46,7 +46,7 @@ export default class OrderRepository extends Repository {
   }
 
   async createOrder(order: CreateOrderDto) {
-    return this.prismaService.order
+    return await this.prismaService.order
       .create({
         data: {
           title: order.title,
@@ -54,7 +54,6 @@ export default class OrderRepository extends Repository {
           user_id: order.user_id,
           photo: order.photo,
           goal_amount: order.goal_amount,
-          sum: order.sum,
           short_info: order.short_info,
           finished_at: new Date(order.finished_at).toISOString(),
         },
@@ -76,7 +75,7 @@ export default class OrderRepository extends Repository {
     }: UpdateOrderDto,
     id: number,
   ) {
-    return this.prismaService.order
+    return await this.prismaService.order
       .update({
         where: { id },
         data: {
@@ -90,6 +89,21 @@ export default class OrderRepository extends Repository {
             finished_at != null
               ? new Date(finished_at).toISOString()
               : undefined,
+        },
+      })
+      .catch(() => {
+        throw new BadRequestException('Something went wrong');
+      });
+  }
+
+  async getUserOrder(id: number, email: string) {
+    return await this.prismaService.order
+      .findFirst({
+        where: {
+          id,
+          user: {
+            email,
+          },
         },
       })
       .catch(() => {

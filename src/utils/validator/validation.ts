@@ -7,6 +7,8 @@ import {
 import Ajv, { JSONSchemaType } from 'ajv';
 import addFormats from 'ajv-formats';
 import { SchemaType } from './types';
+import ajvErrors from 'ajv-errors';
+import { customDate, customSort, customStrNum } from './custom-formats';
 
 @Injectable()
 export class AjvValidationPipe implements PipeTransform {
@@ -14,8 +16,12 @@ export class AjvValidationPipe implements PipeTransform {
 
   constructor(private schema: JSONSchemaType<SchemaType>) {
     if (!this._ajv) {
-      this._ajv = new Ajv({ allErrors: true });
+      this._ajv = new Ajv({ allErrors: true, $data: true });
       addFormats(this._ajv);
+      ajvErrors(this._ajv);
+      this._ajv.addFormat('custom-date', customDate);
+      this._ajv.addFormat('sort', customSort);
+      this._ajv.addFormat('string-num', customStrNum);
     }
   }
 

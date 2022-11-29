@@ -1,10 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-<<<<<<< HEAD
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
-=======
 import { IHttpService } from 'src/utils/http/http.interface';
 import HttpService from 'src/utils/http/http.service';
->>>>>>> origin/dev
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 

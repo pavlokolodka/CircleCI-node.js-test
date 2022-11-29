@@ -5,10 +5,13 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { AdminAuthModule } from './admin/auth/admin-auth.module';
 import { AdminPassModule } from './admin/admin-password/admin-pass.module';
+import { VolunteerModule } from './volunteer/volunteer.module';
 import { PasswordModule } from './password/password.module';
 import { JwtModule } from '@nestjs/jwt';
 import { RecaptchaMiddleware } from './middlewares/recaptcha.middleware';
 import { RecaptchaService } from './utils/recaptcha';
+import { VolunteerRequestModule } from './admin/volunteer-requests/volunteer-request.module';
+import { MailerModule } from '@nestjs-modules/mailer';
 import { OrderModule } from './order/order.module';
 
 @Module({
@@ -19,9 +22,17 @@ import { OrderModule } from './order/order.module';
     AdminAuthModule,
     AdminPassModule,
     PasswordModule,
+    VolunteerModule,
     JwtModule,
-    HttpModule
+    HttpModule,
     OrderModule,
+    VolunteerRequestModule,
+    MailerModule.forRoot({
+      transport: {
+        host: 'smtp.sendgrid.net',
+        auth: { user: 'apikey', pass: process.env.MAIL_PASSWORD },
+      },
+    }),
   ],
   providers: [RecaptchaService]
 })
