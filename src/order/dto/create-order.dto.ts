@@ -16,13 +16,6 @@ export class CreateOrderDto {
   info: string;
 
   @ApiProperty({
-    example: 1,
-    description: 'User identificator',
-    type: Number,
-  })
-  user_id: number;
-
-  @ApiProperty({
     example: 'Photo',
     description: 'Photo',
     type: String,
