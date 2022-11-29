@@ -13,6 +13,7 @@ import { RecaptchaService } from './utils/recaptcha';
 import { VolunteerRequestModule } from './admin/volunteer-requests/volunteer-request.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { OrderModule } from './order/order.module';
+import { BullModule } from '@nestjs/bull';
 
 @Module({
   imports: [
@@ -31,6 +32,12 @@ import { OrderModule } from './order/order.module';
       transport: {
         host: 'smtp.sendgrid.net',
         auth: { user: 'apikey', pass: process.env.MAIL_PASSWORD },
+      },
+    }),
+    BullModule.forRoot({
+      redis: {
+        host: 'localhost',
+        port: 6379,
       },
     }),
   ],
