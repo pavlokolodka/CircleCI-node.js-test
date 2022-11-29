@@ -4,4 +4,5 @@ export class CreateUserDto {
   lastname: string;
   password: string;
   photo?: string;
+  recaptchaToken?: string;
 }
