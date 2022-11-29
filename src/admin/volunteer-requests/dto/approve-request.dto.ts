@@ -14,4 +14,11 @@ export class ApproveRequestDto {
     type: Boolean,
   })
   status: boolean;
+
+  @ApiProperty({
+    example: 'Reject',
+    description: 'message with reason for rejection',
+    type: String,
+  })
+  message: string;
 }
