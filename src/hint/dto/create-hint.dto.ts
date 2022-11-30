@@ -1,0 +1,17 @@
+import { ApiProperty } from '@nestjs/swagger';
+
+export class CreateHintDto {
+  @ApiProperty({
+    example: 'New features',
+    description: 'Title of hint',
+    type: String,
+  })
+  title: string;
+
+  @ApiProperty({
+    example: 'New features info',
+    description: 'Info of hint',
+    type: String,
+  })
+  info: string;
+}
