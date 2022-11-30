@@ -5,7 +5,7 @@ import { JwtService } from '@nestjs/jwt';
 export class AuthHandleService {
   constructor(private readonly jwtService: JwtService) {}
 
-  getPayload(rawToken: string) {
+  getPayload(rawToken?: string) {
     const token = this.parseToken(rawToken);
 
     const user = this.jwtService.verify(token, {
