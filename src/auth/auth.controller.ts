@@ -18,10 +18,7 @@ import { RefreshTokenDto } from './dto/refresh-token.dto';
 @ApiTags('Authorization')
 @Controller('auth')
 export class AuthController {
-  constructor(
-    private readonly authService: AuthService,
-    private readonly authHandleService: AuthHandleService,
-  ) {}
+  constructor(private readonly authService: AuthService) {}
 
   @ApiResponse({ status: 201, description: 'User created' })
   @Post('/sign-up')
@@ -44,13 +41,8 @@ export class AuthController {
     description: 'Return new access and refresh tokens',
   })
   @Post('/refresh-tokens')
-  refreshTokens(@Body() rawRefreshToken: RefreshTokenDto) {
-    try {
-      const { refreshToken } = rawRefreshToken;
-      const { email, role } = this.authHandleService.getPayload(refreshToken);
-      return this.authService.refreshTokens(email, role);
-    } catch (err) {
-      throw new BadRequestException(err.message);
-    }
+  async refreshTokens(@Body() rawRefreshToken: RefreshTokenDto) {
+    const tokens = await this.authService.refreshTokens(rawRefreshToken);
+    return tokens;
   }
 }
