@@ -39,8 +39,10 @@ export class UserController {
   @Patch()
   @UsePipes(new AjvValidationPipe(UpdateUserSchema))
   async updateUser(@Req() req, @Body() updateUserDto: UpdateUserDto) {
-    const { email } = this.authHandleService.getPayload(req.headers['authorization'])
-    const user = await this.userService.getByEmail(email)
-    if (user) return this.userService.updateUser(updateUserDto, user.id)
+    const { email } = this.authHandleService.getPayload(
+      req.headers['authorization'],
+    );
+    const user = await this.userService.getByEmail(email);
+    if (user) return this.userService.updateUser(updateUserDto, user.id);
   }
 }
