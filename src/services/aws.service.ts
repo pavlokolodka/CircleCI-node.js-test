@@ -43,7 +43,7 @@ export class AwsService {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const base64Data = new Buffer.from(
-      base64.replace(/^data:image\/\w+;base64,/, ''),
+      base64.replace(/^data:.+\/\w+;base64,/, ''),
       'base64',
     );
     const params = {

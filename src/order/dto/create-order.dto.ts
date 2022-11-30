@@ -16,13 +16,6 @@ export class CreateOrderDto {
   info: string;
 
   @ApiProperty({
-    example: 1,
-    description: 'User identificator',
-    type: Number,
-  })
-  user_id: number;
-
-  @ApiProperty({
     example: 'Photo',
     description: 'Photo',
     type: String,
@@ -35,13 +28,6 @@ export class CreateOrderDto {
     type: Number,
   })
   goal_amount: number;
-
-  @ApiProperty({
-    example: 50000,
-    description: 'Sum of donation',
-    type: Number,
-  })
-  sum: number;
 
   @ApiProperty({
     example: 'Smth about order',

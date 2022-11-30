@@ -8,6 +8,9 @@ export const ResetPasswordSchema: JSONSchemaType<ResetPasswordDto> = {
     resetToken: {
       type: 'string',
     },
+    recaptchaToken: {
+      type: 'string',
+    },
     newPassword: password,
     newPasswordConfirm: {
       type: 'string',

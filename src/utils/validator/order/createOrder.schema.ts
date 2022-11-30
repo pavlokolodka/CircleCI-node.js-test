@@ -10,33 +10,24 @@ export const CreateOrderSchema: JSONSchemaType<CreateOrderDto> = {
     info: {
       type: 'string',
     },
-    user_id: {
-      type: 'number',
-    },
     photo: {
       type: 'string',
     },
     goal_amount: {
       type: 'number',
     },
-    sum: {
-      type: 'number',
-    },
     short_info: {
       type: 'string',
     },
     finished_at: {
-      type: 'string',
-      format: 'custom-date',
+      type: 'string'
     },
   },
   required: [
     'title',
     'info',
-    'user_id',
     'photo',
     'goal_amount',
-    'sum',
     'short_info',
     'finished_at',
   ],

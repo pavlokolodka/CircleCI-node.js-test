@@ -45,16 +45,15 @@ export default class OrderRepository extends Repository {
       });
   }
 
-  async createOrder(order: CreateOrderDto) {
+  async createOrder(order: CreateOrderDto, userId: number) {
     return await this.prismaService.order
       .create({
         data: {
           title: order.title,
           info: order.info,
-          user_id: order.user_id,
+          user_id: userId,
           photo: order.photo,
           goal_amount: order.goal_amount,
-          sum: order.sum,
           short_info: order.short_info,
           finished_at: new Date(order.finished_at).toISOString(),
         },
@@ -90,6 +89,21 @@ export default class OrderRepository extends Repository {
             finished_at != null
               ? new Date(finished_at).toISOString()
               : undefined,
+        },
+      })
+      .catch(() => {
+        throw new BadRequestException('Something went wrong');
+      });
+  }
+
+  async getUserOrder(id: number, email: string) {
+    return await this.prismaService.order
+      .findFirst({
+        where: {
+          id,
+          user: {
+            email,
+          },
         },
       })
       .catch(() => {
