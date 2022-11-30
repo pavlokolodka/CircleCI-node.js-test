@@ -19,7 +19,7 @@ import { VolunteerRequestModule } from './admin/volunteer-requests/volunteer-req
 import { MailerModule } from '@nestjs-modules/mailer';
 import { OrderModule } from './order/order.module';
 import { HintModule } from './hint/hint.module';
-import { VolunteerHintPhotoModule } from './hint_photo/hint_photo.module';
+import { HintPhotoModule } from './hint_photo/hint_photo.module';
 
 @Module({
   imports: [
@@ -41,7 +41,7 @@ import { VolunteerHintPhotoModule } from './hint_photo/hint_photo.module';
       },
     }),
     HintModule,
-    VolunteerHintPhotoModule,
+    HintPhotoModule,
   ],
   providers: [RecaptchaService],
 })

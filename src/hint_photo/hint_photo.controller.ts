@@ -17,9 +17,9 @@ import { AjvValidationPipe } from '../utils/validator/validation';
 import { IdSchema } from '../utils/validator/order';
 import { IdDto } from '../utils/validator/dto/id.dto';
 import { HintPhotoService } from './hint_photo.service';
-import { CreateHintPhotoSchema } from '../utils/validator/volunteer_hint_photo/create-hint-photo.schema';
+import { CreateHintPhotoSchema } from '../utils/validator/hint_photo/create-hint-photo.schema';
 import { CreateHintPhotoDto } from '../utils/validator/dto/create-hint-photo.dto';
-import { UpdateHintPhotoSchema } from '../utils/validator/volunteer_hint_photo/update-hint-photo.schema';
+import { UpdateHintPhotoSchema } from '../utils/validator/hint_photo/update-hint-photo.schema';
 import { UpdateHintPhotoDto } from '../utils/validator/dto/update-hint-photo.dto';
 
 @ApiTags('Volunteer Hint Photo')

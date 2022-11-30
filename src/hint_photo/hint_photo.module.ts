@@ -19,4 +19,4 @@ import { JwtService } from '@nestjs/jwt';
   exports: [HintPhotoService, HintPhotoRepository],
   imports: [UserModule],
 })
-export class VolunteerHintPhotoModule {}
+export class HintPhotoModule {}
