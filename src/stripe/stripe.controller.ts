@@ -6,7 +6,7 @@ import { DonateDto } from '../utils/validator/dto/donate.dto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Stripe')
-@Controller('stripe')
+@Controller('payment')
 export class StripeController {
   constructor(private stripeService: StripeService) {}
 
