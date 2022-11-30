@@ -37,11 +37,10 @@ export class UserService {
     return this.userRepository.getById(id);
   }
 
-  async updateUser(updateUserPayload: UpdateUserDto) {
+  async updateUser(updateUserPayload: UpdateUserDto, userId: number) {
     if (updateUserPayload.image) {
-      const user = await this.userRepository.getById(updateUserPayload.userId);
-      if (!user) throw new BadRequestException('User not found.');
-      const oldPhoto = user.photo;
+      const user = await this.userRepository.getById(userId);
+      const oldPhoto = user?.photo;
 
       updateUserPayload.image = await this.awsService
         .uploadImg(updateUserPayload.image, AwsBucketFolders.USER_AVATAR)
@@ -51,7 +50,7 @@ export class UserService {
         });
     }
 
-    const user = await this.userRepository.update(updateUserPayload);
+    const user = await this.userRepository.update(updateUserPayload, userId);
     return user;
   }
 }
