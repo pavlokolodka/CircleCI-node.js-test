@@ -53,4 +53,10 @@ export class UserService {
     const user = await this.userRepository.update(updateUserPayload, userId);
     return user;
   }
+
+  async userIsVolunteer(id: number) {
+    const user = await this.userRepository.getById(id);
+    if (user?.role === 'volunteer') return true;
+    else return false;
+  }
 }
