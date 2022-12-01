@@ -3,6 +3,7 @@ import Stripe from 'stripe';
 import { DonateDto } from '../utils/validator/dto/donate.dto';
 import { PrismaService } from '../services';
 import { OrderService } from '../order/order.service';
+import { StatusOfDonateDto } from './dto/statusOfDonate.dto';
 
 @Injectable()
 export class StripeService {
@@ -32,16 +33,21 @@ export class StripeService {
         throw new BadRequestException('Donate not made');
       });
 
-    const sum = orderFromDB.sum + donate.amount;
+    return newDonate;
+  }
+
+  async takeStatusOfDonate(data: StatusOfDonateDto) {
+    const orderFromDB = await this.orderService.getOrderById(data.order_id);
+    if (!orderFromDB) throw new BadRequestException('Order not found');
+
+    const sum = orderFromDB.sum + data.amount;
     await this.prismaService.order
       .update({
-        where: { id: donate.order_id },
+        where: { id: data.order_id },
         data: { sum },
       })
       .catch(() => {
         throw new BadRequestException('Something went wrong');
       });
-
-    return newDonate;
   }
 }

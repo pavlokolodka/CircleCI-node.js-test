@@ -14,6 +14,7 @@ import { ApproveRequestDto } from './dto/approve-request.dto';
 import { GetVolunteerDto } from './dto/get-volunteer.dto';
 import { IdDto } from './dto/id.dto';
 import { DonateDto } from './dto/donate.dto';
+import { StatusOfDonateDto } from './dto/statusOfDonate.dto';
 
 export type SchemaType =
   | CreateUserDto
@@ -31,4 +32,5 @@ export type SchemaType =
   | UpdateOrderDto
   | AllOrdersDto
   | IdDto
-  | DonateDto;
+  | DonateDto
+  | StatusOfDonateDto;
