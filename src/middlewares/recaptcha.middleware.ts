@@ -6,8 +6,11 @@ import { RecaptchaService } from 'src/utils/recaptcha';
 export class RecaptchaMiddleware implements NestMiddleware {
     constructor(private readonly recaptcha: RecaptchaService) { }
     async use(req: Request, res: Response, next: NextFunction) {
-        const recaptchaVerified = await this.recaptcha.check(req.body.recaptchaToken)
-        if (recaptchaVerified && process.env.NODE_ENV !== 'development') next()
-        else throw new BadRequestException('Recaptcha check failed')
+        if (process.env.ENV === 'dev') next()
+        else {
+            const recaptchaVerified = await this.recaptcha.check(req.body.recaptchaToken)
+            if (recaptchaVerified) next()
+            else throw new BadRequestException('Recaptcha check failed')
+        }
     }
 }
