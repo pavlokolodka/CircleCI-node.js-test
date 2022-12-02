@@ -57,6 +57,6 @@ export class UserService {
   async userIsVolunteer(id: number) {
     const user = await this.userRepository.getById(id);
     if (user?.role === 'volunteer') return true;
-    else return false;
+    return false;
   }
 }
