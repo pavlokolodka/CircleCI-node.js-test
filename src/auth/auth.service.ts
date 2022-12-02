@@ -55,15 +55,13 @@ export class AuthService {
   }
 
   async refreshTokens(rawRefreshToken: RefreshTokenDto) {
-    try {
-      const { refreshToken } = rawRefreshToken;
-      const { email, role } = this.authHandleService.getPayload(refreshToken);
-      const res = await this.httpService
-        .post('/auth/refresh-tokens', { email, role })
-        .catch((err) => console.log(err));
-      return res.data;
-    } catch (err) {
-      throw new BadRequestException(err.message);
-    }
+    const { refreshToken } = rawRefreshToken;
+    const { email, role } = this.authHandleService.getPayload(refreshToken);
+    const res = await this.httpService
+      .post('/auth/refresh-tokens', { email, role })
+      .catch((err) => {
+        throw new BadRequestException(err);
+      });
+    return res.data;
   }
 }
