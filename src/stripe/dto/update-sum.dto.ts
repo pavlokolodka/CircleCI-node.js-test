@@ -6,7 +6,7 @@ export class UpdateSumDto {
     description: 'Order id',
     type: Number,
   })
-  order_id: number;
+  orderId: number;
 
   @ApiProperty({
     example: 250,

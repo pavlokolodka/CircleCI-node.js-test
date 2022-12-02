@@ -1,4 +1,4 @@
 export class UpdateSumDto {
-  order_id: number;
+  orderId: number;
   amount: number;
 }

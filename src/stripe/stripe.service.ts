@@ -19,7 +19,7 @@ export class StripeService {
   }
 
   async createDonate(donate: DonateDto) {
-    const orderFromDB = await this.orderService.getOrderById(donate.order_id);
+    const orderFromDB = await this.orderService.getOrderById(donate.orderId);
     if (!orderFromDB) throw new BadRequestException('Order not found');
 
     return this.stripe.paymentIntents
@@ -35,13 +35,13 @@ export class StripeService {
   }
 
   async updateSumInDb(data: UpdateSumDto) {
-    const orderFromDB = await this.orderService.getOrderById(data.order_id);
+    const orderFromDB = await this.orderService.getOrderById(data.orderId);
     if (!orderFromDB) throw new BadRequestException('Order not found');
 
     const sum = orderFromDB.sum + data.amount;
     return this.prismaService.order
       .update({
-        where: { id: data.order_id },
+        where: { id: data.orderId },
         data: { sum },
       })
       .catch(() => {

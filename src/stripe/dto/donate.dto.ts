@@ -21,4 +21,11 @@ export class DonateDto {
     type: String,
   })
   description: string;
+
+  @ApiProperty({
+    example: 1,
+    description: 'Order id',
+    type: Number,
+  })
+  orderId: number;
 }
