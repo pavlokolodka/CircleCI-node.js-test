@@ -15,18 +15,18 @@ export class AllExceptionsFilter implements ExceptionFilter {
 
   catch(exception: unknown, host: ArgumentsHost): void {
     const { httpAdapter } = this.httpAdapterHost;
-
     const ctx = host.switchToHttp();
+    let httpStatus: number;
+    let message: string;
 
-    const httpStatus =
-      exception instanceof HttpException
-        ? exception.getStatus()
-        : HttpStatus.INTERNAL_SERVER_ERROR;
-
-    const message =
-      exception instanceof HttpException
-        ? (exception.getResponse() as IMessage).message
-        : 'Internal server error';
+    if (exception instanceof HttpException) {
+      httpStatus = exception.getStatus();
+      message = (exception.getResponse() as IMessage).message;
+    } else {
+      sentryHandleError(exception, httpAdapter, ctx);
+      httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+      message = 'Internal server error';
+    }
 
     const responseBody = {
       statusCode: httpStatus,
