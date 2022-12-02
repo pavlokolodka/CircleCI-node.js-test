@@ -40,6 +40,20 @@ export default class UserRepository extends Repository {
         where: {
           email,
         },
+      })
+      .catch(() => {
+        throw new BadRequestException('Something went wrong');
+      });
+
+    return user;
+  }
+
+  async getByEmailWithVolunteerAndOrder(email: string) {
+    const user = await this.prismaService.user
+      .findUnique({
+        where: {
+          email,
+        },
         include: { volunteer: true, orders: true },
       })
       .catch(() => {

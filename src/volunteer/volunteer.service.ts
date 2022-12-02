@@ -3,12 +3,15 @@ import { GetVolunteerDto } from './dto/get-Volunteer.dto';
 import VolunteerRepository from './repository/volunteer.repository';
 import { AwsBucketFolders } from 'src/types';
 import { AwsService } from 'src/services';
+import { InjectQueue } from '@nestjs/bull';
+import { Queue } from 'bull';
 
 @Injectable()
 export class VolunteerService {
   constructor(
     private volunteerRepository: VolunteerRepository,
     private awsService: AwsService,
+    @InjectQueue('volunteers_request') private volunterQueue: Queue,
   ) {}
 
   async requestForGetVolunteer(volunteerRequest: GetVolunteerDto) {
@@ -38,6 +41,18 @@ export class VolunteerService {
           return data;
         });
     }
-    return this.volunteerRepository.createRequest(volunteerRequest);
+
+    const sevenDaysToMs = 604800000;
+    const request = await this.volunteerRepository
+      .createRequest(volunteerRequest)
+      .then(async (data) => {
+        await this.volunterQueue.add('activationRequest', data.id, {
+          delay: sevenDaysToMs,
+        });
+
+        return data;
+      });
+
+    return request;
   }
 }

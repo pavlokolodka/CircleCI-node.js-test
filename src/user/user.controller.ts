@@ -15,7 +15,7 @@ import { UserService } from './user.service';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { AuthHandleService } from 'src/services';
-
+import { Request } from 'express';
 @ApiTags('User')
 @Controller('user')
 export class UserController {
@@ -28,17 +28,31 @@ export class UserController {
   @Roles('customer')
   @UseGuards(RolesGuard)
   @Get()
-  get(@Req() req) {
+  get(@Req() req: Request) {
     const { email } = this.authHandleService.getPayload(
       req.headers['authorization'],
     );
     return this.userService.getByEmail(email);
   }
 
+  @ApiResponse({
+    status: 200,
+    description: 'Return user info with volunteer entitiy',
+  })
+  @Roles('customer')
+  @UseGuards(RolesGuard)
+  @Get('/attach')
+  getUserAndVolunteer(@Req() req: Request) {
+    const { email } = this.authHandleService.getPayload(
+      req.headers['authorization'],
+    );
+    return this.userService.getByEmailWithVolunteerAndOrder(email);
+  }
+
   @ApiResponse({ status: 200, description: 'Return updated user' })
   @Patch()
   @UsePipes(new AjvValidationPipe(UpdateUserSchema))
-  async updateUser(@Req() req, @Body() updateUserDto: UpdateUserDto) {
+  async updateUser(@Req() req: Request, @Body() updateUserDto: UpdateUserDto) {
     const { email } = this.authHandleService.getPayload(
       req.headers['authorization'],
     );
