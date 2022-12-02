@@ -3,7 +3,7 @@ import Stripe from 'stripe';
 import { DonateDto } from '../utils/validator/dto/donate.dto';
 import { PrismaService } from '../services';
 import { OrderService } from '../order/order.service';
-import { StatusOfDonateDto } from './dto/statusOfDonate.dto';
+import { UpdateSumDto } from './dto/update-sum.dto';
 
 @Injectable()
 export class StripeService {
@@ -22,7 +22,7 @@ export class StripeService {
     const orderFromDB = await this.orderService.getOrderById(donate.order_id);
     if (!orderFromDB) throw new BadRequestException('Order not found');
 
-    const newDonate = await this.stripe.paymentIntents
+    return this.stripe.paymentIntents
       .create({
         amount: donate.amount * 100,
         currency: donate.currency,
@@ -32,16 +32,14 @@ export class StripeService {
       .catch(() => {
         throw new BadRequestException('Donate not made');
       });
-
-    return newDonate;
   }
 
-  async takeStatusOfDonate(data: StatusOfDonateDto) {
+  async updateSumInDb(data: UpdateSumDto) {
     const orderFromDB = await this.orderService.getOrderById(data.order_id);
     if (!orderFromDB) throw new BadRequestException('Order not found');
 
     const sum = orderFromDB.sum + data.amount;
-    await this.prismaService.order
+    return this.prismaService.order
       .update({
         where: { id: data.order_id },
         data: { sum },

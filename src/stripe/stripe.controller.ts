@@ -4,8 +4,8 @@ import { AjvValidationPipe } from '../utils/validator/validation';
 import { DonateSchema } from '../utils/validator/stripe/donate.schema';
 import { DonateDto } from '../utils/validator/dto/donate.dto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { StatusDonateSchema } from '../utils/validator/stripe/status-donate.schema';
-import { StatusOfDonateDto } from './dto/statusOfDonate.dto';
+import { UpdateSumSchema } from '../utils/validator/stripe/update-sum.schema';
+import { UpdateSumDto } from './dto/update-sum.dto';
 
 @ApiTags('Stripe')
 @Controller('payment')
@@ -20,8 +20,8 @@ export class StripeController {
   }
 
   @Post('/status')
-  @UsePipes(new AjvValidationPipe(StatusDonateSchema))
-  async takeStatusOfDonate(@Body() data: StatusOfDonateDto) {
-    return this.stripeService.takeStatusOfDonate(data);
+  @UsePipes(new AjvValidationPipe(UpdateSumSchema))
+  async updateSumInDb(@Body() data: UpdateSumDto) {
+    return this.stripeService.updateSumInDb(data);
   }
 }
