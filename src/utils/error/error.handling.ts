@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { HttpAdapterHost } from '@nestjs/core';
 import { IMessage } from './errorMessage.interface';
+import { sentryHandleError } from './sentry';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
@@ -31,6 +32,10 @@ export class AllExceptionsFilter implements ExceptionFilter {
       statusCode: httpStatus,
       message: message,
     };
+
+    if (!(exception instanceof HttpException)) {
+      sentryHandleError(exception, httpAdapter, ctx);
+    }
 
     httpAdapter.reply(ctx.getResponse(), responseBody, httpStatus);
   }
