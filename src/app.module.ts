@@ -18,8 +18,7 @@ import { RecaptchaService } from './utils/recaptcha';
 import { VolunteerRequestModule } from './admin/volunteer-requests/volunteer-request.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { OrderModule } from './order/order.module';
-import { HintModule } from './hint/hint.module';
-import { HintPhotoModule } from './hint_photo/hint_photo.module';
+import { BullModule } from '@nestjs/bull';
 
 @Module({
   imports: [
@@ -40,8 +39,12 @@ import { HintPhotoModule } from './hint_photo/hint_photo.module';
         auth: { user: 'apikey', pass: process.env.MAIL_PASSWORD },
       },
     }),
-    HintModule,
-    HintPhotoModule,
+    BullModule.forRoot({
+      redis: {
+        host: 'localhost',
+        port: 6379,
+      },
+    }),
   ],
   providers: [RecaptchaService],
 })
