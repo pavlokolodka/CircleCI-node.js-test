@@ -39,6 +39,9 @@ export default class HintRepository extends Repository {
         where: {
           id,
         },
+        include: {
+          hint_photo: true,
+        },
       })
       .catch(() => {
         throw new BadRequestException('Something went wrong');
