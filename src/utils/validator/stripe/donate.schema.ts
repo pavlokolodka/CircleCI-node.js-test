@@ -13,10 +13,10 @@ export const DonateSchema: JSONSchemaType<DonateDto> = {
     description: {
       type: 'string',
     },
-    order_id: {
+    orderId: {
       type: 'number',
     },
   },
-  required: ['amount', 'currency', 'description', 'order_id'],
+  required: ['amount', 'currency', 'description', 'orderId'],
   additionalProperties: false,
 };
