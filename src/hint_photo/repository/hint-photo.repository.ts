@@ -22,14 +22,13 @@ export class HintPhotoRepository extends Repository {
       });
   }
 
-  async createHintPhoto(hintPhoto: CreateHintPhotoDto, user_id: number) {
+  async createHintPhoto(hintPhoto: CreateHintPhotoDto) {
     return this.prismaService.volunteer_hint_photo
       .create({
         data: {
           text: hintPhoto.text,
-          title: hintPhoto.title,
           photo: hintPhoto.photo,
-          user_id,
+          hint_id: hintPhoto.hintId,
         },
       })
       .catch(() => {
@@ -43,7 +42,6 @@ export class HintPhotoRepository extends Repository {
         id,
       },
       data: {
-        title: hintPhoto.title != null ? hintPhoto.title : undefined,
         text: hintPhoto.text != null ? hintPhoto.text : undefined,
         photo: hintPhoto.photo != null ? hintPhoto.photo : undefined,
       },

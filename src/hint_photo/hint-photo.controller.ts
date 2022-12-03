@@ -16,7 +16,7 @@ import { Roles } from '../auth/decorators/roles.decorator';
 import { AjvValidationPipe } from '../utils/validator/validation';
 import { IdSchema } from '../utils/validator/order';
 import { IdDto } from '../utils/validator/dto/id.dto';
-import { HintPhotoService } from './hint_photo.service';
+import { HintPhotoService } from './hint-photo.service';
 import { CreateHintPhotoSchema } from '../utils/validator/hint_photo/create-hint-photo.schema';
 import { CreateHintPhotoDto } from '../utils/validator/dto/create-hint-photo.dto';
 import { UpdateHintPhotoSchema } from '../utils/validator/hint_photo/update-hint-photo.schema';
@@ -63,11 +63,8 @@ export class HintPhotoController {
   @UseGuards(RolesGuard)
   @Roles('volunteer')
   @UsePipes(new AjvValidationPipe(CreateHintPhotoSchema))
-  async createHintPhoto(@Body() hint: CreateHintPhotoDto, @Req() req) {
-    const { email } = this.authHandleService.getPayload(
-      req.headers['authorization'],
-    );
-    return this.hintPhotoService.createHintPhoto(hint, email);
+  async createHintPhoto(@Body() hint: CreateHintPhotoDto) {
+    return this.hintPhotoService.createHintPhoto(hint);
   }
 
   @ApiResponse({

@@ -5,6 +5,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Req,
   UseGuards,
   UsePipes,
@@ -21,6 +22,7 @@ import { AuthHandleService } from '../services';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { PaginationDto } from '../utils/validator/dto/pagination.dto';
 
 @ApiTags('Volunteer Hint')
 @Controller('hint')
@@ -37,8 +39,9 @@ export class HintController {
   @Get()
   @UseGuards(RolesGuard)
   @Roles('volunteer', 'admin')
-  async getAllHints() {
-    return this.hintService.getAllHints();
+  async getAllHints(@Query() params: PaginationDto) {
+    const { limit = 10, sort = 'asc', page = 1, search } = params;
+    return this.hintService.getAllHints(+limit, sort, +page, search);
   }
 
   @ApiResponse({

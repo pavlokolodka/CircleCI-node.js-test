@@ -4,9 +4,6 @@ import { UpdateHintPhotoDto } from '../dto/update-hint-photo.dto';
 export const UpdateHintPhotoSchema: JSONSchemaType<UpdateHintPhotoDto> = {
   type: 'object',
   properties: {
-    title: {
-      type: 'string',
-    },
     text: {
       type: 'string',
     },
@@ -14,6 +11,6 @@ export const UpdateHintPhotoSchema: JSONSchemaType<UpdateHintPhotoDto> = {
       type: 'string',
     },
   },
-  required: ['text', 'title', 'photo'],
+  required: ['text', 'photo'],
   additionalProperties: false,
 };

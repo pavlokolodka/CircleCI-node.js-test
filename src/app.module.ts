@@ -19,6 +19,8 @@ import { VolunteerRequestModule } from './admin/volunteer-requests/volunteer-req
 import { MailerModule } from '@nestjs-modules/mailer';
 import { OrderModule } from './order/order.module';
 import { BullModule } from '@nestjs/bull';
+import { HintModule } from './hint/hint.module';
+import { HintPhotoModule } from './hint_photo/hint-photo.module';
 
 @Module({
   imports: [
@@ -45,6 +47,8 @@ import { BullModule } from '@nestjs/bull';
         port: 6379,
       },
     }),
+    HintModule,
+    HintPhotoModule,
   ],
   providers: [RecaptchaService],
 })

@@ -19,7 +19,6 @@ model User {
   updatedAt             DateTime @updatedAt
   volunteer             Volunteer_activation_request?
   volunteer_hints       Volunteer_hint[]
-  volunteer_hints_photo Volunteer_hint_photo[]
 }
 
 model Admin {
@@ -65,16 +64,16 @@ model Volunteer_hint {
   info        String
   user        User     @relation(fields: [user_id], references: [id])
   user_id     Int
+  hint_photo  Volunteer_hint_photo[]
   createdAt   DateTime @default(now())
 }
 
 model Volunteer_hint_photo {
   id          Int      @id @default(autoincrement())
-  title       String
   text        String
   photo       String
-  user        User     @relation(fields: [user_id], references: [id])
-  user_id     Int
+  hint        Volunteer_hint     @relation(fields: [hint_id], references: [id])
+  hint_id     Int
   createdAt   DateTime @default(now())
 }
 

@@ -4,16 +4,16 @@ import { CreateHintPhotoDto } from '../dto/create-hint-photo.dto';
 export const CreateHintPhotoSchema: JSONSchemaType<CreateHintPhotoDto> = {
   type: 'object',
   properties: {
-    title: {
-      type: 'string',
-    },
     text: {
       type: 'string',
     },
     photo: {
       type: 'string',
     },
+    hintId: {
+      type: 'number',
+    },
   },
-  required: ['text', 'title', 'photo'],
+  required: ['text', 'hintId', 'photo'],
   additionalProperties: false,
 };

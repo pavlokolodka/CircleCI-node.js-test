@@ -22,20 +22,14 @@ export class HintPhotoService {
     return this.volunteerHintPhotoRepository.getHintPhotoById(id);
   }
 
-  async createHintPhoto(hintPhoto: CreateHintPhotoDto, email: string) {
-    const userFromDb = await this.userService.getByEmail(email);
-    if (!userFromDb) throw new BadRequestException('Something went wrong');
-
+  async createHintPhoto(hintPhoto: CreateHintPhotoDto) {
     if (hintPhoto.photo) {
       hintPhoto.photo = await this.awsService.uploadImg(
         hintPhoto.photo,
         AwsBucketFolders.HINTPHOTO,
       );
     }
-    return this.volunteerHintPhotoRepository.createHintPhoto(
-      hintPhoto,
-      userFromDb.id,
-    );
+    return this.volunteerHintPhotoRepository.createHintPhoto(hintPhoto);
   }
 
   async updateHintPhotoById(id: number, hintPhoto: UpdateHintPhotoDto) {

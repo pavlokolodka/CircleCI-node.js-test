@@ -11,8 +11,8 @@ export class HintService {
     private userService: UserService,
   ) {}
 
-  async getAllHints() {
-    return this.hintRepository.getAllHints();
+  async getAllHints(limit: number, sort, page: number, search: string) {
+    return this.hintRepository.getAllHints(limit, sort, page, search);
   }
 
   async getHintById(id: number) {

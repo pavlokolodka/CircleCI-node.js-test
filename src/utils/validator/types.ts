@@ -9,7 +9,7 @@ import { UpdateOrderDto } from 'src/order/dto/update-order.dto';
 import { CreateUserDto } from './dto/create-user.validator.dto';
 import { LoginUserDto } from './dto/login-user.validator.dto';
 import { UpdateUserDto } from './dto/update-user.validator.dto';
-import { AllOrdersDto } from './dto/allOrders.dto';
+import { PaginationDto } from './dto/pagination.dto';
 import { ApproveRequestDto } from './dto/approve-request.dto';
 import { GetVolunteerDto } from './dto/get-volunteer.dto';
 import { IdDto } from './dto/id.dto';
@@ -32,7 +32,7 @@ export type SchemaType =
   | UpdatePasswordDto
   | CreateOrderDto
   | UpdateOrderDto
-  | AllOrdersDto
+  | PaginationDto
   | IdDto
   | CreateHintDto
   | UpdateHintDto

@@ -4,10 +4,33 @@ import { CreateHintDto } from '../../utils/validator/dto/create-hint.dto';
 import { UpdateHintDto } from '../../utils/validator/dto/update-hint.dto';
 
 export default class HintRepository extends Repository {
-  async getAllHints() {
-    return this.prismaService.volunteer_hint.findMany().catch(() => {
-      throw new BadRequestException('Something went wrong');
-    });
+  async getAllHints(limit: number, sort, page: number, search: string) {
+    const skip = limit * (page - 1);
+    const hints = await this.prismaService.volunteer_hint
+      .findMany({
+        skip,
+        take: limit,
+        orderBy: {
+          id: sort,
+        },
+        where: {
+          title: {
+            contains: search,
+          },
+        },
+      })
+      .catch(() => {
+        throw new BadRequestException('Something went wrong');
+      });
+    const totalPages = Math.round(
+      (await this.prismaService.order.findMany()).length / limit,
+    );
+    return {
+      page,
+      limit,
+      totalPages,
+      data: hints,
+    };
   }
 
   async getHintById(id: number) {
