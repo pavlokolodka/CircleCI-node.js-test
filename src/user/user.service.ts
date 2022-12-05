@@ -18,6 +18,13 @@ export class UserService {
     return user;
   }
 
+  async getByEmailWithVolunteerAndOrder(email: string) {
+    const user = await this.userRepository.getByEmailWithVolunteerAndOrder(
+      email,
+    );
+    return user;
+  }
+
   async delete(email: string) {
     const user = await this.userRepository.delete(email);
     return user;
@@ -52,5 +59,11 @@ export class UserService {
 
     const user = await this.userRepository.update(updateUserPayload, userId);
     return user;
+  }
+
+  async userIsVolunteer(id: number) {
+    const user = await this.userRepository.getById(id);
+    if (user?.role === 'volunteer') return true;
+    return false;
   }
 }
