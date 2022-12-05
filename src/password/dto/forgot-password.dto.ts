@@ -1,4 +1,4 @@
 export class ForgotPasswordDto {
-    email: string
-    recaptchaToken: string
+  email: string;
+  recaptchaToken: string;
 }

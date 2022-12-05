@@ -8,7 +8,7 @@ export const LoginUserSchema: JSONSchemaType<LoginUserDto> = {
   properties: {
     email: email,
     password: password,
-    recaptchaToken: { type: 'string', nullable: true }
+    recaptchaToken: { type: 'string', nullable: true },
   },
   required: ['email', 'password'],
   additionalProperties: false,

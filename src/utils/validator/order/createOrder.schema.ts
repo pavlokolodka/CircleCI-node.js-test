@@ -20,7 +20,7 @@ export const CreateOrderSchema: JSONSchemaType<CreateOrderDto> = {
       type: 'string',
     },
     finished_at: {
-      type: 'string'
+      type: 'string',
     },
   },
   required: [

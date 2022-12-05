@@ -10,7 +10,7 @@ import { UpdateSumDto } from './dto/update-sum.dto';
 @ApiTags('Stripe')
 @Controller('payment')
 export class StripeController {
-  constructor(private stripeService: StripeService) { }
+  constructor(private stripeService: StripeService) {}
 
   @ApiResponse({ status: 201, description: 'Donate was made' })
   @Post()

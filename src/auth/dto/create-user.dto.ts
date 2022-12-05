@@ -40,7 +40,7 @@ export class CreateUserDto {
 
   @ApiProperty({
     description: 'Recaptcha token',
-    type: String
+    type: String,
   })
-  recaptchaToken?: string
+  recaptchaToken?: string;
 }

@@ -21,7 +21,7 @@ export default class VolunteerRepository extends Repository {
         data: {
           country: volunteerRequest.country,
           city: volunteerRequest.city,
-          card_number: volunteerRequest.card_number,
+          card_number: volunteerRequest.cardNumber,
           document: volunteerRequest.document,
           userId: volunteerRequest.userId,
         },

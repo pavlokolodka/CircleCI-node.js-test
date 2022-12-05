@@ -14,7 +14,7 @@ export const GetVolunteerSchema: JSONSchemaType<GetVolunteerDto> = {
       maxLength: 30,
       minLength: 3,
     },
-    card_number: {
+    cardNumber: {
       type: 'string',
       minLength: 8,
     },
@@ -31,7 +31,7 @@ export const GetVolunteerSchema: JSONSchemaType<GetVolunteerDto> = {
   required: [
     'userId',
     'city',
-    'card_number',
+    'cardNumber',
     'country',
     'document',
     'expansion',
