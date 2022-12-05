@@ -18,6 +18,7 @@ import { RecaptchaService } from './utils/recaptcha';
 import { VolunteerRequestModule } from './admin/volunteer-requests/volunteer-request.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { OrderModule } from './order/order.module';
+import { StripeModule } from './stripe/stripe.module';
 import { BullModule } from '@nestjs/bull';
 
 @Module({
@@ -39,6 +40,7 @@ import { BullModule } from '@nestjs/bull';
         auth: { user: 'apikey', pass: process.env.MAIL_PASSWORD },
       },
     }),
+    StripeModule,
     BullModule.forRoot({
       redis: {
         host: 'localhost',
