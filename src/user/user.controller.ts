@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Patch,
+  Query,
   Req,
   UseGuards,
   UsePipes,
@@ -15,6 +16,8 @@ import { UserService } from './user.service';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { AuthHandleService } from 'src/services';
+import { IdSchema } from 'src/utils/validator/order';
+import { IdDto } from 'src/utils/validator/dto/id.dto';
 import { Request } from 'express';
 @ApiTags('User')
 @Controller('user')
@@ -25,7 +28,7 @@ export class UserController {
   ) {}
 
   @ApiResponse({ status: 200, description: 'Return user info' })
-  @Roles('customer')
+  @Roles('volunteer', 'customer')
   @UseGuards(RolesGuard)
   @Get()
   get(@Req() req: Request) {
@@ -58,5 +61,14 @@ export class UserController {
     );
     const user = await this.userService.getByEmail(email);
     if (user) return this.userService.updateUser(updateUserDto, user.id);
+  }
+
+  @ApiResponse({ status: 200, description: 'Check if user if volunteer' })
+  @Get('role-check')
+  @UsePipes(new AjvValidationPipe(IdSchema))
+  async isVolunteer(@Query() idNum: IdDto) {
+    const { id } = idNum;
+    const data = this.userService.userIsVolunteer(+id);
+    return data;
   }
 }
