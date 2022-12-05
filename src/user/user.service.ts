@@ -18,6 +18,13 @@ export class UserService {
     return user;
   }
 
+  async getByEmailWithVolunteerAndOrder(email: string) {
+    const user = await this.userRepository.getByEmailWithVolunteerAndOrder(
+      email,
+    );
+    return user;
+  }
+
   async delete(email: string) {
     const user = await this.userRepository.delete(email);
     return user;

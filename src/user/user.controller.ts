@@ -18,7 +18,7 @@ import { Roles } from '../auth/decorators/roles.decorator';
 import { AuthHandleService } from 'src/services';
 import { IdSchema } from 'src/utils/validator/order';
 import { IdDto } from 'src/utils/validator/dto/id.dto';
-
+import { Request } from 'express';
 @ApiTags('User')
 @Controller('user')
 export class UserController {
@@ -31,20 +31,36 @@ export class UserController {
   @Roles('volunteer', 'customer')
   @UseGuards(RolesGuard)
   @Get()
-  get(@Req() req) {
+  get(@Req() req: Request) {
     const { email } = this.authHandleService.getPayload(
       req.headers['authorization'],
     );
     return this.userService.getByEmail(email);
   }
 
+  @ApiResponse({
+    status: 200,
+    description: 'Return user info with volunteer entitiy',
+  })
+  @Roles('customer')
+  @UseGuards(RolesGuard)
+  @Get('/attach')
+  getUserAndVolunteer(@Req() req: Request) {
+    const { email } = this.authHandleService.getPayload(
+      req.headers['authorization'],
+    );
+    return this.userService.getByEmailWithVolunteerAndOrder(email);
+  }
+
   @ApiResponse({ status: 200, description: 'Return updated user' })
   @Patch()
   @UsePipes(new AjvValidationPipe(UpdateUserSchema))
-  async updateUser(@Req() req, @Body() updateUserDto: UpdateUserDto) {
-    const { email } = this.authHandleService.getPayload(req.headers['authorization'])
-    const user = await this.userService.getByEmail(email)
-    if (user) return this.userService.updateUser(updateUserDto, user.id)
+  async updateUser(@Req() req: Request, @Body() updateUserDto: UpdateUserDto) {
+    const { email } = this.authHandleService.getPayload(
+      req.headers['authorization'],
+    );
+    const user = await this.userService.getByEmail(email);
+    if (user) return this.userService.updateUser(updateUserDto, user.id);
   }
 
   @ApiResponse({ status: 200, description: 'Check if user if volunteer' })

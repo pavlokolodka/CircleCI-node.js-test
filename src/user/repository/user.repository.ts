@@ -25,7 +25,6 @@ export default class UserRepository extends Repository {
     const user = await this.prismaService.user
       .findUnique({
         where: { id },
-        include: { volunteer: true, orders: true }
       })
       .catch(() => {
         throw new BadRequestException('Something went wrong');
@@ -40,7 +39,21 @@ export default class UserRepository extends Repository {
         where: {
           email,
         },
-        include: { volunteer: true, orders: true }
+      })
+      .catch(() => {
+        throw new BadRequestException('Something went wrong');
+      });
+
+    return user;
+  }
+
+  async getByEmailWithVolunteerAndOrder(email: string) {
+    const user = await this.prismaService.user
+      .findUnique({
+        where: {
+          email,
+        },
+        include: { volunteer: true, orders: true },
       })
       .catch(() => {
         throw new BadRequestException('Something went wrong');
