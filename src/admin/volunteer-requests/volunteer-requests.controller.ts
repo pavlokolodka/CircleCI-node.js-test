@@ -17,7 +17,7 @@ import { ApproveRequestSchema } from 'src/utils/validator/admin/approve-request/
 import { Roles } from '../../auth/decorators/roles.decorator';
 import { RolesGuard } from '../../auth/guards/roles.guard';
 import { MessageEvent } from 'src/types';
-import { emitter } from './emitter';
+import { emitter } from 'src/utils/emitter';
 
 @ApiTags('Admin/requests')
 @Controller('admin/requests')
