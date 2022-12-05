@@ -1,5 +1,10 @@
 import { HttpModule } from '@nestjs/axios';
-import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
@@ -14,6 +19,7 @@ import { VolunteerRequestModule } from './admin/volunteer-requests/volunteer-req
 import { MailerModule } from '@nestjs-modules/mailer';
 import { OrderModule } from './order/order.module';
 import { BullModule } from '@nestjs/bull';
+import { LoggerMiddleware } from './middlewares/req.logger';
 
 @Module({
   imports: [
@@ -41,14 +47,18 @@ import { BullModule } from '@nestjs/bull';
       },
     }),
   ],
-  providers: [RecaptchaService]
+  providers: [RecaptchaService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(RecaptchaMiddleware).forRoutes(
-      { path: 'password/forgot', method: RequestMethod.POST },
-      { path: 'password/reset', method: RequestMethod.PATCH },
-      { path: 'auth/sign-up', method: RequestMethod.POST },
-      { path: 'auth/sign-in', method: RequestMethod.POST })
+    consumer
+      .apply(RecaptchaMiddleware)
+      .forRoutes(
+        { path: 'password/forgot', method: RequestMethod.POST },
+        { path: 'password/reset', method: RequestMethod.PATCH },
+        { path: 'auth/sign-up', method: RequestMethod.POST },
+        { path: 'auth/sign-in', method: RequestMethod.POST },
+      ),
+      consumer.apply(LoggerMiddleware).forRoutes('*');
   }
 }
