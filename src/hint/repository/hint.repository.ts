@@ -1,13 +1,11 @@
 import { BadRequestException } from '@nestjs/common';
 import { ICreateHint, IQueryParams, IUpdateHint } from '../interfaces';
-import { AwsService, PrismaService } from '../../services';
+import { AwsService } from '../../services';
 import { AwsBucketFolders } from '../../types';
+import Repository from '../../repository/repository';
 
-export default class HintRepository {
-  constructor(
-    private awsService: AwsService,
-    private prismaService: PrismaService,
-  ) {}
+export default class HintRepository extends Repository {
+  private awsService = new AwsService();
 
   async getAllHints(params: IQueryParams) {
     const { limit, page, search, sort } = params;
@@ -75,29 +73,29 @@ export default class HintRepository {
         .catch(() => {
           throw new BadRequestException('Something went wrong');
         });
-      hint.photos.map(async (photo) => {
-        photo = await this.awsService
-          .uploadImg(photo, AwsBucketFolders.HINTPHOTO)
-          .catch(() => {
-            throw new BadRequestException('Something went wrong');
-          });
-        return this.createHintPhoto(photo, newHint.id);
-      });
-      return newHint;
+      await this.createHintPhoto(hint.photos, newHint.id);
     });
+    return 'success';
   }
 
-  async createHintPhoto(photo: string, hint_id: number) {
-    return this.prismaService.volunteer_hint_photo
-      .create({
-        data: {
-          photo,
-          hint_id,
-        },
-      })
-      .catch(() => {
-        throw new BadRequestException('Something went wrong');
-      });
+  async createHintPhoto(photos: string[], hint_id: number) {
+    photos.map(async (photo) => {
+      photo = await this.awsService
+        .uploadImg(photo, AwsBucketFolders.HINTPHOTO)
+        .catch(() => {
+          throw new BadRequestException('Something went wrong');
+        });
+      await this.prismaService.volunteer_hint_photo
+        .create({
+          data: {
+            photo,
+            hint_id,
+          },
+        })
+        .catch(() => {
+          throw new BadRequestException('Something went wrong');
+        });
+    });
   }
 
   async updateHintById(id: number, hint: IUpdateHint) {
@@ -117,6 +115,7 @@ export default class HintRepository {
         });
       await this.updateHintPhotoById(id, hint.photos);
     });
+    return 'success';
   }
 
   async updateHintPhotoById(hintId: number, photos: string[]) {
@@ -129,9 +128,7 @@ export default class HintRepository {
           await this.deletePhotoById(item.id);
         });
       }
-      photos.map((photo) => {
-        return this.createHintPhoto(photo, hintId);
-      });
+      return this.createHintPhoto(photos, hintId);
     }
   }
 

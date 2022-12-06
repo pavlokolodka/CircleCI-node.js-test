@@ -57,7 +57,7 @@ export class HintController {
   })
   @Post()
   @UseGuards(RolesGuard)
-  @Roles('volunteer', 'customer')
+  @Roles('volunteer')
   async createHint(@Body() hint: CreateHintDto, @Req() req) {
     const { email } = this.authHandleService.getPayload(
       req.headers['authorization'],
@@ -71,7 +71,7 @@ export class HintController {
   })
   @Patch('/:id')
   @UseGuards(RolesGuard)
-  @Roles('volunteer', 'customer')
+  @Roles('volunteer')
   @UsePipes()
   async updateHintById(
     @Param(new AjvValidationPipe(IdSchema)) param: IdDto,
