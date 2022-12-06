@@ -12,7 +12,6 @@ CREATE TABLE "Volunteer_hint" (
 -- CreateTable
 CREATE TABLE "Volunteer_hint_photo" (
     "id" SERIAL NOT NULL,
-    "text" TEXT NOT NULL,
     "photo" TEXT NOT NULL,
     "hint_id" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,

@@ -14,9 +14,6 @@ import { ApproveRequestDto } from './dto/approve-request.dto';
 import { GetVolunteerDto } from './dto/get-volunteer.dto';
 import { IdDto } from './dto/id.dto';
 import { CreateHintDto } from './dto/create-hint.dto';
-import { UpdateHintDto } from './dto/update-hint.dto';
-import { CreateHintPhotoDto } from './dto/create-hint-photo.dto';
-import { UpdateHintPhotoDto } from './dto/update-hint-photo.dto';
 
 export type SchemaType =
   | CreateUserDto
@@ -34,7 +31,4 @@ export type SchemaType =
   | UpdateOrderDto
   | PaginationDto
   | IdDto
-  | CreateHintDto
-  | UpdateHintDto
-  | CreateHintPhotoDto
-  | UpdateHintPhotoDto;
+  | CreateHintDto;

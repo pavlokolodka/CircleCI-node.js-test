@@ -70,7 +70,6 @@ model Volunteer_hint {
 
 model Volunteer_hint_photo {
   id          Int      @id @default(autoincrement())
-  text        String
   photo       String
   hint        Volunteer_hint     @relation(fields: [hint_id], references: [id])
   hint_id     Int

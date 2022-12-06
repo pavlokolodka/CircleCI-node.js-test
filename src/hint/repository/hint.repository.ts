@@ -1,10 +1,10 @@
 import Repository from '../../repository/repository';
 import { BadRequestException } from '@nestjs/common';
-import { CreateHintDto } from '../../utils/validator/dto/create-hint.dto';
-import { UpdateHintDto } from '../../utils/validator/dto/update-hint.dto';
+import { ICreateHint, IQueryParams, IUpdateHint } from '../interfaces';
 
 export default class HintRepository extends Repository {
-  async getAllHints(limit: number, sort, page: number, search: string) {
+  async getAllHints(params: IQueryParams) {
+    const { limit, page, search, sort } = params;
     const skip = limit * (page - 1);
     const hints = await this.prismaService.volunteer_hint
       .findMany({
@@ -23,7 +23,7 @@ export default class HintRepository extends Repository {
         throw new BadRequestException('Something went wrong');
       });
     const totalPages = Math.round(
-      (await this.prismaService.order.findMany()).length / limit,
+      (await this.prismaService.volunteer_hint.count()) / limit,
     );
     return {
       page,
@@ -48,7 +48,7 @@ export default class HintRepository extends Repository {
       });
   }
 
-  async createHint(hint: CreateHintDto, user_id: number) {
+  async createHint(hint: ICreateHint, user_id: number) {
     return this.prismaService.volunteer_hint
       .create({
         data: {
@@ -62,15 +62,64 @@ export default class HintRepository extends Repository {
       });
   }
 
-  async updateHintById(id: number, hint: UpdateHintDto) {
-    return this.prismaService.volunteer_hint.update({
+  async updateHintById(id: number, hint: IUpdateHint) {
+    return this.prismaService.volunteer_hint
+      .update({
+        where: {
+          id,
+        },
+        data: {
+          title: hint.title != null ? hint.title : undefined,
+          info: hint.info != null ? hint.info : undefined,
+        },
+      })
+      .catch(() => {
+        throw new BadRequestException('Something went wrong');
+      });
+  }
+
+  async getHintPhotoById(id: number) {
+    return this.prismaService.volunteer_hint_photo
+      .findFirst({
+        where: {
+          id,
+        },
+      })
+      .catch(() => {
+        throw new BadRequestException('Something went wrong');
+      });
+  }
+
+  async getAllPhotosByHintId(hint_id: number) {
+    return this.prismaService.volunteer_hint_photo.findMany({
       where: {
-        id,
-      },
-      data: {
-        title: hint.title != null ? hint.title : undefined,
-        info: hint.info != null ? hint.info : undefined,
+        hint_id,
       },
     });
+  }
+
+  async createHintPhoto(photo: string, hint_id: number) {
+    return this.prismaService.volunteer_hint_photo
+      .create({
+        data: {
+          photo,
+          hint_id,
+        },
+      })
+      .catch(() => {
+        throw new BadRequestException('Something went wrong');
+      });
+  }
+
+  async deletePhotoById(id: number) {
+    return this.prismaService.volunteer_hint_photo
+      .delete({
+        where: {
+          id,
+        },
+      })
+      .catch(() => {
+        throw new BadRequestException('Something went wrong');
+      });
   }
 }

@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { HintController } from './hint.controller';
 import { HintService } from './hint.service';
-import { AuthHandleService, PrismaService } from '../services';
+import { AuthHandleService, AwsService, PrismaService } from '../services';
 import { UserModule } from '../user/user.module';
 import HintRepository from './repository/hint.repository';
 import { JwtService } from '@nestjs/jwt';
@@ -14,6 +14,7 @@ import { JwtService } from '@nestjs/jwt';
     HintRepository,
     AuthHandleService,
     JwtService,
+    AwsService,
   ],
   imports: [UserModule],
   exports: [HintService, HintRepository],

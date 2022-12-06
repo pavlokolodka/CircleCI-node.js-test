@@ -14,4 +14,11 @@ export class UpdateHintDto {
     type: String,
   })
   info: string;
+
+  @ApiProperty({
+    example: 'Image',
+    description: 'Some images',
+    type: String,
+  })
+  photos: string[];
 }
