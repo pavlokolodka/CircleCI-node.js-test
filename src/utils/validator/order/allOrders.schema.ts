@@ -19,6 +19,9 @@ export const getAllOrdersSchema: JSONSchemaType<AllOrdersDto> = {
     search: {
       type: 'string',
     },
+    status: {
+      type: 'string',
+    },
   },
   required: ['page', 'limit'],
   additionalProperties: false,

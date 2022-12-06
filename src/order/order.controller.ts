@@ -39,8 +39,8 @@ export class OrderController {
   @Get()
   @UsePipes(new AjvValidationPipe(getAllOrdersSchema))
   async getAllOrders(@Query() params: AllOrdersDto) {
-    const { limit = 10, sort = 'asc', page = 1, search } = params;
-    return this.orderService.getAllOrders(+limit, sort, +page, search);
+    const { limit = 10, sort = 'asc', page = 1, search, status } = params;
+    return this.orderService.getAllOrders(+limit, sort, +page, search, status);
   }
 
   @ApiResponse({ status: 200, description: 'Get full information about order' })
