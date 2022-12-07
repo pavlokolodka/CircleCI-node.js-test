@@ -5,11 +5,16 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UserService } from 'src/user/user.service';
 import { IHttpService } from 'src/utils/http/http.interface';
 import HttpService from 'src/utils/http/http.service';
+import { RefreshTokenDto } from './dto/refresh-token.dto';
+import { AuthHandleService } from '../services';
 
 @Injectable()
 export class AuthService {
   private readonly httpService: IHttpService;
-  constructor(private readonly userService: UserService) {
+  constructor(
+    private readonly userService: UserService,
+    private readonly authHandleService: AuthHandleService,
+  ) {
     this.httpService = new HttpService(process.env.AUTH_SERVICE_URL!);
   }
 
@@ -17,7 +22,7 @@ export class AuthService {
     const registeredUser = await this.userService.getByEmail(user.email);
     if (registeredUser) throw new BadRequestException('Something wrong');
 
-    delete user.recaptchaToken
+    delete user.recaptchaToken;
     const createdUser = await this.userService.create(user);
     try {
       const res = await this.httpService.post('/auth/signup', {
@@ -39,7 +44,7 @@ export class AuthService {
       throw new BadRequestException('Something wrong');
     }
 
-    delete credentials.recaptchaToken
+    delete credentials.recaptchaToken;
     try {
       const res = await this.httpService.post('/auth/signin', credentials);
 
@@ -47,5 +52,16 @@ export class AuthService {
     } catch (err) {
       throw new BadRequestException('Invalid email or password');
     }
+  }
+
+  async refreshTokens(rawRefreshToken: RefreshTokenDto) {
+    const { refreshToken } = rawRefreshToken;
+    const { email, role } = this.authHandleService.getPayload(refreshToken);
+    const res = await this.httpService
+      .post('/auth/refresh-tokens', { email, role })
+      .catch((err) => {
+        throw new BadRequestException(err);
+      });
+    return res.data;
   }
 }

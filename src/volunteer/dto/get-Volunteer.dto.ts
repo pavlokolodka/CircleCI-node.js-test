@@ -20,7 +20,7 @@ export class GetVolunteerDto {
     description: 'your card',
     type: String,
   })
-  card_number: string;
+  cardNumber: string;
 
   @ApiProperty({
     example: 'passport photo',

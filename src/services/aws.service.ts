@@ -15,6 +15,7 @@ export class AwsService {
   }
 
   async uploadImg(base64: string, folder: AwsBucketFolders) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const base64Data = new Buffer.from(
       base64.replace(/^data:image\/\w+;base64,/, ''),
@@ -39,6 +40,7 @@ export class AwsService {
     expansion: string,
     folder: AwsBucketFolders,
   ) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const base64Data = new Buffer.from(
       base64.replace(/^data:.+\/\w+;base64,/, ''),
