@@ -73,29 +73,33 @@ export default class HintRepository extends Repository {
         .catch(() => {
           throw new BadRequestException('Something went wrong');
         });
-      await this.createHintPhoto(hint.photos, newHint.id);
+      if (hint.photo?.length) {
+        await this.createHintPhoto(hint.photo, newHint.id, tx);
+      }
     });
     return 'success';
   }
 
-  async createHintPhoto(photos: string[], hint_id: number) {
-    photos.map(async (photo) => {
-      photo = await this.awsService
-        .uploadImg(photo, AwsBucketFolders.HINTPHOTO)
-        .catch(() => {
-          throw new BadRequestException('Something went wrong');
-        });
-      await this.prismaService.volunteer_hint_photo
-        .create({
-          data: {
-            photo,
-            hint_id,
-          },
-        })
-        .catch(() => {
-          throw new BadRequestException('Something went wrong');
-        });
-    });
+  async createHintPhoto(photos: string[], hint_id: number, tx) {
+    await Promise.all(
+      photos.map(async (photo) => {
+        photo = await this.awsService
+          .uploadImg(photo, AwsBucketFolders.HINTPHOTO)
+          .catch(() => {
+            throw new BadRequestException('Something went wrong');
+          });
+        await tx.volunteer_hint_photo
+          .create({
+            data: {
+              photo,
+              hint_id,
+            },
+          })
+          .catch(() => {
+            throw new BadRequestException('Something went wrong');
+          });
+      }),
+    );
   }
 
   async updateHintById(id: number, hint: IUpdateHint) {
@@ -113,27 +117,29 @@ export default class HintRepository extends Repository {
         .catch(() => {
           throw new BadRequestException('Something went wrong');
         });
-      await this.updateHintPhotoById(id, hint.photos);
+      if (hint.photo?.length) {
+        await this.updateHintPhotoById(id, hint.photo, tx);
+      }
     });
     return 'success';
   }
 
-  async updateHintPhotoById(hintId: number, photos: string[]) {
-    if (photos.length && hintId) {
-      const photosByHintId = await this.getAllPhotosByHintId(hintId);
+  async updateHintPhotoById(hintId: number, photos: string[], tx) {
+    const photosByHintId = await this.getAllPhotosByHintId(hintId);
 
-      if (photosByHintId.length) {
+    if (photosByHintId.length) {
+      await Promise.all(
         photosByHintId.map(async (item) => {
           await this.awsService.deleteFile(item.photo);
-          await this.deletePhotoById(item.id);
-        });
-      }
-      return this.createHintPhoto(photos, hintId);
+          await this.deletePhotoById(item.id, tx);
+        }),
+      );
     }
+    return this.createHintPhoto(photos, hintId, tx);
   }
 
-  async deletePhotoById(id: number) {
-    return this.prismaService.volunteer_hint_photo
+  async deletePhotoById(id: number, tx) {
+    return tx.volunteer_hint_photo
       .delete({
         where: {
           id,

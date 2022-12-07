@@ -20,5 +20,5 @@ export class CreateHintDto {
     description: 'Some images',
     type: String,
   })
-  photos: string[];
+  photo?: string[];
 }
