@@ -17,5 +17,6 @@ import { UserModule } from 'src/user/user.module';
   ],
   imports: [UserModule],
   controllers: [OrderController],
+  exports: [OrderService, OrderRepository],
 })
 export class OrderModule {}

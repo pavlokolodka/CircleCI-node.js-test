@@ -19,6 +19,8 @@ import { VolunteerRequestModule } from './admin/volunteer-requests/volunteer-req
 import { MailerModule } from '@nestjs-modules/mailer';
 import { OrderModule } from './order/order.module';
 import { HintModule } from './hint/hint.module';
+import { StripeModule } from './stripe/stripe.module';
+import { BullModule } from '@nestjs/bull';
 
 @Module({
   imports: [
@@ -40,6 +42,13 @@ import { HintModule } from './hint/hint.module';
       },
     }),
     HintModule,
+    StripeModule,
+    BullModule.forRoot({
+      redis: {
+        host: 'localhost',
+        port: 6379,
+      },
+    }),
   ],
   providers: [RecaptchaService],
 })
