@@ -33,9 +33,7 @@ export class VolunteerRequestsController {
   }
 
   @ApiResponse({ status: 200, description: 'Get new requests after creation (Sse)' })
-  @Sse('sse')
-  @UseGuards(RolesGuard)
-  @Roles('admin')
+  @Sse('sse') //not protected
   async getRequestsSse(): Promise<Observable<MessageEvent>> {
     const subject$ = new Subject();
     emitter.on('newRequest', function (request) {
