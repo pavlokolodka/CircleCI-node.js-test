@@ -33,8 +33,6 @@ export type SchemaType =
   | UpdateOrderDto
   | PaginationDto
   | IdDto
-  | CreateHintDto;
-  | AllOrdersDto
-  | IdDto
+  | CreateHintDto
   | DonateDto
   | UpdateSumDto;
