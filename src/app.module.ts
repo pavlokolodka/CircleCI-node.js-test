@@ -21,6 +21,7 @@ import { OrderModule } from './order/order.module';
 import { HintModule } from './hint/hint.module';
 import { StripeModule } from './stripe/stripe.module';
 import { BullModule } from '@nestjs/bull';
+import { LoggerMiddleware } from './middlewares/req.logger';
 
 @Module({
   imports: [
@@ -61,6 +62,7 @@ export class AppModule implements NestModule {
         { path: 'password/reset', method: RequestMethod.PATCH },
         { path: 'auth/sign-up', method: RequestMethod.POST },
         { path: 'auth/sign-in', method: RequestMethod.POST },
-      );
+      ),
+      consumer.apply(LoggerMiddleware).forRoutes('*');
   }
 }
