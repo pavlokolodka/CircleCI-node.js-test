@@ -21,10 +21,10 @@ import { AjvValidationPipe } from 'src/utils/validator/validation';
 import {
   CreateOrderSchema,
   UpdateOrderSchema,
-  getAllOrdersSchema,
   IdSchema,
+  PaginationSchema,
 } from 'src/utils/validator/order';
-import { AllOrdersDto } from 'src/utils/validator/dto/allOrders.dto';
+import { PaginationDto } from 'src/utils/validator/dto/pagination.dto';
 import { IdDto } from 'src/utils/validator/dto/id.dto';
 
 @ApiTags('Orders')
@@ -37,8 +37,8 @@ export class OrderController {
 
   @ApiResponse({ status: 200, description: 'Get all Orders from DB' })
   @Get()
-  @UsePipes(new AjvValidationPipe(getAllOrdersSchema))
-  async getAllOrders(@Query() params: AllOrdersDto) {
+  @UsePipes(new AjvValidationPipe(PaginationSchema))
+  async getAllOrders(@Query() params: PaginationDto) {
     const { limit = 10, sort = 'asc', page = 1, search } = params;
     return this.orderService.getAllOrders(+limit, sort, +page, search);
   }
