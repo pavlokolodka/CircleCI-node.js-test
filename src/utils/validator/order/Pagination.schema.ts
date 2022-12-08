@@ -1,7 +1,7 @@
 import { JSONSchemaType } from 'ajv';
-import { AllOrdersDto } from '../dto/allOrders.dto';
+import { PaginationDto } from '../dto/pagination.dto';
 
-export const getAllOrdersSchema: JSONSchemaType<AllOrdersDto> = {
+export const PaginationSchema: JSONSchemaType<PaginationDto> = {
   type: 'object',
   properties: {
     page: {

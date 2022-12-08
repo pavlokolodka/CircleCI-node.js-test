@@ -1,6 +1,6 @@
 import { OrderStatusEnum } from '../../../types/order-status.enum';
 
-export class AllOrdersDto {
+export class PaginationDto {
   page: string;
   limit: string;
   sort: string;
