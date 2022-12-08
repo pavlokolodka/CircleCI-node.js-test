@@ -5,6 +5,7 @@ import { AwsBucketFolders } from 'src/types';
 import { AwsService } from 'src/services';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
+import { emitter } from 'src/utils/emitter';
 
 @Injectable()
 export class VolunteerService {
@@ -45,14 +46,15 @@ export class VolunteerService {
     const sevenDaysToMs = 604800000;
     const request = await this.volunteerRepository
       .createRequest(volunteerRequest)
-      .then(async (data) => {
-        await this.volunterQueue.add('activationRequest', data.id, {
-          delay: sevenDaysToMs,
-        });
-
-        return data;
+    .then(async (data) => {
+      await this.volunterQueue.add('activationRequest', data.id, {
+        delay: sevenDaysToMs,
       });
 
+      return data;
+    });
+    
+    emitter.emit('newRequest', request);
     return request;
   }
 }
