@@ -19,7 +19,7 @@ export const CreateUserSchema: JSONSchemaType<CreateUserDto> = {
     },
     password: password,
     photo: { type: 'string', nullable: true },
-    recaptchaToken: { type: 'string', nullable: true }
+    recaptchaToken: { type: 'string', nullable: true },
   },
   required: ['email', 'name', 'lastname', 'password'],
   additionalProperties: false,

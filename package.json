@@ -20,7 +20,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "prepare": "husky install",
+    "prepare": "husky install && chmod ug+x .husky/*",
     "buildDb": "docker build -t postgresdb_main .",
     "upDb": "docker run -d --name postgresdb_main --rm -v /postgres-data:/var/lib/postgresql/data -p 6532:5432 postgresdb_main",
     "stopDb": "docker stop postgresdb_main"
@@ -50,10 +50,12 @@
     "cors": "^2.8.5",
     "gravatar": "^1.8.2",
     "nodemailer": "^6.8.0",
+    "prisma": "4.5.0",
     "react-scripts": "^5.0.1",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
+    "stripe": "^11.1.0",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
@@ -76,7 +78,6 @@
     "jest": "28.1.3",
     "lint-staged": "^13.0.3",
     "prettier": "^2.3.2",
-    "prisma": "^4.5.0",
     "source-map-support": "^0.5.20",
     "supertest": "^6.1.3",
     "ts-jest": "28.0.8",

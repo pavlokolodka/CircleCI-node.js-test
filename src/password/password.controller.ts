@@ -11,11 +11,11 @@ import { PasswordService } from './password.service';
 
 @Controller('password')
 export class PasswordController {
-  constructor(private readonly passwordService: PasswordService) { }
+  constructor(private readonly passwordService: PasswordService) {}
 
   @Post('forgot')
   forgotPassword(@Body() forgotPasswordDto: ForgotPasswordDto) {
-    return this.passwordService.forgotPassword(forgotPasswordDto.email)
+    return this.passwordService.forgotPassword(forgotPasswordDto.email);
   }
 
   @Patch('reset')
