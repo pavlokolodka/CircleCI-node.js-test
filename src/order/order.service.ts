@@ -18,6 +18,21 @@ export class OrderService {
     return this.orderRepository.getAllOrders(limit, sort, page, search);
   }
 
+  async getSortOrders(limit: number, sort, page: number, sortBy: string) {
+    switch (sortBy) {
+      case 'name':
+        return this.orderRepository.sortOrdersByName(limit, sort, page);
+      case 'popularity':
+        return this.orderRepository.sortOrdersByPopularity(limit, sort, page);
+      case 'remain':
+        return this.orderRepository.sortOrdersByRemainTime(limit, sort, page);
+      case 'date':
+        return this.orderRepository.sortOrdersByCreationDate(limit, sort, page);
+      default:
+        throw new BadRequestException('Wrong case');
+    }
+  }
+
   async getOrderById(id: number) {
     return this.orderRepository.getOrderById(id);
   }

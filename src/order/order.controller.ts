@@ -26,6 +26,8 @@ import {
 } from 'src/utils/validator/order';
 import { AllOrdersDto } from 'src/utils/validator/dto/allOrders.dto';
 import { IdDto } from 'src/utils/validator/dto/id.dto';
+import { SortOrdersDto } from 'src/utils/validator/dto/sortOrders.dto';
+import { getSortedOrdersSchema } from 'src/utils/validator/order/sortedOrders.schema';
 
 @ApiTags('Orders')
 @Controller('orders')
@@ -41,6 +43,14 @@ export class OrderController {
   async getAllOrders(@Query() params: AllOrdersDto) {
     const { limit = 10, sort = 'asc', page = 1, search } = params;
     return this.orderService.getAllOrders(+limit, sort, +page, search);
+  }
+
+  @ApiResponse({ status: 200, description: 'Get all Orders sorted from DB' })
+  @Get('sorted')
+  @UsePipes(new AjvValidationPipe(getSortedOrdersSchema))
+  async getSortOrders(@Query() params: SortOrdersDto) {
+    const { page = 1, limit = 10, sort = 'asc', sortBy } = params;
+    return this.orderService.getSortOrders(+limit, sort, +page, sortBy);
   }
 
   @ApiResponse({ status: 200, description: 'Get full information about order' })
