@@ -24,36 +24,39 @@ export class VolunteerService {
         'Hello friend you have already become volunteer',
       );
     }
-    const oldDocument = requestFromDb?.document;
 
     if (requestFromDb) {
       await this.volunteerRepository.deleteRequest(requestFromDb.id);
     }
 
-    if (volunteerRequest.document) {
-      volunteerRequest.document = await this.awsService
-        .uploadFile(
-          volunteerRequest.document,
-          volunteerRequest.expansion,
+    const docsArray: string[] = [];
+    if (volunteerRequest.documents) {
+      for (let i = 0; i < volunteerRequest.documents.length; i++) {
+        const document = await this.awsService.uploadFile(
+          volunteerRequest.documents[i].base64File,
+          volunteerRequest.documents[i].ext,
           AwsBucketFolders.DOCUMENTS,
-        )
-        .then(async (data) => {
-          if (oldDocument) await this.awsService.deleteFile(oldDocument);
-          return data;
-        });
+        );
+        docsArray.push(document);
+      }
+
+      if (requestFromDb?.documents) {
+        for (let i = 0; i < requestFromDb?.documents.length; i++) {
+          await this.awsService.deleteFile(requestFromDb?.documents[i]);
+        }
+      }
     }
 
     const sevenDaysToMs = 604800000;
     const request = await this.volunteerRepository
-      .createRequest(volunteerRequest)
-    .then(async (data) => {
-      await this.volunterQueue.add('activationRequest', data.id, {
-        delay: sevenDaysToMs,
+      .createRequest({ ...volunteerRequest, documents: docsArray })
+      .then(async (data) => {
+        await this.volunterQueue.add('activationRequest', data.id, {
+          delay: sevenDaysToMs,
+        });
+        return data;
       });
 
-      return data;
-    });
-    
     emitter.emit('newRequest', request);
     return request;
   }
