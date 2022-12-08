@@ -1,4 +1,4 @@
-import Repository from 'src/repository/repository';
+import Repository from '../../repository/repository';
 import { GetVolunteerDto } from '../dto/get-Volunteer.dto';
 import { BadRequestException } from '@nestjs/common';
 
