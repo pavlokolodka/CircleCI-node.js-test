@@ -30,15 +30,18 @@ export default class OrderRepository extends Repository {
       .catch(() => {
         throw new BadRequestException('Something went wrong');
       });
-    const totalPages = Math.ceil(
-      (
-        await this.prismaService.order.findMany({
-          where: {
-            status,
-          },
-        })
-      ).length / limit,
-    );
+
+    const ordersCount = await this.prismaService.order.count({
+      where: {
+        status,
+        title: {
+          contains: search,
+        },
+      },
+    });
+
+    const totalPages = Math.ceil(ordersCount / limit);
+
     return {
       page,
       limit,
