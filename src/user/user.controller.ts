@@ -19,6 +19,7 @@ import { AuthHandleService } from 'src/services';
 import { IdSchema } from 'src/utils/validator/order';
 import { IdDto } from 'src/utils/validator/dto/id.dto';
 import { Request } from 'express';
+
 @ApiTags('User')
 @Controller('user')
 export class UserController {
@@ -31,7 +32,7 @@ export class UserController {
   @Roles('volunteer', 'customer')
   @UseGuards(RolesGuard)
   @Get()
-  get(@Req() req: Request) {
+  getUser(@Req() req: Request) {
     const { email } = this.authHandleService.getPayload(
       req.headers['authorization'],
     );
