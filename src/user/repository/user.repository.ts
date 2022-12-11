@@ -1,7 +1,7 @@
 import { BadRequestException } from '@nestjs/common';
 import { CreateUserDto } from 'src/auth/dto/create-user.dto';
-import Repository from 'src/repository/repository';
 import { UpdateUserDto } from '../dto/update-user.dto';
+import Repository from '../../repository/repository';
 
 export default class UserRepository extends Repository {
   async update({ name, lastname, image }: UpdateUserDto, userId: number) {
