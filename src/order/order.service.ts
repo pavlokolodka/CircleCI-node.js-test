@@ -6,6 +6,13 @@ import { UpdateOrderDto } from './dto/update-order.dto';
 import { AwsBucketFolders } from 'src/types';
 import { AwsService } from 'src/services';
 
+export interface OrderByCase {
+  title?: any;
+  sum?: any;
+  finished_at?: any;
+  createdAt?: any;
+}
+
 @Injectable()
 export class OrderService {
   constructor(
@@ -19,18 +26,25 @@ export class OrderService {
   }
 
   async getSortOrders(limit: number, sort, page: number, sortBy: string) {
+    let orderByCase: OrderByCase;
+
     switch (sortBy) {
       case 'name':
-        return this.orderRepository.sortOrdersByName(limit, sort, page);
+        orderByCase = { title: sort };
+        break;
       case 'popularity':
-        return this.orderRepository.sortOrdersByPopularity(limit, sort, page);
+        orderByCase = { sum: sort };
+        break;
       case 'remain':
-        return this.orderRepository.sortOrdersByRemainTime(limit, sort, page);
+        orderByCase = { finished_at: sort };
+        break;
       case 'date':
-        return this.orderRepository.sortOrdersByCreationDate(limit, sort, page);
+        orderByCase = { createdAt: sort };
+        break;
       default:
         throw new BadRequestException('Wrong case');
     }
+    return this.orderRepository.getSortOrders(limit, page, orderByCase);
   }
 
   async getOrderById(id: number) {
