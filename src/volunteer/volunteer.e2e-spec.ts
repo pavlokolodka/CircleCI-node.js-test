@@ -4,22 +4,23 @@ import { INestApplication } from '@nestjs/common';
 import { VolunteerModule } from './volunteer.module';
 import { Volunteer_activation_request } from '@prisma/client';
 import { PrismaService } from '../services';
+import { faker } from '@faker-js/faker';
 
 describe('Volunteer', () => {
   let app: INestApplication;
   const payload = {
-    country: 'Ukraine',
-    city: 'Kyiv',
-    document: 'base64string',
-    cardNumber: '1111111111111111111',
+    country: faker.address.country(),
+    city: faker.address.city(),
+    document: faker.internet.avatar(),
+    cardNumber: faker.finance.creditCardNumber(),
     expansion: 'pdf',
     userId: 10,
   };
   const payload2 = {
-    country: 'Ukraine',
-    city: 'Kyiv',
-    document: 'base64string',
-    cardNumber: '1111111111111111111',
+    country: faker.address.country(),
+    city: faker.address.city(),
+    document: faker.internet.avatar(),
+    cardNumber: faker.finance.creditCardNumber(),
     expansion: 'pdf',
     userId: 9,
   };
@@ -33,6 +34,8 @@ describe('Volunteer', () => {
     await app.init();
 
     const prismaService = new PrismaService();
+
+    // Update the entities in the database to restore the initial state
     await prismaService.volunteer_activation_request.upsert({
       where: {
         userId: 9,
@@ -77,13 +80,12 @@ describe('Volunteer', () => {
       .send(payload)
       .expect(201)
       .expect((res) => {
+        const { cardNumber, expansion, ...result } = payload;
         expect(res.body).toMatchObject<Volunteer_activation_request>({
+          ...result,
           id: expect.any(Number),
-          country: 'Ukraine',
-          city: 'Kyiv',
-          card_number: '1111111111111111111',
           document: expect.any(String),
-          userId: 10,
+          card_number: payload.cardNumber,
           status: null,
         });
       });
@@ -93,10 +95,10 @@ describe('Volunteer', () => {
     return request(app.getHttpServer())
       .post('/volunteer')
       .send({
-        country: 'Ukraine',
-        city: 'Kyiv',
-        document: 'base64string',
-        cardNumber: '1111111111111111111',
+        country: faker.address.country(),
+        city: faker.address.city(),
+        document: faker.internet.avatar(),
+        cardNumber: faker.finance.creditCardNumber(),
         expansion: 'pdf',
       })
       .expect(400);
