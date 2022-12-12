@@ -28,7 +28,7 @@ export default class UserRepository extends Repository {
         include: { volunteer: true, orders: true },
       })
       .catch(() => {
-        throw new BadRequestException('Something went wrong');
+        throw new BadRequestException('User not found');
       });
 
     return user;
@@ -42,9 +42,8 @@ export default class UserRepository extends Repository {
         },
       })
       .catch(() => {
-        throw new BadRequestException('Something went wrong');
+        throw new BadRequestException('User not found');
       });
-
     return user;
   }
 
@@ -57,7 +56,7 @@ export default class UserRepository extends Repository {
         include: { volunteer: true, orders: true },
       })
       .catch(() => {
-        throw new BadRequestException('Something went wrong');
+        throw new BadRequestException('User not found');
       });
 
     return user;

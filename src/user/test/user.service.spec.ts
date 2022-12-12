@@ -1,186 +1,245 @@
 import { Test } from '@nestjs/testing';
-import { CreateUserDto } from 'src/auth/dto/create-user.dto';
-import { AwsService } from 'src/services';
-import { AwsBucketFolders } from 'src/types';
-import { UpdateUserDto } from '../dto/update-user.dto';
+import { AwsService, PrismaService } from 'src/services';
 import UserRepository from '../repository/user.repository';
 import { UserService } from '../user.service';
-import { userMock } from './user-mock';
+import { MockAwsService, UserMatchingObject, userMock } from './user-mock';
 
 describe('UserService', () => {
   let userService: UserService;
-  const mockUserRepository = {
-    update: jest.fn((updateUserPayload: UpdateUserDto, userId: number) =>
-      userMock(),
-    ),
-    getById: jest.fn((id: number) => userMock()),
-    getByEmail: jest.fn((email: string) => userMock()),
-    getByEmailWithVolunteerAndOrder: jest.fn((email: string) => userMock()),
-    delete: jest.fn((email: string) => userMock()),
-    create: jest.fn((user: CreateUserDto) => userMock()),
-  };
-  const mockAwsService = {
-    uploadImg: jest.fn(async (base64: string, folder: AwsBucketFolders) =>
-      Promise.resolve('file location'),
-    ),
-    uploadFile: jest.fn(
-      async (base64: string, ext: string, folder: AwsBucketFolders) =>
-        Promise.resolve('file location'),
-    ),
-    deleteFile: jest.fn(async (location: string) => {
-      return Promise.resolve({ success: true });
-    }),
-  };
+  let userRepository: UserRepository;
+  const mockAwsService = MockAwsService;
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
-      providers: [UserService, UserRepository, AwsService],
+      providers: [UserService, UserRepository, AwsService, PrismaService],
     })
-      .overrideProvider(UserRepository)
-      .useValue(mockUserRepository)
       .overrideProvider(AwsService)
       .useValue(mockAwsService)
       .compile();
 
     userService = moduleRef.get<UserService>(UserService);
+    userRepository = moduleRef.get<UserRepository>(UserRepository);
     jest.clearAllMocks();
+
+    const prismaService = new PrismaService();
+    await prismaService.user
+      .create({
+        data: {
+          email: userMock().email,
+          name: userMock().name,
+          lastname: userMock().lastname,
+          role: userMock().role,
+        },
+      })
+      .catch(() => {
+        return;
+      });
+    await prismaService.$disconnect();
   });
 
   describe('getByEmail', () => {
-    let user;
+    test('call userRepository.getByEmail', async () =>
+      await userRepository
+        .getByEmail(userMock().email)
+        .then((data) => expect(data).toMatchObject(UserMatchingObject))
+        .catch((err) => expect(err).rejects));
 
-    beforeEach(async () => {
-      user = await userService.getByEmail(userMock().email);
-    });
-    test('call userRepository/getByEmail', () => {
-      expect(mockUserRepository.getByEmail(userMock().email)).toEqual(
-        userMock(),
-      );
-    });
-    test('return user', () => {
-      expect(user).toEqual(userMock());
-    });
+    test('call userRepository.getByEmail (unexisting email)', async () =>
+      await userRepository
+        .getByEmail('unexisting@gmail.com')
+        .then((data) => expect(data).toMatchObject(UserMatchingObject))
+        .catch((err) => expect(err).rejects));
+
+    test('call userService.getByEmail', async () =>
+      await userService
+        .getByEmail(userMock().email)
+        .then((data) => expect(data).toMatchObject(UserMatchingObject))
+        .catch((err) => expect(err).rejects));
+
+    test('call userService.getByEmail (unexisting email)', async () =>
+      await userService
+        .getByEmail('unexisting@gmail.com')
+        .then((data) => expect(data).toMatchObject(UserMatchingObject))
+        .catch((err) => expect(err).rejects));
   });
 
   describe('getByEmailWithVolunteerAndOrder', () => {
-    let user;
+    test('call userRepository.getByEmailWithVolunteerAndOrder', async () =>
+      await userRepository
+        .getByEmailWithVolunteerAndOrder(userMock().email)
+        .then((data) =>
+          expect(data).toMatchObject({
+            ...UserMatchingObject,
+            orders: [],
+            volunteer_hints: [],
+          }),
+        )
+        .catch((err) => expect(err).rejects));
 
-    beforeEach(async () => {
-      user = await userService.getByEmailWithVolunteerAndOrder(
-        userMock().email,
-      );
-    });
-    test('call userRepository/getByEmail', () => {
-      expect(
-        mockUserRepository.getByEmailWithVolunteerAndOrder(userMock().email),
-      ).toEqual(userMock());
-    });
-    test('return user', () => {
-      expect(user).toEqual(userMock());
-    });
-  });
+    test('call userRepository.getByEmailWithVolunteerAndOrder (unexisting email)', async () =>
+      await userRepository
+        .getByEmailWithVolunteerAndOrder('unexisting@gmail.com')
+        .then((data) =>
+          expect(data).toMatchObject({
+            ...UserMatchingObject,
+            orders: [],
+            volunteer_hints: [],
+          }),
+        )
+        .catch((err) => expect(err).rejects));
 
-  describe('delete', () => {
-    let user;
+    test('call userService.getByEmailWithVolunteerAndOrder', async () =>
+      await userService
+        .getByEmailWithVolunteerAndOrder(userMock().email)
+        .then((data) =>
+          expect(data).toMatchObject({
+            ...UserMatchingObject,
+            orders: [],
+            volunteer_hints: [],
+          }),
+        )
+        .catch((err) => expect(err).rejects));
 
-    beforeEach(async () => {
-      user = await userService.delete(userMock().email);
-    });
-    test('call userRepository/delete', () => {
-      expect(mockUserRepository.delete(userMock().email)).toEqual(userMock());
-    });
-    test('return user', () => {
-      expect(user).toEqual(userMock());
-    });
+    test('call userService.getByEmailWithVolunteerAndOrder (unexisting email)', async () =>
+      await userService
+        .getByEmailWithVolunteerAndOrder('unexisting@gmail.com')
+        .then((data) =>
+          expect(data).toMatchObject({
+            ...UserMatchingObject,
+            orders: [],
+            volunteer_hints: [],
+          }),
+        )
+        .catch((err) => expect(err).rejects));
   });
 
   describe('create', () => {
-    let user;
     const createUserDto = {
-      email: 'email',
+      email: 'newemail@gmail.com',
       name: 'name',
       lastname: 'lastname',
       password: 'password',
     };
 
-    beforeEach(async () => {
-      user = await userService.create(createUserDto);
-    });
-    test('call userRepository/create', () => {
-      expect(mockUserRepository.create(createUserDto)).toEqual(userMock());
-    });
-    test('return user', () => {
-      expect(user).toEqual(userMock());
-    });
+    test('call userRepository.create', async () =>
+      await userRepository
+        .create(createUserDto)
+        .then((data) =>
+          expect(data).toMatchObject({
+            ...UserMatchingObject,
+            email: 'newemail@gmail.com',
+          }),
+        )
+        .catch((err) => expect(err).rejects));
+
+    test('call userRepository.create (existing email)', async () =>
+      await userRepository
+        .create({ ...createUserDto, email: userMock().email })
+        .then((data) => expect(data).toMatchObject(UserMatchingObject))
+        .catch((err) => expect(err).rejects));
+
+    test('call userService.create', async () =>
+      await userService
+        .create(createUserDto)
+        .then((data) => expect(data).toMatchObject(UserMatchingObject))
+        .catch((err) => expect(err).rejects));
+
+    test('call userService.create (existing email)', async () =>
+      await userService
+        .create({ ...createUserDto, email: userMock().email })
+        .then((data) => expect(data).toMatchObject(UserMatchingObject))
+        .catch((err) => expect(err).rejects));
   });
 
   describe('getUserById', () => {
-    let user;
+    test('call userRepository.getById', async () =>
+      await userRepository
+        .getById(userMock().id)
+        .then((data) => expect(data).toMatchObject(UserMatchingObject))
+        .catch((err) => expect(err).rejects));
 
-    beforeEach(async () => {
-      user = await userService.getUserById(userMock().id);
-    });
-    test('call userRepository/getById', () => {
-      expect(mockUserRepository.getById(userMock().id)).toEqual(userMock());
-    });
-    test('return user', () => {
-      expect(user).toEqual(userMock());
-    });
-  });
-
-  describe('updateUser', () => {
-    let user;
-    const updateUserPayload = { name: 'name', lastname: 'lastname' };
-
-    beforeEach(async () => {
-      user = await userService.updateUser(updateUserPayload, userMock().id);
-    });
-    test('call userRepository/update', () => {
-      expect(
-        mockUserRepository.update(updateUserPayload, userMock().id),
-      ).toEqual({ ...userMock(), updatedAt: expect.any(Date) });
-    });
-    test('return user', () => {
-      expect(user).toEqual(userMock());
-    });
-  });
-
-  describe('updateUser photo', () => {
-    let user;
-    const updateUserPayload = { image: 'image' };
-
-    beforeEach(async () => {
-      user = await userService.updateUser(updateUserPayload, userMock().id);
-    });
-    test('call awsService/uploadImg', async () => {
-      mockAwsService
-        .uploadImg(updateUserPayload.image, AwsBucketFolders.USER_AVATAR)
-        .then((data) => {
-          expect(mockAwsService.deleteFile).toBeCalledWith('photo');
-          expect(data).toEqual('file location');
-        });
-    });
-    test('call userRepository/update', () => {
-      expect(
-        mockUserRepository.update(updateUserPayload, userMock().id),
-      ).toEqual({ ...userMock(), updatedAt: expect.any(Date) });
-    });
-    test('return user', () => {
-      expect(user).toEqual(userMock());
-    });
+    test('call userService.getUserById', async () =>
+      await userService
+        .getUserById(userMock().id)
+        .then((data) => expect(data).toMatchObject(UserMatchingObject))
+        .catch((err) => expect(err).rejects));
   });
 
   describe('userIsVolunteer', () => {
-    let res: boolean;
+    test('call userRepository.getById', async () =>
+      await userRepository
+        .getById(userMock().id)
+        .then((data) => expect(data).toMatchObject(UserMatchingObject))
+        .catch((err) => expect(err).rejects));
 
-    beforeEach(async () => {
-      res = await userService.userIsVolunteer(userMock().id);
-    });
-    test('call userRepository/getById', () => {
-      expect(mockUserRepository.getById(userMock().id)).toEqual(userMock());
-    });
-    test('call userIsVolunteer', () => {
-      expect(res).toEqual(expect.any(Boolean));
-    });
+    test('call userService.userIsVolunteer', async () =>
+      await userService
+        .userIsVolunteer(userMock().id)
+        .then((data) => expect(data).toEqual(expect.any(Boolean)))
+        .catch((err) => expect(err).rejects));
+  });
+
+  describe('updateUser', () => {
+    const updateUserPayload = { name: 'newname', lastname: 'newlastname' };
+
+    test('call userRepository.update', async () =>
+      await userRepository
+        .update(updateUserPayload, userMock().id)
+        .then((data) =>
+          expect(data).toMatchObject({
+            ...UserMatchingObject,
+            name: updateUserPayload.name,
+            lastname: updateUserPayload.lastname,
+          }),
+        )
+        .catch((err) => expect(err).rejects));
+
+    test('call userRepository.update photo', async () =>
+      await userRepository
+        .update({ image: 'newimage' }, userMock().id)
+        .then((data) =>
+          expect(data).toMatchObject({
+            ...UserMatchingObject,
+            photo: 'newimage',
+          }),
+        )
+        .catch((err) => expect(err).rejects));
+
+    test('call userService.update', async () =>
+      await userService
+        .updateUser(updateUserPayload, userMock().id)
+        .then((data) =>
+          expect(data).toMatchObject({
+            ...UserMatchingObject,
+            name: updateUserPayload.name,
+            lastname: updateUserPayload.lastname,
+          }),
+        )
+        .catch((err) => expect(err).rejects));
+
+    test('call userService.update photo', async () =>
+      await userService
+        .updateUser({ image: 'newimage' }, userMock().id)
+        .then((data) =>
+          expect(data).toMatchObject({
+            ...UserMatchingObject,
+            photo: 'newimage',
+          }),
+        )
+        .catch((err) => expect(err).rejects));
+  });
+
+  describe('delete', () => {
+    test('call userRepository.delete photo', async () =>
+      await userRepository
+        .delete(userMock().email)
+        .then((data) => expect(data).toMatchObject(UserMatchingObject))
+        .catch((err) => expect(err).rejects));
+
+    test('call userService.delete photo', async () =>
+      await userService
+        .delete(userMock().email)
+        .then((data) => expect(data).toMatchObject(UserMatchingObject))
+        .catch((err) => expect(err).rejects));
   });
 });

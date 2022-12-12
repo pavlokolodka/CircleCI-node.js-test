@@ -10,6 +10,7 @@ import {
   UseGuards,
   UsePipes,
 } from '@nestjs/common';
+import { Request } from 'express';
 import { UpdateUserSchema } from '../utils/validator/user';
 import { AjvValidationPipe } from '../utils/validator/validation';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -20,23 +21,18 @@ import { Roles } from '../auth/decorators/roles.decorator';
 import { AuthHandleService } from '../services/auth.handle.service';
 import { IdSchema } from '../utils/validator/order';
 import { IdDto } from '../utils/validator/dto/id.dto';
-import { Request } from 'express';
 
 @ApiTags('User')
 @Controller('user')
 export class UserController {
   constructor(
-    // private readonly userService: UserService,
-    //private readonly authHandleService: AuthHandleService,
-    @Inject(forwardRef(() => UserService))
-    private userService: UserService,
-    @Inject(forwardRef(() => AuthHandleService))
-    private authHandleService: AuthHandleService,
+    private readonly userService: UserService,
+    private readonly authHandleService: AuthHandleService,
   ) {}
 
   @ApiResponse({ status: 200, description: 'Return user info' })
-  // @Roles('volunteer', 'customer')
-  //@UseGuards(RolesGuard)
+  @Roles('volunteer', 'customer')
+  @UseGuards(RolesGuard)
   @Get()
   getUser(@Req() req: Request) {
     const { email } = this.authHandleService.getPayload(

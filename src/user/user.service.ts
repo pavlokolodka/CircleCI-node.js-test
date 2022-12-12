@@ -1,4 +1,4 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from 'src/auth/dto/create-user.dto';
 import { AwsBucketFolders } from '../types/aws-bucket-folders.enum';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -9,12 +9,8 @@ import { AwsService } from '../services/aws.service';
 @Injectable()
 export class UserService {
   constructor(
-    //private userRepository: UserRepository,
-    //private awsService: AwsService,
-    @Inject(forwardRef(() => AwsService))
-    private awsService: AwsService,
-    @Inject(forwardRef(() => UserRepository))
     private userRepository: UserRepository,
+    private awsService: AwsService,
   ) {}
 
   async getByEmail(email: string) {
