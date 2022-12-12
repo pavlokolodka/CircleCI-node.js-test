@@ -1,7 +1,9 @@
 import {
   Body,
   Controller,
+  forwardRef,
   Get,
+  Inject,
   Patch,
   Query,
   Req,
@@ -9,28 +11,32 @@ import {
   UsePipes,
 } from '@nestjs/common';
 import { UpdateUserSchema } from '../utils/validator/user';
-import { AjvValidationPipe } from 'src/utils/validator/validation';
+import { AjvValidationPipe } from '../utils/validator/validation';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
-import { AuthHandleService } from 'src/services';
-import { IdSchema } from 'src/utils/validator/order';
-import { IdDto } from 'src/utils/validator/dto/id.dto';
+import { AuthHandleService } from '../services/auth.handle.service';
+import { IdSchema } from '../utils/validator/order';
+import { IdDto } from '../utils/validator/dto/id.dto';
 import { Request } from 'express';
 
 @ApiTags('User')
 @Controller('user')
 export class UserController {
   constructor(
-    private readonly userService: UserService,
-    private readonly authHandleService: AuthHandleService,
+    // private readonly userService: UserService,
+    //private readonly authHandleService: AuthHandleService,
+    @Inject(forwardRef(() => UserService))
+    private userService: UserService,
+    @Inject(forwardRef(() => AuthHandleService))
+    private authHandleService: AuthHandleService,
   ) {}
 
   @ApiResponse({ status: 200, description: 'Return user info' })
-  @Roles('volunteer', 'customer')
-  @UseGuards(RolesGuard)
+  // @Roles('volunteer', 'customer')
+  //@UseGuards(RolesGuard)
   @Get()
   getUser(@Req() req: Request) {
     const { email } = this.authHandleService.getPayload(

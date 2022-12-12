@@ -1,38 +1,31 @@
 import { JwtService } from '@nestjs/jwt';
-import { Test, TestingModule } from '@nestjs/testing';
+import { Test } from '@nestjs/testing';
+import { createRequest } from 'node-mocks-http';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { AwsService } from 'src/services';
-import { AuthHandleService } from '../../services/auth.handle.service';
+import { AuthHandleService } from 'src/services/auth.handle.service';
 import UserRepository from '../repository/user.repository';
 import { UserController } from '../user.controller';
 import { UserService } from '../user.service';
-import { userMock } from './user-mock';
-import { createRequest } from 'node-mocks-http';
-import { IUser } from 'src/types';
-import { CreateUserDto } from 'src/auth/dto/create-user.dto';
+import { MockAuthHandleService, MockUserService, userMock } from './user-mock';
 import { UpdateUserDto } from '../dto/update-user.dto';
-
-jest.mock('../user.service.ts');
 
 describe('UserController', () => {
   let userController: UserController;
-  const mockUserService = {
-    getByEmail: jest.fn((email: string) => userMock()),
-    getByEmailWithVolunteerAndOrder: jest.fn((email: string) => userMock()),
-    delete: jest.fn((email: string) => userMock()),
-    create: jest.fn((createUserDto: CreateUserDto) => userMock()),
-    getUserById: jest.fn((id: number) => userMock()),
-    updateUser: jest.fn((updateUserPayload: UpdateUserDto, userId: number) =>
-      userMock(),
-    ),
-    userIsVolunteer: jest.fn((id: number) => true),
-  };
-  const mockAuthHandleService = {
-    getPayload: jest.fn((rawToken) => userMock()),
-  };
-  const mockJwtService = {
-    verify: jest.fn((token, publicKey) => userMock()),
-  };
+  const mockUserService = MockUserService;
+  // {
+  //     getByEmail: jest.fn((email: string) => userMock()),
+  //     getByEmailWithVolunteerAndOrder: jest.fn((email: string) => userMock()),
+  //     userIsVolunteer: jest.fn((id: number) => true),
+  //     updateUser: jest.fn((updateUserPayload: UpdateUserDto, userId: number) =>
+  //         userMock()
+  //     )
+  // };
+  const mockAuthHandleService = MockAuthHandleService;
+  // {
+  //     getPayload: jest.fn((rawToken: string) => userMock()),
+  // };
+  const mockJwtService = {};
   const mockUserRepository = {};
   const mockAwsService = {};
 
@@ -69,18 +62,70 @@ describe('UserController', () => {
       headers: { authorization: 'Bearer authorization' },
     });
 
-    test('calling authHandleService/jwtService', () => {
-      const token = req.headers['authorization'] || 'Bearer authorization';
-      expect(mockAuthHandleService.getPayload(token)).toEqual(userMock());
-      expect(mockJwtService.verify(token, { publicKey: 'publicKey' })).toEqual(
+    test('call authHandleService', () => {
+      expect(mockAuthHandleService.getPayload('Bearer token')).toEqual(
         userMock(),
       );
     });
-    test('calling userService', () => {
+    test('call userService/getByEmail', () => {
       expect(mockUserService.getByEmail(userMock().email)).toEqual(userMock());
     });
-    test('calling getUser', () => {
+    test('call getUser', () => {
       expect(userController.getUser(req)).toEqual(userMock());
+    });
+  });
+
+  describe('getUserAndVolunteer', () => {
+    const req = createRequest({
+      headers: { authorization: 'Bearer authorization' },
+    });
+
+    test('call authHandleService', () => {
+      expect(mockAuthHandleService.getPayload('Bearer token')).toEqual(
+        userMock(),
+      );
+    });
+    test('call userService', () => {
+      expect(
+        mockUserService.getByEmailWithVolunteerAndOrder(userMock().email),
+      ).toEqual(userMock());
+    });
+    test('call getUserAndVolunteer', () => {
+      expect(userController.getUserAndVolunteer(req)).toEqual(userMock());
+    });
+  });
+
+  describe('updateUser', () => {
+    let user;
+    const req = createRequest({
+      headers: { authorization: 'Bearer token' },
+    });
+
+    beforeEach(async () => {
+      user = await userController.updateUser(req, {
+        name: 'name',
+        lastname: 'lastname',
+        image: 'image',
+      });
+    });
+    test('call authHandleService', () => {
+      expect(mockAuthHandleService.getPayload('Bearer token')).toEqual(
+        userMock(),
+      );
+    });
+    test('call userService/getByEmail', () => {
+      expect(mockUserService.getByEmail(userMock().email)).toEqual(userMock());
+    });
+    test('call userService/updateUser', () => {
+      expect(
+        mockUserService.updateUser(
+          { name: 'name', lastname: 'lastname', image: 'image' },
+          userMock().id,
+        ),
+      ).toEqual({ ...userMock(), updatedAt: expect.any(Date) });
+    });
+    test('call return user', () => {
+      expect(user).toEqual({ ...userMock(), updatedAt: expect.any(Date) });
     });
   });
 
@@ -90,10 +135,10 @@ describe('UserController', () => {
     beforeEach(async () => {
       res = await userController.isVolunteer({ id: userMock().id.toString() });
     });
-    test('calling userService', () => {
+    test('call userService', () => {
       expect(mockUserService.userIsVolunteer).toBeCalledWith(userMock().id);
     });
-    test('returning boolean', () => {
+    test('return boolean', () => {
       expect(res).toEqual(expect.any(Boolean));
     });
   });

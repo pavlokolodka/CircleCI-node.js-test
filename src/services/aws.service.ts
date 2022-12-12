@@ -68,5 +68,7 @@ export class AwsService {
     await this.s3.deleteObject(params, (err, data) => {
       if (err) console.log(err);
     });
+
+    return { success: true };
   }
 }

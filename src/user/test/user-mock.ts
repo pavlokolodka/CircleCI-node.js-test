@@ -1,4 +1,5 @@
 import { IUser } from 'src/types';
+import { UpdateUserDto } from '../dto/update-user.dto';
 
 export const userMock = (): IUser => {
   return {
@@ -8,23 +9,21 @@ export const userMock = (): IUser => {
     lastname: 'lastname',
     role: 'volunteer',
     photo: 'photo',
-    orders: [
-      {
-        id: 3,
-        user_id: 1,
-        status: 'open',
-        title: 'title',
-        info: 'info',
-        photo: 'photo',
-        goal_amount: 1000,
-        sum: 10,
-        short_info: 'short info',
-        finished_at: new Date(),
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-    ],
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    createdAt: new Date('2022-12-09T13:54:37.019Z'),
+    updatedAt: new Date('2022-12-09T13:54:37.019Z'),
+    //orders: []
   };
+};
+
+export const MockUserService = {
+  getByEmail: jest.fn((email: string) => userMock()),
+  getByEmailWithVolunteerAndOrder: jest.fn((email: string) => userMock()),
+  userIsVolunteer: jest.fn((id: number) => true),
+  updateUser: jest.fn((updateUserPayload: UpdateUserDto, userId: number) =>
+    userMock(),
+  ),
+};
+
+export const MockAuthHandleService = {
+  getPayload: jest.fn((rawToken: string) => userMock()),
 };
