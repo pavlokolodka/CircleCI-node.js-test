@@ -32,12 +32,15 @@ export class VolunteerRequestsController {
     return this.volunteerRequestsService.getRequests();
   }
 
-  @ApiResponse({ status: 200, description: 'Get new requests after creation (Sse)' })
+  @ApiResponse({
+    status: 200,
+    description: 'Get new requests after creation (Sse)',
+  })
   @Sse('sse') //not protected
   async getRequestsSse(): Promise<Observable<MessageEvent>> {
     const subject$ = new Subject();
     emitter.on('newRequest', function (request) {
-      subject$.next({ request })
+      subject$.next({ request });
     });
     return subject$.pipe(map((data: MessageEvent): MessageEvent => ({ data })));
   }
