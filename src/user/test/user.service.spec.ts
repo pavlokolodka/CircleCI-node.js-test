@@ -7,9 +7,9 @@ import { UserMatchingObject, userMock } from './user-mock';
 
 describe('UserService', () => {
   let userService: UserService;
+  const prismaService = new PrismaService();
 
   beforeAll(async () => {
-    const prismaService = new PrismaService();
     await prismaService.user
       .create({
         data: {
@@ -22,8 +22,12 @@ describe('UserService', () => {
       .catch(() => {
         return;
       });
+  }, 10000);
+
+  afterAll(async () => {
+    await prismaService.user.delete({ where: { email: 'newemail@gmail.com' } });
     await prismaService.$disconnect();
-  });
+  }, 10000);
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
