@@ -3,6 +3,8 @@ import { Test } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import { PasswordModule } from './password.module';
 import { PasswordService } from './password.service';
+import HttpService from '../utils/http/http.service';
+import HttpMockService from '../utils/http/http.service.mock';
 
 describe('Password', () => {
   let app: INestApplication;
@@ -21,29 +23,19 @@ describe('Password', () => {
     newPasswordConfirm: '12345678',
     recaptchaToken: 'flkadfjdfjfi22ehljfdj',
   };
-  const result = { success: true };
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [PasswordModule],
-    }).compile();
+    })
+      .overrideProvider(HttpService)
+      .useValue(new HttpMockService())
+      .compile();
 
     passwordService = moduleRef.get<PasswordService>(PasswordService);
 
     app = moduleRef.createNestApplication();
     await app.init();
-
-    jest
-      .spyOn(passwordService, 'forgotPassword')
-      .mockImplementation(() => Promise.resolve(result));
-
-    jest
-      .spyOn(passwordService, 'resetPassword')
-      .mockImplementation(() => Promise.resolve(result));
-
-    jest
-      .spyOn(passwordService, 'updatePassword')
-      .mockImplementation(() => Promise.resolve(result));
   });
 
   describe('/password/forgot', () => {
