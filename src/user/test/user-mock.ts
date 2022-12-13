@@ -7,7 +7,7 @@ export const userMock = (): IUser => {
     name: 'name',
     lastname: 'lastname',
     role: 'volunteer',
-    photo: 'photo',
+    photo: null,
     createdAt: new Date('2022-12-09T13:54:37.019Z'),
     updatedAt: new Date('2022-12-09T13:54:37.019Z'),
   };
@@ -15,11 +15,10 @@ export const userMock = (): IUser => {
 
 export const UserMatchingObject = {
   id: expect.any(Number),
-  email: userMock().email,
+  email: expect.any(String),
   name: expect.any(String),
   lastname: expect.any(String),
   role: expect.any(String),
-  photo: null,
   createdAt: expect.any(Date),
   updatedAt: expect.any(Date),
 };

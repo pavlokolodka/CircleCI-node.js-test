@@ -1,6 +1,6 @@
 import { Test } from '@nestjs/testing';
 import { AwsService, PrismaService } from 'src/services';
-import { MockAwsService } from '../../../test/mocks/aws-service.mock';
+import { MockAwsService } from '../../services/mocks';
 import UserRepository from '../repository/user.repository';
 import { UserService } from '../user.service';
 import { UserMatchingObject, userMock } from './user-mock';
@@ -46,8 +46,7 @@ describe('UserService', () => {
     test('call userService.getByEmail', async () =>
       await userService
         .getByEmail(userMock().email)
-        .then((data) => expect(data).toMatchObject(UserMatchingObject))
-        .catch((err) => expect(err).rejects));
+        .then((data) => expect(data).toMatchObject(UserMatchingObject)));
 
     test('call userService.getByEmail (unexisting email)', async () =>
       await userService
@@ -57,29 +56,34 @@ describe('UserService', () => {
   });
 
   describe('getByEmailWithVolunteerAndOrder', () => {
-    test('call userService.getByEmailWithVolunteerAndOrder', async () =>
-      await userService
-        .getByEmailWithVolunteerAndOrder(userMock().email)
-        .then((data) =>
-          expect(data).toMatchObject({
-            ...UserMatchingObject,
-            orders: [],
-            volunteer_hints: [],
-          }),
-        )
-        .catch((err) => expect(err).rejects));
+    test(
+      'call userService.getByEmailWithVolunteerAndOrder',
+      async () =>
+        await userService
+          .getByEmailWithVolunteerAndOrder(userMock().email)
+          .then((data) =>
+            expect(data).toMatchObject({
+              ...UserMatchingObject,
+              orders: [],
+            }),
+          ),
+      20000,
+    );
 
-    test('call userService.getByEmailWithVolunteerAndOrder (unexisting email)', async () =>
-      await userService
-        .getByEmailWithVolunteerAndOrder('unexisting@gmail.com')
-        .then((data) =>
-          expect(data).toMatchObject({
-            ...UserMatchingObject,
-            orders: [],
-            volunteer_hints: [],
-          }),
-        )
-        .catch((err) => expect(err).rejects));
+    test(
+      'call userService.getByEmailWithVolunteerAndOrder (unexisting email)',
+      async () =>
+        await userService
+          .getByEmailWithVolunteerAndOrder('unexisting@gmail.com')
+          .then((data) =>
+            expect(data).toMatchObject({
+              ...UserMatchingObject,
+              orders: [],
+            }),
+          )
+          .catch((err) => expect(err).rejects),
+      20000,
+    );
   });
 
   describe('create', () => {
@@ -95,8 +99,7 @@ describe('UserService', () => {
       async () =>
         await userService
           .create(createUserDto)
-          .then((data) => expect(data).toMatchObject(UserMatchingObject))
-          .catch((err) => expect(err).rejects),
+          .then((data) => expect(data).toMatchObject(UserMatchingObject)),
       20000,
     );
 
@@ -115,16 +118,14 @@ describe('UserService', () => {
     test('call userService.getUserById', async () =>
       await userService
         .getUserById(userMock().id)
-        .then((data) => expect(data).toMatchObject(UserMatchingObject))
-        .catch((err) => expect(err).rejects));
+        .then((data) => expect(data).toMatchObject(UserMatchingObject)));
   });
 
   describe('userIsVolunteer', () => {
     test('call userService.userIsVolunteer', async () =>
       await userService
         .userIsVolunteer(userMock().id)
-        .then((data) => expect(data).toEqual(expect.any(Boolean)))
-        .catch((err) => expect(err).rejects));
+        .then((data) => expect(data).toEqual(expect.any(Boolean))));
   });
 
   describe('updateUser', () => {
@@ -135,14 +136,7 @@ describe('UserService', () => {
       async () =>
         await userService
           .updateUser(updateUserPayload, userMock().id)
-          .then((data) =>
-            expect(data).toMatchObject({
-              ...UserMatchingObject,
-              name: updateUserPayload.name,
-              lastname: updateUserPayload.lastname,
-            }),
-          )
-          .catch((err) => expect(err).rejects),
+          .then((data) => expect(data).toMatchObject(UserMatchingObject)),
       20000,
     );
 
@@ -151,13 +145,7 @@ describe('UserService', () => {
       async () =>
         await userService
           .updateUser({ image: 'newimage' }, userMock().id)
-          .then((data) =>
-            expect(data).toMatchObject({
-              ...UserMatchingObject,
-              photo: 'newimage',
-            }),
-          )
-          .catch((err) => expect(err).rejects),
+          .then((data) => expect(data).toMatchObject(UserMatchingObject)),
       20000,
     );
   });
@@ -166,7 +154,6 @@ describe('UserService', () => {
     test('call userService.delete photo', async () =>
       await userService
         .delete(userMock().email)
-        .then((data) => expect(data).toMatchObject(UserMatchingObject))
-        .catch((err) => expect(err).rejects));
+        .then((data) => expect(data).toMatchObject(UserMatchingObject)));
   });
 });
