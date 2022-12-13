@@ -1,4 +1,4 @@
-import { AwsBucketFolders, IUser } from 'src/types';
+import { IUser } from 'src/types';
 
 export const userMock = (): IUser => {
   return {
@@ -22,17 +22,4 @@ export const UserMatchingObject = {
   photo: null,
   createdAt: expect.any(Date),
   updatedAt: expect.any(Date),
-};
-
-export const MockAwsService = {
-  uploadImg: jest.fn(async (base64: string, folder: AwsBucketFolders) =>
-    Promise.resolve('file location'),
-  ),
-  uploadFile: jest.fn(
-    async (base64: string, ext: string, folder: AwsBucketFolders) =>
-      Promise.resolve('file location'),
-  ),
-  deleteFile: jest.fn(async (location: string) => {
-    return Promise.resolve({ success: true });
-  }),
 };

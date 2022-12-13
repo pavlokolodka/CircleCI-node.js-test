@@ -1,26 +1,14 @@
 import { Test } from '@nestjs/testing';
 import { AwsService, PrismaService } from 'src/services';
+import { MockAwsService } from '../../../test/mocks/aws-service.mock';
 import UserRepository from '../repository/user.repository';
 import { UserService } from '../user.service';
-import { MockAwsService, UserMatchingObject, userMock } from './user-mock';
+import { UserMatchingObject, userMock } from './user-mock';
 
 describe('UserService', () => {
   let userService: UserService;
-  let userRepository: UserRepository;
-  const mockAwsService = MockAwsService;
 
-  beforeEach(async () => {
-    const moduleRef = await Test.createTestingModule({
-      providers: [UserService, UserRepository, AwsService, PrismaService],
-    })
-      .overrideProvider(AwsService)
-      .useValue(mockAwsService)
-      .compile();
-
-    userService = moduleRef.get<UserService>(UserService);
-    userRepository = moduleRef.get<UserRepository>(UserRepository);
-    jest.clearAllMocks();
-
+  beforeAll(async () => {
     const prismaService = new PrismaService();
     await prismaService.user
       .create({
@@ -36,6 +24,19 @@ describe('UserService', () => {
       });
     await prismaService.$disconnect();
   });
+
+  beforeEach(async () => {
+    const moduleRef = await Test.createTestingModule({
+      providers: [UserService, UserRepository, AwsService, PrismaService],
+    })
+      .overrideProvider(AwsService)
+      .useClass(MockAwsService)
+      .compile();
+
+    userService = moduleRef.get<UserService>(UserService);
+    jest.useRealTimers();
+    jest.clearAllMocks();
+  }, 30000);
 
   describe('getByEmail', () => {
     test('call userService.getByEmail', async () =>
