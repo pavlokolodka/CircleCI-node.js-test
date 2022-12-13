@@ -4,7 +4,7 @@ export interface IHint {
   info: string;
   user_id: number;
   createdAt: Date;
-  volunteer_hints_photo?: IHintPhoto[];
+  hint_photo: IHintPhoto[];
 }
 
 interface IHintPhoto {
