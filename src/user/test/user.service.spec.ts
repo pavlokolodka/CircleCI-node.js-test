@@ -86,17 +86,25 @@ describe('UserService', () => {
       password: 'password',
     };
 
-    test('call userService.create', async () =>
-      await userService
-        .create(createUserDto)
-        .then((data) => expect(data).toMatchObject(UserMatchingObject))
-        .catch((err) => expect(err).rejects));
+    test(
+      'call userService.create',
+      async () =>
+        await userService
+          .create(createUserDto)
+          .then((data) => expect(data).toMatchObject(UserMatchingObject))
+          .catch((err) => expect(err).rejects),
+      20000,
+    );
 
-    test('call userService.create (existing email)', async () =>
-      await userService
-        .create({ ...createUserDto, email: userMock().email })
-        .then((data) => expect(data).toMatchObject(UserMatchingObject))
-        .catch((err) => expect(err).rejects));
+    test(
+      'call userService.create (existing email)',
+      async () =>
+        await userService
+          .create({ ...createUserDto, email: userMock().email })
+          .then((data) => expect(data).toMatchObject(UserMatchingObject))
+          .catch((err) => expect(err).rejects),
+      20000,
+    );
   });
 
   describe('getUserById', () => {
@@ -118,28 +126,36 @@ describe('UserService', () => {
   describe('updateUser', () => {
     const updateUserPayload = { name: 'newname', lastname: 'newlastname' };
 
-    test('call userService.update', async () =>
-      await userService
-        .updateUser(updateUserPayload, userMock().id)
-        .then((data) =>
-          expect(data).toMatchObject({
-            ...UserMatchingObject,
-            name: updateUserPayload.name,
-            lastname: updateUserPayload.lastname,
-          }),
-        )
-        .catch((err) => expect(err).rejects));
+    test(
+      'call userService.update',
+      async () =>
+        await userService
+          .updateUser(updateUserPayload, userMock().id)
+          .then((data) =>
+            expect(data).toMatchObject({
+              ...UserMatchingObject,
+              name: updateUserPayload.name,
+              lastname: updateUserPayload.lastname,
+            }),
+          )
+          .catch((err) => expect(err).rejects),
+      20000,
+    );
 
-    test('call userService.update photo', async () =>
-      await userService
-        .updateUser({ image: 'newimage' }, userMock().id)
-        .then((data) =>
-          expect(data).toMatchObject({
-            ...UserMatchingObject,
-            photo: 'newimage',
-          }),
-        )
-        .catch((err) => expect(err).rejects));
+    test(
+      'call userService.update photo',
+      async () =>
+        await userService
+          .updateUser({ image: 'newimage' }, userMock().id)
+          .then((data) =>
+            expect(data).toMatchObject({
+              ...UserMatchingObject,
+              photo: 'newimage',
+            }),
+          )
+          .catch((err) => expect(err).rejects),
+      20000,
+    );
   });
 
   describe('delete', () => {
