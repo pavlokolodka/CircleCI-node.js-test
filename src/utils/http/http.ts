@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import axios, { AxiosInstance } from 'axios';
 import { IHttp } from './interfaces/http.interface';
 
@@ -12,10 +12,14 @@ export default class Http implements IHttp {
   }
 
   async post(path: string, data: object) {
-    return this.http.post(path, data);
+    return this.http.post(path, data).catch((e) => {
+      throw new BadRequestException(e.message);
+    });
   }
 
   async patch(path: string, data: object) {
-    return this.http.patch(path, data);
+    return this.http.patch(path, data).catch((e) => {
+      throw new BadRequestException(e.message);
+    });
   }
 }

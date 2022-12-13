@@ -16,11 +16,7 @@ export class AdminAuthService {
       throw new BadRequestException('Admin with this email does not exist');
     }
 
-    const res = await this.httpService
-      .adminSignIn(adminPayload)
-      .catch((err) => {
-        throw new BadRequestException(err.message);
-      });
+    const res = await this.httpService.adminSignIn(adminPayload);
 
     return res.data;
   }

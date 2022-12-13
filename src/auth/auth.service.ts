@@ -30,7 +30,7 @@ export class AuthService {
       return res.data;
     } catch (err) {
       const res = await this.userService.delete(user.email);
-      throw new BadRequestException(err.response.data.message);
+      throw err;
     }
   }
 
@@ -53,11 +53,8 @@ export class AuthService {
   async refreshTokens(rawRefreshToken: RefreshTokenDto) {
     const { refreshToken } = rawRefreshToken;
     const { email, role } = this.authHandleService.getPayload(refreshToken);
-    const res = await this.httpService
-      .refreshToken(email, role)
-      .catch((err) => {
-        throw new BadRequestException(err);
-      });
+    const res = await this.httpService.refreshToken(email, role);
+
     return res.data;
   }
 }
