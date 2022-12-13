@@ -35,6 +35,8 @@ describe('UserService', () => {
     })
       .overrideProvider(AwsService)
       .useClass(MockAwsService)
+      .overrideProvider(PrismaService)
+      .useValue(prismaService)
       .compile();
 
     userService = moduleRef.get<UserService>(UserService);
