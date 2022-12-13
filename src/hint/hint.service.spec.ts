@@ -1,104 +1,90 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { HintService } from './hint.service';
-import { hintMock, hintMockWithPhoto, user } from './test/hint.mock';
+import { Test, TestingModule } from '@nestjs/testing';
 import { UserService } from '../user/user.service';
 import HintRepository from './repository/hint.repository';
-import { AwsService, PrismaService } from '../services';
-import UserRepository from '../user/repository/user.repository';
+import { PrismaService } from '../services';
+import { HintMatchingObject, hintMock } from './test/hint.mock';
+import { userMock } from './test/user.mock';
 
-describe('HintService', () => {
+describe('Hint Service', () => {
   let hintService: HintService;
-  let hintRepository: HintRepository;
-  let userService: UserService;
-  let userRepository: UserRepository;
+  const prismaService = new PrismaService();
 
-  const allHints = {
-    page: 1,
-    limit: 10,
-    totalPages: 2,
-    data: [hintMockWithPhoto()],
+  beforeAll(async () => {
+    await prismaService.volunteer_hint
+      .create({
+        data: {
+          id: hintMock().id,
+          title: hintMock().title,
+          info: hintMock().info,
+          user_id: hintMock().user_id,
+        },
+      })
+      .catch(() => {
+        return;
+      });
+  });
+
+  const mockUserService = {
+    getByEmail: jest.fn().mockImplementation(() => userMock()),
   };
-
-  const hint = {
-    title: 'new title',
-    info: 'new info',
-    photo: ['photo', 'photo'],
-  };
-
-  const mockPrismaService = {};
-  const mockAwsService = {};
 
   beforeEach(async () => {
-    const moduleRef: TestingModule = await Test.createTestingModule({
-      providers: [
-        HintService,
-        UserService,
-        HintRepository,
-        PrismaService,
-        UserService,
-        UserRepository,
-        AwsService,
-      ],
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [HintService, UserService, HintRepository, PrismaService],
     })
-      .overrideProvider(PrismaService)
-      .useValue(mockPrismaService)
-      .overrideProvider(AwsService)
-      .useValue(mockAwsService)
+      .overrideProvider(UserService)
+      .useValue(mockUserService)
       .compile();
 
-    hintService = moduleRef.get<HintService>(HintService);
-    hintRepository = moduleRef.get<HintRepository>(HintRepository);
-    userService = moduleRef.get<UserService>(UserService);
-    userRepository = moduleRef.get<UserRepository>(UserRepository);
+    hintService = module.get<HintService>(HintService);
   });
 
-  test('should be defined', () => {
-    expect(hintService).toBeDefined();
+  afterAll(async () => {
+    await prismaService.volunteer_hint.delete({ where: { id: hintMock().id } });
+    await prismaService.$disconnect();
   });
 
-  describe('getAllHints', () => {
-    test('it should return all hints', async () => {
-      jest
-        .spyOn(hintRepository, 'getAllHints')
-        .mockImplementation(async () => allHints);
-      expect(await hintService.getAllHints(10, 'asc', 1, '')).toEqual(allHints);
+  describe('Find Hints', () => {
+    test('should find all hints', async () => {
+      await hintService
+        .getAllHints(10, 'asc', 1, '')
+        .then((value) =>
+          expect(value.data[0]).toMatchObject(HintMatchingObject),
+        );
     });
   });
 
-  describe('getHintById', () => {
-    test('it should return one hint', async () => {
-      jest
-        .spyOn(hintRepository, 'getHintById')
-        .mockImplementation(async () => hintMockWithPhoto());
-      expect(await hintService.getHintById(2)).toEqual(hintMockWithPhoto());
+  describe('Find Hint', () => {
+    test('should find a existing hint', async () => {
+      await hintService
+        .getHintById(hintMock().id)
+        .then((data) => expect(data).toMatchObject(HintMatchingObject));
     });
   });
 
-  describe('create Hint', () => {
-    test('it should create hint', async () => {
-      jest
-        .spyOn(userRepository, 'getByEmail')
-        .mockImplementation(async () => await user());
-      expect(await userService.getByEmail(user().email)).toEqual(user());
-      jest
-        .spyOn(hintRepository, 'createHint')
-        .mockImplementation(async () => await hintMock());
-      expect(await hintService.createHint(hint, user().email)).toEqual(
-        hintMock(),
-      );
+  describe('Create Hint', () => {
+    const email = 'Arvid_Beer@hotmail.com';
+    const hint = {
+      title: 'new title',
+      info: 'new info',
+    };
+    test('should create hint', async () => {
+      const data = await hintService.createHint(hint, email);
+      expect(data).toMatchObject(HintMatchingObject);
+      await prismaService.volunteer_hint.delete({ where: { id: data.id } });
     });
   });
 
-  describe('update Hint', () => {
-    test('it should update hint', async () => {
-      jest
-        .spyOn(hintRepository, 'getHintById')
-        .mockImplementation(async () => hintMockWithPhoto());
-      expect(await hintService.getHintById(2)).toEqual(hintMockWithPhoto());
-      jest
-        .spyOn(hintRepository, 'updateHintById')
-        .mockImplementation(async () => await hintMock());
-      expect(await hintService.updateHintById(2, hint)).toEqual(hintMock());
+  describe('Update Hint', () => {
+    const hint = {
+      title: 'update title',
+      info: 'update info',
+    };
+    test('should create hint', async () => {
+      await hintService
+        .updateHintById(hintMock().id, hint)
+        .then((data) => expect(data).toMatchObject(HintMatchingObject));
     });
   });
 });
