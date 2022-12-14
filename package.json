@@ -50,7 +50,6 @@
     "bull": "^4.10.2",
     "cors": "^2.8.5",
     "gravatar": "^1.8.2",
-    "jest-mock-extended": "^3.0.1",
     "nodemailer": "^6.8.0",
     "prisma": "4.5.0",
     "react-scripts": "^5.0.1",
