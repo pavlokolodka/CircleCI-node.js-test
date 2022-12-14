@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { S3 } from 'aws-sdk';
-import { AwsBucketFolders } from 'src/types';
+import { AwsBucketFolders, IMultipleUploadFiles } from 'src/types';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
@@ -57,6 +57,22 @@ export class AwsService {
     return res.Location;
   }
 
+  async uploadMultipleFiles(
+    files: IMultipleUploadFiles[],
+    folder: AwsBucketFolders,
+  ) {
+    const locationsArray: string[] = [];
+    for (let i = 0; i < files.length; i++) {
+      const document = await this.uploadFile(
+        files[i].base64File,
+        files[i].ext,
+        folder,
+      );
+      locationsArray.push(document);
+    }
+    return locationsArray;
+  }
+
   async deleteFile(location: string) {
     const key = `${location.split('/').reverse()[1]}/${
       location.split('/').reverse()[0]
@@ -68,5 +84,11 @@ export class AwsService {
     await this.s3.deleteObject(params, (err, data) => {
       if (err) console.log(err);
     });
+  }
+
+  async deleteMultipleFiles(locations: string[]) {
+    for (let i = 0; i < locations.length; i++) {
+      await this.deleteFile(locations[i]);
+    }
   }
 }

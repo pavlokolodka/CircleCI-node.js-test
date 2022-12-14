@@ -29,21 +29,15 @@ export class VolunteerService {
       await this.volunteerRepository.deleteRequest(requestFromDb.id);
     }
 
-    const docsArray: string[] = [];
+    let docsArray: string[] = [];
     if (volunteerRequest.documents) {
-      for (let i = 0; i < volunteerRequest.documents.length; i++) {
-        const document = await this.awsService.uploadFile(
-          volunteerRequest.documents[i].base64File,
-          volunteerRequest.documents[i].ext,
-          AwsBucketFolders.DOCUMENTS,
-        );
-        docsArray.push(document);
-      }
+      docsArray = await this.awsService.uploadMultipleFiles(
+        volunteerRequest.documents,
+        AwsBucketFolders.DOCUMENTS,
+      );
 
       if (requestFromDb?.documents) {
-        for (let i = 0; i < requestFromDb?.documents.length; i++) {
-          await this.awsService.deleteFile(requestFromDb?.documents[i]);
-        }
+        await this.awsService.deleteMultipleFiles(requestFromDb?.documents);
       }
     }
 
