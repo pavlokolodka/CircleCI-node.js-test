@@ -1,39 +1,57 @@
 import { Test } from '@nestjs/testing';
-import { AwsService, PrismaService } from 'src/services';
-import { MockAwsService } from '../../services/mocks';
+import { PrismaService } from 'src/services';
 import UserRepository from '../repository/user.repository';
-import { UserService } from '../user.service';
-import { MockUserRepository, UserMatchingObject, userMock } from './user-mock';
+import { UserMatchingObject, userMock } from './user-mock';
 
-describe('UserService', () => {
-  let userService: UserService;
-  const mockPrismaService = {};
+describe('UserRepository', () => {
+  let userRepo: UserRepository;
+  const prismaService = new PrismaService();
+
+  beforeAll(async () => {
+    await prismaService.user
+      .create({
+        data: {
+          email: userMock().email,
+          name: userMock().name,
+          lastname: userMock().lastname,
+          role: userMock().role,
+        },
+      })
+      .catch(() => {
+        return;
+      });
+  }, 10000);
+
+  afterAll(async () => {
+    await prismaService.user
+      .delete({ where: { email: 'newemail@gmail.com' } })
+      .catch(() => {
+        return;
+      });
+    await prismaService.$disconnect();
+  }, 10000);
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
-      providers: [UserService, UserRepository, AwsService, PrismaService],
+      providers: [PrismaService, UserRepository],
     })
-      .overrideProvider(UserRepository)
-      .useClass(MockUserRepository)
-      .overrideProvider(AwsService)
-      .useClass(MockAwsService)
       .overrideProvider(PrismaService)
-      .useValue(mockPrismaService)
+      .useValue(prismaService)
       .compile();
 
-    userService = moduleRef.get<UserService>(UserService);
+    userRepo = moduleRef.get<UserRepository>(UserRepository);
     jest.useRealTimers();
     jest.clearAllMocks();
   }, 30000);
 
   describe('getByEmail', () => {
-    test('call userService.getByEmail', async () =>
-      await userService
+    test('call getByEmail', async () =>
+      await userRepo
         .getByEmail(userMock().email)
         .then((data) => expect(data).toMatchObject(UserMatchingObject)));
 
-    test('call userService.getByEmail (unexisting email)', async () =>
-      await userService
+    test('call getByEmail (unexisting email)', async () =>
+      await userRepo
         .getByEmail('unexisting@gmail.com')
         .then((data) => expect(data).toMatchObject(UserMatchingObject))
         .catch((err) => expect(err).rejects));
@@ -41,24 +59,23 @@ describe('UserService', () => {
 
   describe('getByEmailWithVolunteerAndOrder', () => {
     test(
-      'call userService.getByEmailWithVolunteerAndOrder',
+      'call getByEmailWithVolunteerAndOrder',
       async () =>
-        await userService
+        await userRepo
           .getByEmailWithVolunteerAndOrder(userMock().email)
           .then((data) =>
             expect(data).toMatchObject({
               ...UserMatchingObject,
               orders: [],
-              volunteer_hints: [],
             }),
           ),
       20000,
     );
 
     test(
-      'call userService.getByEmailWithVolunteerAndOrder (unexisting email)',
+      'call getByEmailWithVolunteerAndOrder (unexisting email)',
       async () =>
-        await userService
+        await userRepo
           .getByEmailWithVolunteerAndOrder('unexisting@gmail.com')
           .then((data) =>
             expect(data).toMatchObject({
@@ -81,18 +98,18 @@ describe('UserService', () => {
     };
 
     test(
-      'call userService.create',
+      'call create',
       async () =>
-        await userService
+        await userRepo
           .create(createUserDto)
           .then((data) => expect(data).toMatchObject(UserMatchingObject)),
       20000,
     );
 
     test(
-      'call userService.create (existing email)',
+      'call create (existing email)',
       async () =>
-        await userService
+        await userRepo
           .create({ ...createUserDto, email: userMock().email })
           .then((data) => expect(data).toMatchObject(UserMatchingObject))
           .catch((err) => expect(err).rejects),
@@ -100,45 +117,38 @@ describe('UserService', () => {
     );
   });
 
-  describe('getUserById', () => {
-    test('call userService.getUserById', async () =>
-      await userService
-        .getUserById(userMock().id)
+  describe('getById', () => {
+    test('call getById', async () =>
+      await userRepo
+        .getById(userMock().id)
         .then((data) => expect(data).toMatchObject(UserMatchingObject)));
   });
 
-  describe('userIsVolunteer', () => {
-    test('call userService.userIsVolunteer', async () =>
-      await userService
-        .userIsVolunteer(userMock().id)
-        .then((data) => expect(data).toEqual(expect.any(Boolean))));
-  });
-
-  describe('updateUser', () => {
+  describe('update', () => {
     const updateUserPayload = { name: 'newname', lastname: 'newlastname' };
 
     test(
-      'call userService.update',
+      'call update',
       async () =>
-        await userService
-          .updateUser(updateUserPayload, userMock().id)
+        await userRepo
+          .update(updateUserPayload, userMock().id)
           .then((data) => expect(data).toMatchObject(UserMatchingObject)),
       20000,
     );
 
     test(
-      'call userService.update photo',
+      'call update photo',
       async () =>
-        await userService
-          .updateUser({ image: 'newimage' }, userMock().id)
+        await userRepo
+          .update({ image: 'newimage' }, userMock().id)
           .then((data) => expect(data).toMatchObject(UserMatchingObject)),
       20000,
     );
   });
 
   describe('delete', () => {
-    test('call userService.delete photo', async () =>
-      await userService
+    test('call delete', async () =>
+      await userRepo
         .delete(userMock().email)
         .then((data) => expect(data).toMatchObject(UserMatchingObject)));
   });
