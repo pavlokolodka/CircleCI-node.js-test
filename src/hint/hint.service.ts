@@ -19,10 +19,6 @@ export class HintService {
     return this.hintRepository.getHintById(id);
   }
 
-  async getAllPhotosByHintId(hintId: number) {
-    return this.hintRepository.getAllPhotosByHintId(hintId);
-  }
-
   async createHint(hint: CreateHintDto, email: string) {
     const userFromDb = await this.userService.getByEmail(email);
     if (!userFromDb) throw new BadRequestException('Something went wrong');

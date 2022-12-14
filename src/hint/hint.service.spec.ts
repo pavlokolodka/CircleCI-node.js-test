@@ -1,78 +1,56 @@
-import { HintService } from './hint.service';
 import { Test, TestingModule } from '@nestjs/testing';
+import { HintService } from './hint.service';
 import { UserService } from '../user/user.service';
-import HintRepository from './repository/hint.repository';
-import { PrismaService } from '../services';
-import { HintMatchingObject, hintMock } from './test/hint.mock';
+import HintMockRepository from './repository/hint.mock.repository';
 import { userMock } from './test/user.mock';
+import HintRepository from './repository/hint.repository';
+import { HintMatchingObject, hintMock } from './test/hint.mock';
+import { PrismaService } from '../services';
 
 describe('Hint Service', () => {
   let hintService: HintService;
-  const prismaService = new PrismaService();
 
-  beforeAll(async () => {
-    await prismaService.volunteer_hint
-      .create({
-        data: {
-          id: hintMock().id,
-          title: hintMock().title,
-          info: hintMock().info,
-          user_id: hintMock().user_id,
-        },
-      })
-      .catch(() => {
-        return;
-      });
-  });
-
-  const mockUserService = {
+  const UserMockService = {
     getByEmail: jest.fn().mockImplementation(() => userMock()),
   };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [HintService, UserService, HintRepository, PrismaService],
+      providers: [HintRepository, HintService, UserService, PrismaService],
     })
+      .overrideProvider(HintRepository)
+      .useClass(HintMockRepository)
       .overrideProvider(UserService)
-      .useValue(mockUserService)
+      .useValue(UserMockService)
       .compile();
 
     hintService = module.get<HintService>(HintService);
   });
 
-  afterAll(async () => {
-    await prismaService.volunteer_hint.delete({ where: { id: hintMock().id } });
-    await prismaService.$disconnect();
-  });
-
-  describe('Find Hints', () => {
+  describe('Get All Hints', () => {
     test('should find all hints', async () => {
-      await hintService
-        .getAllHints(10, 'asc', 1, '')
-        .then((value) =>
-          expect(value.data[0]).toMatchObject(HintMatchingObject),
-        );
+      const data = await hintService.getAllHints(10, 'asc', 1, '');
+      expect(data.data[0]).toMatchObject(HintMatchingObject);
     });
   });
 
-  describe('Find Hint', () => {
+  describe('GetHintById', () => {
     test('should find a existing hint', async () => {
-      await hintService
-        .getHintById(hintMock().id)
-        .then((data) => expect(data).toMatchObject(HintMatchingObject));
+      expect(await hintService.getHintById(hintMock().id)).toMatchObject(
+        HintMatchingObject,
+      );
     });
   });
 
-  describe('Create Hint', () => {
-    const email = 'Arvid_Beer@hotmail.com';
+  describe('Create hint', () => {
     const hint = {
       title: 'new title',
       info: 'new info',
     };
+    const email = 'Arvid_Beer@hotmail.com';
     test('should create hint', async () => {
-      const data = await hintService.createHint(hint, email);
-      expect(data).toMatchObject(HintMatchingObject);
-      await prismaService.volunteer_hint.delete({ where: { id: data.id } });
+      const newHint = await hintService.createHint(hint, email);
+      expect(newHint).toMatchObject(HintMatchingObject);
     });
   });
 
@@ -82,9 +60,8 @@ describe('Hint Service', () => {
       info: 'update info',
     };
     test('should create hint', async () => {
-      await hintService
-        .updateHintById(hintMock().id, hint)
-        .then((data) => expect(data).toMatchObject(HintMatchingObject));
+      const updateHint = await hintService.updateHintById(hintMock().id, hint);
+      expect(updateHint).toMatchObject(HintMatchingObject);
     });
   });
 });
