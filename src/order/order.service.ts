@@ -5,6 +5,7 @@ import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { AwsBucketFolders } from 'src/types';
 import { AwsService } from 'src/services';
+import { OrderStatusEnum } from '../types/order-status.enum';
 
 export interface OrderByCase {
   title?: any;
@@ -21,8 +22,14 @@ export class OrderService {
     private userService: UserService,
   ) {}
 
-  async getAllOrders(limit: number, sort, page: number, search: string) {
-    return this.orderRepository.getAllOrders(limit, sort, page, search);
+  async getAllOrders(
+    limit: number,
+    sort,
+    page: number,
+    search: string,
+    status: OrderStatusEnum,
+  ) {
+    return this.orderRepository.getAllOrders(limit, sort, page, search, status);
   }
 
   async getSortOrders(limit: number, sort, page: number, sortBy: string) {
