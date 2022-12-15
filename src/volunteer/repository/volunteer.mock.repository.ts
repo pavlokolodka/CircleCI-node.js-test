@@ -1,8 +1,12 @@
 import { Volunteer_activation_request } from '@prisma/client';
+import Repository from '../../repository/repository';
 import { GetVolunteerDto } from '../dto/get-Volunteer.dto';
 import IVolunteerRepository from './interface';
 
-export default class VolunteerMockRepository implements IVolunteerRepository {
+export default class VolunteerMockRepository
+  extends Repository
+  implements IVolunteerRepository
+{
   async getRequestById(
     userId: number,
   ): Promise<Volunteer_activation_request | null> {
@@ -33,5 +37,9 @@ export default class VolunteerMockRepository implements IVolunteerRepository {
   }
   async deleteRequest(id: number): Promise<void> {
     return;
+  }
+
+  async query(query: string): Promise<unknown> {
+    throw new Error('Method not implemented');
   }
 }
