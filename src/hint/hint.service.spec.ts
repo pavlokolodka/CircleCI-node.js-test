@@ -5,6 +5,7 @@ import HintMockRepository from './repository/hint.mock.repository';
 import HintRepository from './repository/hint.repository';
 import { HintMatchingObject, hintMock } from './test/hint.mock';
 import { PrismaService } from '../services';
+import { userMock } from '../user/repository/user.repository.mock';
 
 describe('Hint Service', () => {
   let hintService: HintService;
