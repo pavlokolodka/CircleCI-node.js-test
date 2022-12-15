@@ -53,12 +53,12 @@ export class VolunteerRequestsController {
     return this.volunteerRequestsService.getRequestById(+id);
   }
 
-  @ApiResponse({ status: 201, description: 'Approve or reject request' })
+  @ApiResponse({ status: 201, description: 'Change status request' })
   @Post()
   @UseGuards(RolesGuard)
   @Roles('admin')
   @UsePipes(new AjvValidationPipe(ApproveRequestSchema))
-  async approveRequest(@Body() approveRequest: ApproveRequestDto) {
-    return this.volunteerRequestsService.approveRequest(approveRequest);
+  async changeRequestStatus(@Body() dto: ApproveRequestDto) {
+    return this.volunteerRequestsService.changeRequestStatus(dto);
   }
 }

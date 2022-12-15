@@ -1,10 +1,10 @@
+import { InjectQueue } from '@nestjs/bull';
+import { Queue } from 'bull';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { GetVolunteerDto } from './dto/get-Volunteer.dto';
 import VolunteerRepository from './repository/volunteer.repository';
-import { AwsBucketFolders } from 'src/types';
+import { AwsBucketFolders, VolunteerRequestStatus } from 'src/types';
 import { AwsService } from 'src/services';
-import { InjectQueue } from '@nestjs/bull';
-import { Queue } from 'bull';
 import { emitter } from 'src/utils/emitter';
 
 @Injectable()
@@ -19,7 +19,7 @@ export class VolunteerService {
     const requestFromDb = await this.volunteerRepository.getRequestById(
       volunteerRequest.userId,
     );
-    if (requestFromDb?.status) {
+    if (requestFromDb?.status == VolunteerRequestStatus.APPROVED) {
       throw new BadRequestException(
         'Hello friend you have already become volunteer',
       );

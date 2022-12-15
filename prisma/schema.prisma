@@ -49,14 +49,14 @@ model Order {
 }
 
 model Volunteer_activation_request {
-  id          Int      @id @default(autoincrement())
+  id          Int                    @id @default(autoincrement())
   country     String
   city        String
   card_number String
   documents   String[]
-  user        User     @relation(fields: [userId], references: [id])
-  userId      Int      @unique
-  status      Boolean?
+  user        User                   @relation(fields: [userId], references: [id])
+  userId      Int                    @unique
+  status      VolunteerRequestStatus @default(open)
 }
 
 model Volunteer_hint {
@@ -85,4 +85,10 @@ enum Role {
 enum Status {
   open
   closed
+}
+
+enum VolunteerRequestStatus {
+  open
+  rejected
+  approved
 }
