@@ -3,6 +3,7 @@ import { CreateUserDto } from 'src/auth/dto/create-user.dto';
 import { IUserRerository } from 'src/types';
 import Repository from '../../repository/repository';
 import { UpdateUserDto } from '../dto/update-user.dto';
+import Repository from '../../repository/repository';
 
 export default class UserRepository
   extends Repository
