@@ -15,7 +15,7 @@ export class HintService {
     return this.hintRepository.getAllHints({ limit, sort, page, search });
   }
 
-  getHintById(id: number) {
+  async getHintById(id: number) {
     return this.hintRepository.getHintById(id);
   }
 
