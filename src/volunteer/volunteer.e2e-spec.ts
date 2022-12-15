@@ -8,13 +8,14 @@ import { faker } from '@faker-js/faker';
 
 describe('Volunteer', () => {
   let app: INestApplication;
+  let prismaService: PrismaService;
   const payload = {
     country: faker.address.country(),
     city: faker.address.city(),
     document: faker.internet.avatar(),
     cardNumber: faker.finance.creditCardNumber(),
     expansion: 'pdf',
-    userId: 10,
+    userId: 1,
   };
   const payload2 = {
     country: faker.address.country(),
@@ -22,7 +23,7 @@ describe('Volunteer', () => {
     document: faker.internet.avatar(),
     cardNumber: faker.finance.creditCardNumber(),
     expansion: 'pdf',
-    userId: 9,
+    userId: 2,
   };
 
   beforeAll(async () => {
@@ -33,20 +34,20 @@ describe('Volunteer', () => {
     app = moduleRef.createNestApplication();
     await app.init();
 
-    const prismaService = new PrismaService();
+    prismaService = new PrismaService();
 
     // Update the entities in the database to restore the initial state
     await prismaService.volunteer_activation_request.upsert({
       where: {
-        userId: 9,
+        userId: 2,
       },
       create: {
-        country: 'Ukraine',
-        city: 'Kyiv',
+        country: payload2.country,
+        city: payload2.city,
         document:
           'https://krauddonate161122.s3.eu-central-1.amazonaws.com/documents/6afa0386-0727-436d-bc90-bf3f2e907631.pdf',
-        card_number: '1111111111111111111',
-        userId: 9,
+        card_number: payload2.cardNumber,
+        userId: 2,
         status: true,
       },
       update: {
@@ -55,7 +56,7 @@ describe('Volunteer', () => {
     });
     await prismaService.volunteer_activation_request.upsert({
       where: {
-        userId: 10,
+        userId: 1,
       },
       create: {
         country: 'Ukraine',
@@ -63,7 +64,7 @@ describe('Volunteer', () => {
         document:
           'https://krauddonate161122.s3.eu-central-1.amazonaws.com/documents/6afa0386-0727-436d-bc90-bf3f2e907631.pdf',
         card_number: '1111111111111111111',
-        userId: 10,
+        userId: 1,
         status: false,
       },
       update: {
@@ -118,6 +119,13 @@ describe('Volunteer', () => {
   });
 
   afterAll(async () => {
+    await prismaService.volunteer_activation_request.deleteMany({
+      where: {
+        userId: {
+          in: [1, 2],
+        },
+      },
+    });
     await app.close();
   });
 });
