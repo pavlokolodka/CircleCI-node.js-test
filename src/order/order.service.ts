@@ -7,6 +7,13 @@ import { AwsBucketFolders } from 'src/types';
 import { AwsService } from 'src/services';
 import { OrderStatusEnum } from '../types/order-status.enum';
 
+export interface OrderByCase {
+  title?: any;
+  sum?: any;
+  finished_at?: any;
+  createdAt?: any;
+}
+
 @Injectable()
 export class OrderService {
   constructor(
@@ -23,6 +30,28 @@ export class OrderService {
     status: OrderStatusEnum,
   ) {
     return this.orderRepository.getAllOrders(limit, sort, page, search, status);
+  }
+
+  async getSortOrders(limit: number, sort, page: number, sortBy: string) {
+    let orderByCase: OrderByCase;
+
+    switch (sortBy) {
+      case 'name':
+        orderByCase = { title: sort };
+        break;
+      case 'popularity':
+        orderByCase = { sum: sort };
+        break;
+      case 'remain':
+        orderByCase = { finished_at: sort };
+        break;
+      case 'date':
+        orderByCase = { createdAt: sort };
+        break;
+      default:
+        throw new BadRequestException('Wrong case');
+    }
+    return this.orderRepository.getSortOrders(limit, page, orderByCase);
   }
 
   async getOrderById(id: number) {
