@@ -1,25 +1,21 @@
-import { MockUserRepository } from './../../repository/user.repository.mock';
 import { Test } from '@nestjs/testing';
 import { PrismaService } from 'src/services';
-import { IUser } from 'src/types';
 import UserRepository from '../repository/user.repository';
+import { userMock } from '../repository/user.repository.mock';
 import { UserMatchingObject } from './user-mock';
 
 describe('UserRepository', () => {
   let userRepo: UserRepository;
-  let userMock: IUser;
-  const mockUserRepo = new MockUserRepository();
   const prismaService = new PrismaService();
 
   beforeAll(async () => {
-    userMock = await mockUserRepo.getByEmail('email');
     await prismaService.user
       .create({
         data: {
-          email: userMock.email,
-          name: userMock.name,
-          lastname: userMock.lastname,
-          role: userMock.role,
+          email: userMock().email,
+          name: userMock().name,
+          lastname: userMock().lastname,
+          role: userMock().role,
         },
       })
       .catch(() => {
@@ -52,7 +48,7 @@ describe('UserRepository', () => {
   describe('getByEmail', () => {
     test('call getByEmail', async () =>
       await userRepo
-        .getByEmail(userMock.email)
+        .getByEmail(userMock().email)
         .then((data) => expect(data).toMatchObject(UserMatchingObject)));
 
     test('call getByEmail (unexisting email)', async () =>
@@ -67,7 +63,7 @@ describe('UserRepository', () => {
       'call getByEmailWithVolunteerAndOrder',
       async () =>
         await userRepo
-          .getByEmailWithVolunteerAndOrder(userMock.email)
+          .getByEmailWithVolunteerAndOrder(userMock().email)
           .then((data) =>
             expect(data).toMatchObject({
               ...UserMatchingObject,
@@ -114,7 +110,7 @@ describe('UserRepository', () => {
       'call create (existing email)',
       async () =>
         await userRepo
-          .create({ ...createUserDto, email: userMock.email })
+          .create({ ...createUserDto, email: userMock().email })
           .then((data) => expect(data).toMatchObject(UserMatchingObject))
           .catch((err) => expect(err).rejects),
       20000,
@@ -124,7 +120,7 @@ describe('UserRepository', () => {
   describe('getById', () => {
     test('call getById', async () =>
       await userRepo
-        .getById(userMock.id)
+        .getById(userMock().id)
         .then((data) => expect(data).toMatchObject(UserMatchingObject)));
   });
 
@@ -135,7 +131,7 @@ describe('UserRepository', () => {
       'call update',
       async () =>
         await userRepo
-          .update(updateUserPayload, userMock.id)
+          .update(updateUserPayload, userMock().id)
           .then((data) => expect(data).toMatchObject(UserMatchingObject)),
       20000,
     );
@@ -144,7 +140,7 @@ describe('UserRepository', () => {
       'call update photo',
       async () =>
         await userRepo
-          .update({ image: 'newimage' }, userMock.id)
+          .update({ image: 'newimage' }, userMock().id)
           .then((data) => expect(data).toMatchObject(UserMatchingObject)),
       20000,
     );
@@ -153,7 +149,7 @@ describe('UserRepository', () => {
   describe('delete', () => {
     test('call delete', async () =>
       await userRepo
-        .delete(userMock.email)
+        .delete(userMock().email)
         .then((data) => expect(data).toMatchObject(UserMatchingObject)));
   });
 });
