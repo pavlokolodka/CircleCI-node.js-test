@@ -39,12 +39,6 @@ export default class OrderRepository extends Repository {
 
     const totalPages = Math.ceil(ordersCount / limit);
 
-    console.log('page', page);
-    console.log('limit', limit);
-    console.log('total pages', totalPages);
-    console.log('order by', orderByCase);
-    console.log('orders', orders);
-
     return {
       page,
       limit,
