@@ -58,7 +58,11 @@ export class VolunteerRequestsController {
   @UseGuards(RolesGuard)
   @Roles('admin')
   @UsePipes(new AjvValidationPipe(ApproveRequestSchema))
-  async changeRequestStatus(@Body() dto: ApproveRequestDto) {
-    return this.volunteerRequestsService.changeRequestStatus(dto);
+  async changeRequestStatus(
+    @Body() changeRequestStatusPayload: ApproveRequestDto,
+  ) {
+    return this.volunteerRequestsService.changeRequestStatus(
+      changeRequestStatusPayload,
+    );
   }
 }
