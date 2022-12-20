@@ -1,5 +1,6 @@
 import { Volunteer_activation_request } from '@prisma/client';
 import Repository from '../../repository/repository';
+import { CreateRequestDto } from '../dto/create-request.dto';
 import { GetVolunteerDto } from '../dto/get-Volunteer.dto';
 import IVolunteerRepository from './interface';
 
@@ -15,24 +16,26 @@ export default class VolunteerMockRepository
       country: 'Ukraine',
       city: 'Zaporizhzhia',
       card_number: '123456789101123',
-      document:
+      documents: [
         'https://krauddonate161122.s3.eu-central-1.amazonaws.com/documents/ad67fd79-48e7-42bf-9a81-8bbf32ad22a3.sTZDl5nNofvL8sU',
+      ],
       userId: 1,
-      status: null,
+      status: 'open',
     };
   }
   async createRequest(
-    volunteerRequest: GetVolunteerDto,
+    volunteerRequest: CreateRequestDto,
   ): Promise<Volunteer_activation_request> {
     return {
       id: 127,
       country: 'Ukraine',
       city: 'Zaporizhzhia',
       card_number: '123456789101123',
-      document:
+      documents: [
         'https://krauddonate161122.s3.eu-central-1.amazonaws.com/documents/ad67fd79-48e7-42bf-9a81-8bbf32ad22a3.sTZDl5nNofvL8sU',
+      ],
       userId: 1,
-      status: null,
+      status: 'open',
     };
   }
   async deleteRequest(id: number): Promise<void> {

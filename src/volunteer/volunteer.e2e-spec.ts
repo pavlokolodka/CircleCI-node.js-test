@@ -12,17 +12,15 @@ describe('Volunteer', () => {
   const payload = {
     country: faker.address.country(),
     city: faker.address.city(),
-    document: faker.internet.avatar(),
+    documents: [faker.internet.avatar()],
     cardNumber: faker.finance.creditCardNumber(),
-    expansion: 'pdf',
     userId: 1,
   };
   const payload2 = {
     country: faker.address.country(),
     city: faker.address.city(),
-    document: faker.internet.avatar(),
+    documents: [faker.internet.avatar()],
     cardNumber: faker.finance.creditCardNumber(),
-    expansion: 'pdf',
     userId: 2,
   };
 
@@ -44,14 +42,15 @@ describe('Volunteer', () => {
       create: {
         country: payload2.country,
         city: payload2.city,
-        document:
+        documents: [
           'https://krauddonate161122.s3.eu-central-1.amazonaws.com/documents/6afa0386-0727-436d-bc90-bf3f2e907631.pdf',
+        ],
         card_number: payload2.cardNumber,
         userId: 2,
-        status: true,
+        status: 'approved',
       },
       update: {
-        status: true,
+        status: 'approved',
       },
     });
     await prismaService.volunteer_activation_request.upsert({
@@ -61,14 +60,15 @@ describe('Volunteer', () => {
       create: {
         country: 'Ukraine',
         city: 'Kyiv',
-        document:
+        documents: [
           'https://krauddonate161122.s3.eu-central-1.amazonaws.com/documents/6afa0386-0727-436d-bc90-bf3f2e907631.pdf',
+        ],
         card_number: '1111111111111111111',
         userId: 1,
-        status: false,
+        status: 'rejected',
       },
       update: {
-        status: false,
+        status: 'rejected',
       },
     });
 
@@ -81,13 +81,13 @@ describe('Volunteer', () => {
       .send(payload)
       .expect(201)
       .expect((res) => {
-        const { cardNumber, expansion, ...result } = payload;
+        const { cardNumber, ...result } = payload;
         expect(res.body).toMatchObject<Volunteer_activation_request>({
           ...result,
           id: expect.any(Number),
-          document: expect.any(String),
+          documents: [expect.any(String)],
           card_number: payload.cardNumber,
-          status: null,
+          status: expect.any(String),
         });
       });
   });
@@ -98,9 +98,13 @@ describe('Volunteer', () => {
       .send({
         country: faker.address.country(),
         city: faker.address.city(),
-        document: faker.internet.avatar(),
+        documents: [
+          {
+            base64File: faker.internet.avatar(),
+            ext: faker.internet.avatar(),
+          },
+        ],
         cardNumber: faker.finance.creditCardNumber(),
-        expansion: 'pdf',
       })
       .expect(400);
   });
