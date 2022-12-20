@@ -3,6 +3,7 @@ import Repository from 'src/repository/repository';
 import { CreateOrderDto } from '../dto/create-order.dto';
 import { UpdateOrderDto } from '../dto/update-order.dto';
 import { OrderStatusEnum } from '../../types/order-status.enum';
+import { OrderByCase } from '../order.service';
 
 export default class OrderRepository extends Repository {
   async getAllOrders(
@@ -42,6 +43,28 @@ export default class OrderRepository extends Repository {
 
     const totalPages = Math.ceil(ordersCount / limit);
 
+    return {
+      page,
+      limit,
+      totalPages,
+      data: orders,
+    };
+  }
+
+  async getSortOrders(limit: number, page: number, orderByCase: OrderByCase) {
+    const skip = limit * (page - 1);
+    const orders = await this.prismaService.order
+      .findMany({
+        skip,
+        take: limit,
+        orderBy: orderByCase,
+      })
+      .catch(() => {
+        throw new BadRequestException('Something went wrong');
+      });
+    const totalPages = Math.round(
+      (await this.prismaService.order.findMany()).length / limit,
+    );
     return {
       page,
       limit,
