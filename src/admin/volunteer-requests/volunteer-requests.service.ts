@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import VolunteerRequestsRepository from './repository/volunteer-requests.repository';
-import { MailerService } from '@nestjs-modules/mailer';
 import { ApproveRequestDto } from './dto/approve-request.dto';
 import { UserService } from '../../user/user.service';
 import { REJECTED_TEMP } from '../../templates/rejected-request';
 import { VolunteerRequestStatus } from 'src/types';
+import { MailService } from '../../utils/mail/mail.service';
 
 @Injectable()
 export class VolunteerRequestsService {
   constructor(
     private volunteerRequestsRepository: VolunteerRequestsRepository,
-    private mailService: MailerService,
+    private mailService: MailService,
     private userService: UserService,
   ) {}
 
@@ -22,19 +22,21 @@ export class VolunteerRequestsService {
     return this.volunteerRequestsRepository.getRequestById(id);
   }
 
-  async changeRequestStatus(dto: ApproveRequestDto) {
-    // -- PROBLEM WITH GRID
-    // if (dto.status === VolunteerRequestStatus.REJECTED) {
-    //   const user = await this.userService.getUserById(dto.userId);
-    //   if (user) {
-    //     await this.mailService.sendMail({
-    //       to: user.email,
-    //       from: 'krauddonate@gmail.com',
-    //       subject: 'Rejected request',
-    //       html: REJECTED_TEMP(user.name, dto.message),
-    //     });
-    //   }
-    // }
-    return this.volunteerRequestsRepository.changeRequestStatus(dto);
+  async changeRequestStatus(changeRequestStatusPayload: ApproveRequestDto) {
+    if (changeRequestStatusPayload.status == VolunteerRequestStatus.REJECTED) {
+      const user = await this.userService.getUserById(
+        changeRequestStatusPayload.userId,
+      );
+      if (user) {
+        await this.mailService.sendEmail(
+          user.email,
+          'Rejected request',
+          REJECTED_TEMP(user.name, changeRequestStatusPayload.message),
+        );
+      }
+      return this.volunteerRequestsRepository.changeRequestStatus(
+        changeRequestStatusPayload,
+      );
+    }
   }
 }

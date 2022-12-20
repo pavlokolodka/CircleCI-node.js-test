@@ -1,4 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const EventEmitter = require('events');
+/// <reference types="node" />
+import * as EventEmitter from 'events';
 
 export const emitter = new EventEmitter();

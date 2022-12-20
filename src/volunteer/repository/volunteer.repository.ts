@@ -1,8 +1,12 @@
-import Repository from 'src/repository/repository';
 import { BadRequestException } from '@nestjs/common';
 import { CreateRequestDto } from '../dto/create-request.dto';
+import Repository from '../../repository/repository';
+import IVolunteerRepository from './interface';
 
-export default class VolunteerRepository extends Repository {
+export default class VolunteerRepository
+  extends Repository
+  implements IVolunteerRepository
+{
   async getRequestById(userId: number) {
     return this.prismaService.volunteer_activation_request
       .findFirst({

@@ -1,10 +1,11 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { S3 } from 'aws-sdk';
 import { AwsBucketFolders, IMultipleUploadFiles } from 'src/types';
+import { IAwsService } from 'src/types/aws.interface';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
-export class AwsService {
+export class AwsService implements IAwsService {
   s3: S3.ClientConfiguration | any;
   constructor() {
     this.s3 = new S3({
@@ -86,6 +87,8 @@ export class AwsService {
     await this.s3.deleteObject(params, (err, data) => {
       if (err) console.log(err);
     });
+
+    return { success: true };
   }
 
   async deleteMultipleFiles(locations: string[]) {

@@ -4,7 +4,7 @@ import { VolunteerRequestsService } from 'src/admin/volunteer-requests/volunteer
 import { VolunteerRequestStatus } from 'src/types';
 
 @Processor('volunteers_request')
-export class AudioConsumer {
+export class VolunteerConsumer {
   constructor(
     private readonly volunteerRequestsService: VolunteerRequestsService,
   ) {}

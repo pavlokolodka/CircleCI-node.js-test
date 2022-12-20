@@ -4,7 +4,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { GetVolunteerDto } from './dto/get-Volunteer.dto';
 import VolunteerRepository from './repository/volunteer.repository';
 import { AwsBucketFolders, VolunteerRequestStatus } from 'src/types';
-import { AwsService } from 'src/services';
+import { AwsService } from '../services';
 import { emitter } from 'src/utils/emitter';
 
 @Injectable()
