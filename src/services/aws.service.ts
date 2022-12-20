@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { S3 } from 'aws-sdk';
 import { AwsBucketFolders, IMultipleUploadFiles } from 'src/types';
 import { v4 as uuidv4 } from 'uuid';
@@ -67,7 +67,9 @@ export class AwsService {
         files[i].base64File,
         files[i].ext,
         folder,
-      );
+      ).catch(() => {
+        throw new BadRequestException('Files were not downloaded.');
+      });
       locationsArray.push(document);
     }
     return locationsArray;
