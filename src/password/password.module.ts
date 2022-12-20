@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { PrismaService } from 'src/services';
+import { PrismaService } from '../services';
 import { PasswordService } from './password.service';
 import { PasswordController } from './password.controller';
 import HttpService from '../utils/http/http.service';
