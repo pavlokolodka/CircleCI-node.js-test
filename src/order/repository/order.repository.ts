@@ -2,9 +2,17 @@ import { BadRequestException } from '@nestjs/common';
 import Repository from 'src/repository/repository';
 import { CreateOrderDto } from '../dto/create-order.dto';
 import { UpdateOrderDto } from '../dto/update-order.dto';
+import { OrderStatusEnum } from '../../types/order-status.enum';
+import { OrderByCase } from '../order.service';
 
 export default class OrderRepository extends Repository {
-  async getAllOrders(limit: number, sort, page: number, search: string) {
+  async getAllOrders(
+    limit: number,
+    sort,
+    page: number,
+    search: string,
+    status: OrderStatusEnum,
+  ) {
     const skip = limit * (page - 1);
     const orders = await this.prismaService.order
       .findMany({
@@ -14,10 +22,42 @@ export default class OrderRepository extends Repository {
           id: sort,
         },
         where: {
+          status,
           title: {
             contains: search,
           },
         },
+      })
+      .catch(() => {
+        throw new BadRequestException('Something went wrong');
+      });
+
+    const ordersCount = await this.prismaService.order.count({
+      where: {
+        status,
+        title: {
+          contains: search,
+        },
+      },
+    });
+
+    const totalPages = Math.ceil(ordersCount / limit);
+
+    return {
+      page,
+      limit,
+      totalPages,
+      data: orders,
+    };
+  }
+
+  async getSortOrders(limit: number, page: number, orderByCase: OrderByCase) {
+    const skip = limit * (page - 1);
+    const orders = await this.prismaService.order
+      .findMany({
+        skip,
+        take: limit,
+        orderBy: orderByCase,
       })
       .catch(() => {
         throw new BadRequestException('Something went wrong');
