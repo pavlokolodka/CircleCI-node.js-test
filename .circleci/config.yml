@@ -9,6 +9,9 @@ jobs:
       - node/install-packages:
           pkg-manager: npm
       - run:
+          command: npm i
+          name: Run installation of packages
+      - run:
           command: npm run test -- volunteer.service.spec.ts
           name: Run tests
 workflows:
