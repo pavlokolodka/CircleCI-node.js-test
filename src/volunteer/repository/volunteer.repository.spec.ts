@@ -32,6 +32,7 @@ describe('Test Volunteer Repository', () => {
         name: faker.name.firstName(),
         lastname: faker.name.lastName(),
         role: 'customer',
+        id: 1,
       },
       update: {
         email: faker.internet.email(),
