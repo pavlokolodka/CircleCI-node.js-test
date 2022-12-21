@@ -2,10 +2,24 @@ version: 2.1
 orbs:
   node: circleci/node@5.0.2
 jobs:
-  build_and_test: # this can be any name you choose
-    executor: node/default # use the default executor defined within the orb
+  build_and_test: 
+    executor: node/default 
+    docker:
+      - image: circleci/node:16.15.1
+        environment:
+          DATABASE_URL: postgresql://circleci@localhost/main
+      - image: circleci/postgres:15.0
+        environment:
+          PGHOST: localhost
+          PGUSER: circleci
+          POSTGRES_USER: circleci
+          POSTGRES_DB: main
+          POSTGRES_HOST_AUTH_METHOD: trust
     steps:
       - checkout
+      - run:
+          name: Wait for db to run
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - node/install:
           node-version: "16.15.1"
       - run:
