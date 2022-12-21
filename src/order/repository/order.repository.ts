@@ -3,19 +3,16 @@ import Repository from 'src/repository/repository';
 import { CreateOrderDto } from '../dto/create-order.dto';
 import { UpdateOrderDto } from '../dto/update-order.dto';
 import { OrderByCase } from '../order.service';
-import { SortOrdersDto } from '../../utils/validator/dto/sortOrders.dto';
+import { OrderFiltersType } from '../../types/order-filters.type';
 
 export default class OrderRepository extends Repository {
-  async getAllOrders(filters: SortOrdersDto, orderByCase: OrderByCase) {
-    const limit = parseInt(filters.limit);
-    const page = parseInt(filters.page);
-
-    const skip = limit * (page - 1);
+  async getAllOrders(filters: OrderFiltersType, orderByCase: OrderByCase) {
+    const skip = filters.limit * (filters.page - 1);
 
     const orders = await this.prismaService.order
       .findMany({
         skip,
-        take: limit,
+        take: filters.limit,
         orderBy: orderByCase,
         where: {
           status: filters.status,
@@ -37,11 +34,11 @@ export default class OrderRepository extends Repository {
       },
     });
 
-    const totalPages = Math.ceil(ordersCount / limit);
+    const totalPages = Math.ceil(ordersCount / filters.limit);
 
     return {
-      page,
-      limit,
+      page: filters.page,
+      limit: filters.limit,
       totalPages,
       data: orders,
     };

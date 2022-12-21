@@ -22,9 +22,7 @@ import {
   CreateOrderSchema,
   UpdateOrderSchema,
   IdSchema,
-  PaginationSchema,
 } from 'src/utils/validator/order';
-import { PaginationDto } from 'src/utils/validator/dto/pagination.dto';
 import { IdDto } from 'src/utils/validator/dto/id.dto';
 import { SortOrdersDto } from 'src/utils/validator/dto/sortOrders.dto';
 import { getSortedOrdersSchema } from 'src/utils/validator/order/sortedOrders.schema';
@@ -41,7 +39,15 @@ export class OrderController {
   @Get()
   @UsePipes(new AjvValidationPipe(getSortedOrdersSchema))
   async getAllOrders(@Query() params: SortOrdersDto) {
-    return this.orderService.getAllOrders(params);
+    const { page, limit, sort, sortBy, search, status } = params;
+    return this.orderService.getAllOrders({
+      page: page ? Number.parseInt(page) : 1,
+      limit: limit ? Number.parseInt(limit) : 10,
+      sort: sort ?? 'asc',
+      sortBy,
+      search,
+      status,
+    });
   }
 
   @ApiResponse({ status: 200, description: 'Get full information about order' })
