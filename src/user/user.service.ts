@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from 'src/auth/dto/create-user.dto';
-import { AwsBucketFolders } from '../types/aws-bucket-folders.enum';
 import { UpdateUserDto } from './dto/update-user.dto';
 import UserRepository from './repository/user.repository';
 import * as gravatar from 'gravatar';
 import { AwsService } from '../services/aws.service';
+import { AwsBucketFolders } from 'src/types';
 
 @Injectable()
 export class UserService {

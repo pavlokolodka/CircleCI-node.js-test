@@ -13,9 +13,9 @@ describe('Test Volunteer Repository', () => {
     country: expect.any(String),
     city: expect.any(String),
     card_number: expect.any(String),
-    document: expect.any(String),
+    documents: [expect.any(String), expect.any(String)],
     userId: 1,
-    status: null,
+    status: expect.any(String),
   };
 
   beforeAll(async () => {
@@ -31,14 +31,14 @@ describe('Test Volunteer Repository', () => {
         country: faker.address.country(),
         city: faker.address.city(),
         card_number: faker.finance.creditCardNumber(),
-        document: faker.image.dataUri(),
+        documents: [faker.image.dataUri(), faker.image.dataUri()],
         userId: 1,
       },
       update: {
         country: faker.address.country(),
         city: faker.address.city(),
         card_number: faker.finance.creditCardNumber(),
-        document: faker.image.dataUri(),
+        documents: [faker.image.dataUri(), faker.image.dataUri()],
       },
       where: {
         userId: 1,
@@ -67,19 +67,18 @@ describe('Test Volunteer Repository', () => {
       country: faker.address.country(),
       city: faker.address.city(),
       cardNumber: faker.finance.creditCardNumber(),
-      document: faker.image.dataUri(),
+      documents: [faker.image.dataUri(), faker.image.dataUri()],
       userId: 2,
-      expansion: 'pdf',
     };
     const request = await volunteerRepo.createRequest(data);
-    const { cardNumber, expansion, ...result } = data;
+    const { cardNumber, ...result } = data;
 
     expect(request).toEqual({
       ...result,
       card_number: data.cardNumber,
-      status: null,
+      status: 'open',
       id: expect.any(Number),
-      document: expect.any(String),
+      documents: [faker.image.dataUri(), faker.image.dataUri()],
     });
   });
 
@@ -89,9 +88,8 @@ describe('Test Volunteer Repository', () => {
         country: faker.address.country(),
         city: faker.address.city(),
         cardNumber: faker.finance.creditCardNumber(),
-        document: faker.image.dataUri(),
+        documents: [faker.image.dataUri(), faker.image.dataUri()],
         userId: 2,
-        expansion: 'pdf',
       };
       await volunteerRepo.createRequest(data);
       expect(await volunteerRepo.createRequest(data)).toThrow(
