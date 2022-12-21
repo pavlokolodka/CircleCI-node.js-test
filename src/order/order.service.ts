@@ -5,7 +5,7 @@ import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { AwsBucketFolders } from 'src/types';
 import { AwsService } from 'src/services';
-import { OrderStatusEnum } from '../types/order-status.enum';
+import { OrderFiltersType } from '../types/order-filters.type';
 
 export interface OrderByCase {
   title?: any;
@@ -22,36 +22,27 @@ export class OrderService {
     private userService: UserService,
   ) {}
 
-  async getAllOrders(
-    limit: number,
-    sort,
-    page: number,
-    search: string,
-    status: OrderStatusEnum,
-  ) {
-    return this.orderRepository.getAllOrders(limit, sort, page, search, status);
-  }
-
-  async getSortOrders(limit: number, sort, page: number, sortBy: string) {
+  async getAllOrders(params: OrderFiltersType) {
     let orderByCase: OrderByCase;
 
-    switch (sortBy) {
+    switch (params.sortBy) {
       case 'name':
-        orderByCase = { title: sort };
+        orderByCase = { title: params.sort };
         break;
       case 'popularity':
-        orderByCase = { sum: sort };
+        orderByCase = { sum: params.sort };
         break;
       case 'remain':
-        orderByCase = { finished_at: sort };
+        orderByCase = { finished_at: params.sort };
         break;
       case 'date':
-        orderByCase = { createdAt: sort };
+        orderByCase = { createdAt: params.sort };
         break;
       default:
         throw new BadRequestException('Wrong case');
     }
-    return this.orderRepository.getSortOrders(limit, page, orderByCase);
+
+    return this.orderRepository.getAllOrders(params, orderByCase);
   }
 
   async getOrderById(id: number) {

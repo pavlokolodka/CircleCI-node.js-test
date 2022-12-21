@@ -22,9 +22,7 @@ import {
   CreateOrderSchema,
   UpdateOrderSchema,
   IdSchema,
-  PaginationSchema,
 } from 'src/utils/validator/order';
-import { PaginationDto } from 'src/utils/validator/dto/pagination.dto';
 import { IdDto } from 'src/utils/validator/dto/id.dto';
 import { SortOrdersDto } from 'src/utils/validator/dto/sortOrders.dto';
 import { getSortedOrdersSchema } from 'src/utils/validator/order/sortedOrders.schema';
@@ -39,18 +37,17 @@ export class OrderController {
 
   @ApiResponse({ status: 200, description: 'Get all Orders from DB' })
   @Get()
-  @UsePipes(new AjvValidationPipe(PaginationSchema))
-  async getAllOrders(@Query() params: PaginationDto) {
-    const { limit = 10, sort = 'asc', page = 1, search, status } = params;
-    return this.orderService.getAllOrders(+limit, sort, +page, search, status);
-  }
-
-  @ApiResponse({ status: 200, description: 'Get all Orders sorted from DB' })
-  @Get('sorted')
   @UsePipes(new AjvValidationPipe(getSortedOrdersSchema))
-  async getSortOrders(@Query() params: SortOrdersDto) {
-    const { page = 1, limit = 10, sort = 'asc', sortBy } = params;
-    return this.orderService.getSortOrders(+limit, sort, +page, sortBy);
+  async getAllOrders(@Query() params: SortOrdersDto) {
+    const { page, limit, sort, sortBy, search, status } = params;
+    return this.orderService.getAllOrders({
+      page: page ? Number.parseInt(page) : 1,
+      limit: limit ? Number.parseInt(limit) : 10,
+      sort: sort ?? 'asc',
+      sortBy,
+      search,
+      status,
+    });
   }
 
   @ApiResponse({ status: 200, description: 'Get full information about order' })

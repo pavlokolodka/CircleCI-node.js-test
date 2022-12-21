@@ -2,29 +2,22 @@ import { BadRequestException } from '@nestjs/common';
 import Repository from 'src/repository/repository';
 import { CreateOrderDto } from '../dto/create-order.dto';
 import { UpdateOrderDto } from '../dto/update-order.dto';
-import { OrderStatusEnum } from '../../types/order-status.enum';
 import { OrderByCase } from '../order.service';
+import { OrderFiltersType } from '../../types/order-filters.type';
 
 export default class OrderRepository extends Repository {
-  async getAllOrders(
-    limit: number,
-    sort,
-    page: number,
-    search: string,
-    status: OrderStatusEnum,
-  ) {
-    const skip = limit * (page - 1);
+  async getAllOrders(filters: OrderFiltersType, orderByCase: OrderByCase) {
+    const skip = filters.limit * (filters.page - 1);
+
     const orders = await this.prismaService.order
       .findMany({
         skip,
-        take: limit,
-        orderBy: {
-          id: sort,
-        },
+        take: filters.limit,
+        orderBy: orderByCase,
         where: {
-          status,
+          status: filters.status,
           title: {
-            contains: search,
+            contains: filters.search,
           },
         },
       })
@@ -34,40 +27,18 @@ export default class OrderRepository extends Repository {
 
     const ordersCount = await this.prismaService.order.count({
       where: {
-        status,
+        status: filters.status,
         title: {
-          contains: search,
+          contains: filters.search,
         },
       },
     });
 
-    const totalPages = Math.ceil(ordersCount / limit);
+    const totalPages = Math.ceil(ordersCount / filters.limit);
 
     return {
-      page,
-      limit,
-      totalPages,
-      data: orders,
-    };
-  }
-
-  async getSortOrders(limit: number, page: number, orderByCase: OrderByCase) {
-    const skip = limit * (page - 1);
-    const orders = await this.prismaService.order
-      .findMany({
-        skip,
-        take: limit,
-        orderBy: orderByCase,
-      })
-      .catch(() => {
-        throw new BadRequestException('Something went wrong');
-      });
-    const totalPages = Math.round(
-      (await this.prismaService.order.findMany()).length / limit,
-    );
-    return {
-      page,
-      limit,
+      page: filters.page,
+      limit: filters.limit,
       totalPages,
       data: orders,
     };

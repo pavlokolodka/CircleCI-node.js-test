@@ -20,6 +20,12 @@ export const getSortedOrdersSchema: JSONSchemaType<SortOrdersDto> = {
       type: 'string',
       format: 'sortBy',
     },
+    search: {
+      type: 'string',
+    },
+    status: {
+      type: 'string',
+    },
   },
   required: ['page', 'limit', 'sortBy'],
   additionalProperties: false,
