@@ -64,18 +64,6 @@ describe('Test Volunteer Repository', () => {
       },
     });
 
-    // const user2 = await prisma.user.findFirst({
-    //   where: {
-    //     id: 2,
-    //   },
-    // });
-
-    // if (user2) {
-    //   await prisma.volunteer_activation_request.delete({
-    //     where: { userId: 2 },
-    //   });
-    // }
-
     const record = await prisma.volunteer_activation_request.upsert({
       create: {
         country: faker.address.country(),
@@ -172,6 +160,10 @@ describe('Test Volunteer Repository', () => {
 
   afterAll(async () => {
     await prisma.volunteer_activation_request.delete({ where: { userId: 2 } });
-    await prisma.user.deleteMany({ where: { id: { in: [1, 2] } } });
+    await prisma.user
+      .findMany({ where: { id: { in: [1, 2] } } })
+      .then(async (data) => {
+        await prisma.user.deleteMany({ where: { id: { in: [1, 2] } } });
+      });
   });
 });
