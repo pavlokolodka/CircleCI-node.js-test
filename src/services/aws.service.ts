@@ -63,23 +63,22 @@ export class AwsService implements IAwsService {
     folder: AwsBucketFolders,
   ) {
     const locationsArray: string[] = [];
-    for (let i = 0; i < files.length; i++) {
-      const document = await this.uploadFile(
-        files[i].base64File,
-        files[i].ext,
-        folder,
-      ).catch(() => {
-        throw new BadRequestException('Files were not downloaded.');
-      });
-      locationsArray.push(document);
-    }
+    Promise.all(
+      files.map(async (file) => {
+        const document = await this
+          .uploadFile(file.base64File, file.ext, folder)
+          .catch(() => {
+            throw new BadRequestException('Files were not downloaded.');
+          })
+        locationsArray.push(document);
+      }));
     return locationsArray;
   }
 
   async deleteFile(location: string) {
     const key = `${location.split('/').reverse()[1]}/${
       location.split('/').reverse()[0]
-    }`;
+      }`;
     const params = {
       Bucket: process.env.AWS_BUCKET_NAME,
       Key: key,
