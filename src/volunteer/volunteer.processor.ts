@@ -3,13 +3,13 @@ import { Job } from 'bull';
 import { VolunteerRequestsService } from 'src/admin/volunteer-requests/volunteer-requests.service';
 
 @Processor('volunteers_request')
-export class AudioConsumer {
+export class VolunteerConsumer {
   constructor(
     private readonly volunteerRequestsService: VolunteerRequestsService,
   ) {}
 
   @Process('activationRequest')
-  async transcode(job: Job<unknown>) {
+  async approve(job: Job<unknown>) {
     await this.volunteerRequestsService.approveRequest({
       userId: Number(job.id),
       status: false,

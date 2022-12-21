@@ -1,7 +1,6 @@
 import { BadRequestException } from '@nestjs/common';
 import { CreateUserDto } from 'src/auth/dto/create-user.dto';
 import { IUserRerository } from 'src/types';
-import Repository from '../../repository/repository';
 import { UpdateUserDto } from '../dto/update-user.dto';
 
 export default class UserRepository

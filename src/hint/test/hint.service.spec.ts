@@ -1,11 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { HintService } from './hint.service';
-import { UserService } from '../user/user.service';
-import HintMockRepository from './repository/hint.mock.repository';
-import HintRepository from './repository/hint.repository';
-import { HintMatchingObject, hintMock } from './test/hint.mock';
-import { PrismaService } from '../services';
-import { userMock } from '../user/repository/user.repository.mock';
+import { HintService } from '../hint.service';
+import { UserService } from '../../user/user.service';
+import HintMockRepository from '../repository/hint.mock.repository';
+import HintRepository from '../repository/hint.repository';
+import { HintMatchingObject, hintMock } from './hint.mock';
+import { PrismaService } from '../../services';
+import { userMock } from '../../user/repository/user.repository.mock';
 
 describe('Hint Service', () => {
   let hintService: HintService;
