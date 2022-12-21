@@ -26,6 +26,36 @@ describe('Test Volunteer Repository', () => {
     volunteerRepo = moduleRef.get<VolunteerRepository>(VolunteerRepository);
     prisma = new PrismaService();
 
+    const user1 = await prisma.user.upsert({
+      create: {
+        email: faker.internet.email(),
+        name: faker.name.firstName(),
+        lastname: faker.name.lastName(),
+        role: 'customer',
+      },
+      update: {
+        email: faker.internet.email(),
+        name: faker.name.firstName(),
+        lastname: faker.name.lastName(),
+        role: 'customer',
+      },
+      where: {
+        id: 1,
+      },
+    });
+
+    const user2 = await prisma.user.findFirst({
+      where: {
+        id: 2,
+      },
+    });
+
+    if (user2) {
+      await prisma.volunteer_activation_request.delete({
+        where: { userId: 2 },
+      });
+    }
+
     const record = await prisma.volunteer_activation_request.upsert({
       create: {
         country: faker.address.country(),
@@ -122,5 +152,6 @@ describe('Test Volunteer Repository', () => {
 
   afterAll(async () => {
     await prisma.volunteer_activation_request.delete({ where: { userId: 2 } });
+    await prisma.volunteer_activation_request.delete({ where: { userId: 1 } });
   });
 });
