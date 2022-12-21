@@ -1,15 +1,17 @@
 version: 2.1
 orbs:
   node: circleci/node@5.0.2
-build_and_test: # this can be any name you choose
+jobs:
+  build_and_test: # this can be any name you choose
     executor: node/default # use the default executor defined within the orb
     steps:
       - checkout
       - node/install-packages:
           pkg-manager: npm
       - run:
-          command: npm i
-          name: Run installation
-      - run:
           command: npm run test
           name: Run tests
+workflows:
+  my-custom-workflow:
+    jobs:
+      - build_and_test            
