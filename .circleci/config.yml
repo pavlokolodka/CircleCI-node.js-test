@@ -8,7 +8,7 @@ jobs:
       - image: circleci/node
         environment:
           DATABASE_URL: postgresql://circleci@localhost/main
-      - image: circleci/postgres:15.0
+      - image: circleci/postgres
         environment:
           PGHOST: localhost
           PGUSER: circleci
