@@ -26,6 +26,9 @@ jobs:
           command: npm i
           name: Run installation of packages
       - run:
+          command: npx prisma migrate dev 
+          name: Sync Prisma with Database
+      - run:
           command: npm run test 
           name: Run tests
 workflows:
