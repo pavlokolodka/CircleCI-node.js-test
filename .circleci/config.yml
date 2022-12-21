@@ -8,8 +8,6 @@ jobs:
       - checkout
       - node/install:
           node-version: "16.15.1"
-      - node/install-packages:
-          pkg-manager: npm
       - run:
           command: npm i
           name: Run installation of packages
