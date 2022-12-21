@@ -172,6 +172,5 @@ describe('Test Volunteer Repository', () => {
 
   afterAll(async () => {
     await prisma.volunteer_activation_request.delete({ where: { userId: 2 } });
-    await prisma.volunteer_activation_request.delete({ where: { userId: 1 } });
   });
 });
