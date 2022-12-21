@@ -10,12 +10,22 @@ describe('UserRepository', () => {
 
   beforeAll(async () => {
     await prismaService.user
-      .create({
-        data: {
+      .upsert({
+        create: {
           email: userMock().email,
           name: userMock().name,
           lastname: userMock().lastname,
           role: userMock().role,
+          id: userMock().id,
+        },
+        update: {
+          email: userMock().email,
+          name: userMock().name,
+          lastname: userMock().lastname,
+          role: userMock().role,
+        },
+        where: {
+          id: userMock().id,
         },
       })
       .catch(() => {
