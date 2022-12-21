@@ -6,6 +6,8 @@ jobs:
     executor: node/default # use the default executor defined within the orb
     steps:
       - checkout
+      - node/install:
+          node-version: "16.15.1"
       - node/install-packages:
           pkg-manager: npm
       - run:
