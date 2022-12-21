@@ -90,8 +90,9 @@ export default class UserRepository
           photo: user.photo,
         },
       })
-      .catch(() => {
-        throw new BadRequestException('Something went wrong');
+      .catch((e) => {
+        throw new BadRequestException(e);
+        // throw new BadRequestException('Something went wrong');
       });
 
     return newUser;
