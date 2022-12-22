@@ -9,6 +9,7 @@ describe('Hint Repository', () => {
   const prismaService = new PrismaService();
 
   beforeAll(async () => {
+    console.log('start 1');
     const user1 = await prismaService.user.upsert({
       create: {
         email: faker.internet.email(),
@@ -127,5 +128,6 @@ describe('Hint Repository', () => {
     const del2 = prismaService.user.delete({ where: { id: 2 } });
     await Promise.allSettled([del1, del2]);
     await prismaService.$disconnect();
+    console.log('finish 1');
   });
 });

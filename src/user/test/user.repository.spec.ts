@@ -9,6 +9,7 @@ describe('UserRepository', () => {
   const prismaService = new PrismaService();
 
   beforeAll(async () => {
+    console.log('start 3');
     await prismaService.user
       .upsert({
         create: {
@@ -40,6 +41,7 @@ describe('UserRepository', () => {
         return;
       });
     await prismaService.$disconnect();
+    console.log('finish 3');
   }, 10000);
 
   beforeEach(async () => {

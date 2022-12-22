@@ -19,6 +19,7 @@ describe('Test Volunteer Repository', () => {
   };
 
   beforeAll(async () => {
+    console.log('start 2');
     const moduleRef = await Test.createTestingModule({
       providers: [PrismaService, VolunteerRepository],
     }).compile();
@@ -169,5 +170,6 @@ describe('Test Volunteer Repository', () => {
     //     .then(async (data) => {
     //       data ? await prisma.user.deleteMany({ where: { id: { in: [1, 2] } } }) : null;      });
     // });
+    console.log('finish 2');
   });
 });
