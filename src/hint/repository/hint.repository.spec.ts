@@ -96,6 +96,8 @@ describe('Hint Repository', () => {
       info: 'new info',
     };
     test('should create hint', async () => {
+      const user = await prismaService.user.findFirst({ where: { id: 1 } });
+      console.log('user', user);
       const newHint = await hintRepository.createHint(hint, 1);
       expect(newHint).toMatchObject(HintMatchingObject);
       await prismaService.volunteer_hint.delete({ where: { id: newHint.id } });
