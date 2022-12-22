@@ -97,6 +97,26 @@ describe('Hint Repository', () => {
     };
     test('should create hint', async () => {
       const user = await prismaService.user.findFirst({ where: { id: 1 } });
+      if (!user) {
+        await prismaService.user.upsert({
+          create: {
+            email: faker.internet.email(),
+            name: faker.name.firstName(),
+            lastname: faker.name.lastName(),
+            role: 'customer',
+            id: 1,
+          },
+          update: {
+            email: faker.internet.email(),
+            name: faker.name.firstName(),
+            lastname: faker.name.lastName(),
+            role: 'customer',
+          },
+          where: {
+            id: 1,
+          },
+        });
+      }
       console.log('user', user);
       const newHint = await hintRepository.createHint(hint, 1);
       expect(newHint).toMatchObject(HintMatchingObject);
