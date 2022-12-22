@@ -98,7 +98,7 @@ describe('Hint Repository', () => {
       const newHint = await hintRepository.createHint(hint, 1);
       expect(newHint).toMatchObject(HintMatchingObject);
       await prismaService.volunteer_hint.delete({ where: { id: newHint.id } });
-    }, 10000);
+    }, 20000);
   });
 
   describe('Update Hint', () => {
