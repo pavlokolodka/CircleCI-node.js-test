@@ -98,7 +98,7 @@ describe('Hint Repository', () => {
       const newHint = await hintRepository.createHint(hint, 1);
       expect(newHint).toMatchObject(HintMatchingObject);
       await prismaService.volunteer_hint.delete({ where: { id: newHint.id } });
-    }, 20000);
+    }, 10000);
   });
 
   describe('Update Hint', () => {
@@ -118,6 +118,14 @@ describe('Hint Repository', () => {
         id: hintMock().id,
       },
     });
-    await prismaService.user.deleteMany({ where: { id: { in: [1, 2] } } });
+    // await prismaService.user
+    //   .findMany({ where: { id: { in: [1, 2] } } })
+    //   .then(async (data) => {
+    //     data ? await prismaService.user.deleteMany({ where: { id: { in: [1, 2] } } }) : null;
+    //   });
+    const del1 = prismaService.user.delete({ where: { id: 1 } });
+    const del2 = prismaService.user.delete({ where: { id: 2 } });
+    await Promise.allSettled([del1, del2]);
+    await prismaService.$disconnect();
   });
 });

@@ -160,10 +160,14 @@ describe('Test Volunteer Repository', () => {
 
   afterAll(async () => {
     await prisma.volunteer_activation_request.delete({ where: { userId: 2 } });
-    await prisma.user
-      .findMany({ where: { id: { in: [1, 2] } } })
-      .then(async (data) => {
-        await prisma.user.deleteMany({ where: { id: { in: [1, 2] } } });
-      });
+    const del1 = prisma.user.delete({ where: { id: 1 } });
+    const del2 = prisma.user.delete({ where: { id: 2 } });
+    await Promise.allSettled([del1, del2]);
+    await prisma.$disconnect();
+    //   await prisma.user
+    //     .findMany({ where: { id: { in: [1, 2] } } })
+    //     .then(async (data) => {
+    //       data ? await prisma.user.deleteMany({ where: { id: { in: [1, 2] } } }) : null;      });
+    // });
   });
 });
