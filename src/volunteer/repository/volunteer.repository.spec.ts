@@ -19,12 +19,51 @@ describe('Test Volunteer Repository', () => {
   };
 
   beforeAll(async () => {
+    console.log('start 2');
     const moduleRef = await Test.createTestingModule({
       providers: [PrismaService, VolunteerRepository],
     }).compile();
 
     volunteerRepo = moduleRef.get<VolunteerRepository>(VolunteerRepository);
     prisma = new PrismaService();
+
+    const user1 = await prisma.user.upsert({
+      create: {
+        email: faker.internet.email(),
+        name: faker.name.firstName(),
+        lastname: faker.name.lastName(),
+        role: 'customer',
+        id: 1,
+      },
+      update: {
+        email: faker.internet.email(),
+        name: faker.name.firstName(),
+        lastname: faker.name.lastName(),
+        role: 'customer',
+      },
+      where: {
+        id: 1,
+      },
+    });
+
+    const user2 = await prisma.user.upsert({
+      create: {
+        email: faker.internet.email(),
+        name: faker.name.firstName(),
+        lastname: faker.name.lastName(),
+        role: 'customer',
+        id: 2,
+      },
+      update: {
+        email: faker.internet.email(),
+        name: faker.name.firstName(),
+        lastname: faker.name.lastName(),
+        role: 'customer',
+      },
+      where: {
+        id: 2,
+      },
+    });
 
     const record = await prisma.volunteer_activation_request.upsert({
       create: {
@@ -122,5 +161,15 @@ describe('Test Volunteer Repository', () => {
 
   afterAll(async () => {
     await prisma.volunteer_activation_request.delete({ where: { userId: 2 } });
+    const del1 = prisma.user.delete({ where: { id: 1 } });
+    const del2 = prisma.user.delete({ where: { id: 2 } });
+    await Promise.allSettled([del1, del2]);
+    await prisma.$disconnect();
+    //   await prisma.user
+    //     .findMany({ where: { id: { in: [1, 2] } } })
+    //     .then(async (data) => {
+    //       data ? await prisma.user.deleteMany({ where: { id: { in: [1, 2] } } }) : null;      });
+    // });
+    console.log('finish 2');
   });
 });

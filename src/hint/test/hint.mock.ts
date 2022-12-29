@@ -2,7 +2,7 @@ import { IHint } from '../../types';
 
 export const hintMock = (): IHint => {
   return {
-    id: 1,
+    id: 2,
     title: 'title',
     info: 'info',
     user_id: 2,

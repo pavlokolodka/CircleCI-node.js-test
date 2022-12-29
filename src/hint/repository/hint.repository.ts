@@ -77,8 +77,9 @@ export default class HintRepository
             user_id,
           },
         })
-        .catch(() => {
-          throw new BadRequestException('Something went wrong');
+        .catch((e) => {
+          throw new BadRequestException(e);
+          // throw new BadRequestException('Something went wrong');
         });
       if (hint.photo?.length) {
         await this.createHintPhoto(hint.photo, newHint.id, tx);

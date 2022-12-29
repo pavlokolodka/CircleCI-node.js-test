@@ -9,13 +9,24 @@ describe('UserRepository', () => {
   const prismaService = new PrismaService();
 
   beforeAll(async () => {
+    console.log('start 3');
     await prismaService.user
-      .create({
-        data: {
+      .upsert({
+        create: {
           email: userMock().email,
           name: userMock().name,
           lastname: userMock().lastname,
           role: userMock().role,
+          id: userMock().id,
+        },
+        update: {
+          email: userMock().email,
+          name: userMock().name,
+          lastname: userMock().lastname,
+          role: userMock().role,
+        },
+        where: {
+          id: userMock().id,
         },
       })
       .catch(() => {
@@ -30,6 +41,7 @@ describe('UserRepository', () => {
         return;
       });
     await prismaService.$disconnect();
+    console.log('finish 3');
   }, 10000);
 
   beforeEach(async () => {

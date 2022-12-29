@@ -5,7 +5,7 @@ import { UpdateUserDto } from 'src/user/dto/update-user.dto';
 
 export const userMock = (): IUser => {
   return {
-    id: 1,
+    id: 2,
     email: 'email@gmail.com',
     name: 'name',
     lastname: 'lastname',
